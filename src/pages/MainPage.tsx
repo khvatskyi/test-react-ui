@@ -1,37 +1,16 @@
 import css from './MainPage.module.scss';
 import { Panel, RichTextView, IconContainer } from '@epam/uui';
-import { ReactComponent as UuiPromoImage } from '../icons/uui-promo-image.svg';
-
-const links = [
-    {
-        label: 'UUI docs: ',
-        link: 'https://uui.epam.com',
-        linkLabel: 'uui.epam.com',
-    },
-    {
-        label: 'Git: ',
-        link: 'https://github.com/epam/uui',
-        linkLabel: 'github.com/epam/uui',
-    },
-];
+import { ReactComponent as CopilotImage } from '../icons/github-copilot-icon.svg';
 
 export const MainPage = () => {
     return (
         <main>
             <div className={css.bgImg}>
-                <IconContainer icon={UuiPromoImage} />
+                <IconContainer icon={CopilotImage} />
             </div>
             <Panel cx={css.mainPanel}>
                 <RichTextView size="14">
-                    <h3>Welcome to UUI template app</h3>
-                    {
-                        links.map((value) => (
-                            <p key={value.label}>
-                                {value.label}
-                                <a href={value.link}>{value.linkLabel}</a>
-                            </p>
-                        ))
-                    }
+                    <h1>API Producer Copilot​</h1>
                 </RichTextView>
             </Panel>
         </main>

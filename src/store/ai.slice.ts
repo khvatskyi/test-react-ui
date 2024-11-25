@@ -22,9 +22,9 @@ export const aiSlice = createSlice({
     initialState,
     reducers: { },
     extraReducers: builder => {
-        builder.addCase(incrementAsync.pending, state => {
-            state.status = 'loading'
-        })
+        // builder.addCase(incrementAsync.pending, state => {
+        //     state.status = 'loading'
+        // })
     }
 })
 

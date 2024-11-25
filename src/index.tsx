@@ -2,6 +2,7 @@ import '@epam/uui-components/styles.css';
 import '@epam/uui/styles.css';
 import '@epam/assets/theme/theme_loveship.scss';
 import './index.module.scss';
+import AppMainMenu from "./components/MainMenu";
 
 import logo from "./icons/logo.svg";
 //
@@ -30,24 +31,7 @@ function UuiEnhancedApp() {
         <UuiContext.Provider value={services}>
             <ErrorHandler>
                 <Router history={history}>
-                    <Route>
-                        <MainMenu appLogoUrl={logo}>
-                            <MainMenuButton
-                                caption="Home"
-                                link={{ pathname: '/' }}
-                                priority={1}
-                                estimatedWidth={72}
-                            />
-                            <MainMenuButton
-                                caption="Login"
-                                link={{ pathname: '/chat-room' }}
-                                priority={2}
-                                estimatedWidth={72}
-                            />
-
-                            {/* <BurgerButton icon={ GitIcon } caption="Github" href={ GIT_LINK } target="_blank" /> */}
-                        </MainMenu>
-                    </Route>
+                    <Route component={AppMainMenu} />
                     <Route exact path="/" component={MainPage} />
                     <Route path="/chat-room" component={ChatRoom} />
                 </Router>
