@@ -1,16 +1,21 @@
 import { IOption } from './option.model';
 
+export interface IAiMessage {
+    context: IAiContext[];
+    text: string;
+}
+
 export interface IMessageToAi {
-  context: IAiContext[];
-  text: string;
+    context: IAiContext[];
+    text: string;
 }
 
 export interface IAiContext {
-  role: string;
-  content: string
+    role: string;
+    content: string
 }
 
 export interface IAiResponse {
-  message: string;
-  options: IOption[];
+    message: string;
+    options: IOption[];
 }

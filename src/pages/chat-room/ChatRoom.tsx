@@ -1,7 +1,30 @@
+import { IChatMessage } from '../../models/chat.models';
+import Chat from '../chat/chat';
 import css from './ChatRoom.module.scss';
+import { getMessages, isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+
+interface ChatProps {
+    messages: IChatMessage[];
+    isResponding: boolean;
+    onSendMessage: (message: string) => void;
+}
 
 export const ChatRoom = () => {
+    const dispatch = useAppDispatch();
+    const isResponding = useAppSelector(isAiMessageLoading);
+    const messages = useAppSelector(getMessages);
+    // console.log(useAppSelector((state) => state.ai));
+
+    const chatProps: ChatProps = {
+        messages: messages,
+        isResponding,
+        onSendMessage: (message: string) => dispatch(sendMessageToAi(message))
+    };
+
     return (
-        <div className={css.chatRoom} >Hello! I am chat room!</div>
+        <div>
+            <Chat {...chatProps} />
+        </div>
     );
 }
