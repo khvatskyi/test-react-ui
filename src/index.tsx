@@ -2,12 +2,13 @@ import '@epam/uui-components/styles.css';
 import '@epam/uui/styles.css';
 import '@epam/assets/theme/theme_loveship.scss';
 import './index.module.scss';
-import AppMainMenu from "./components/MainMenu";
+import AppMainMenuComponent from './components/MainMenu';
+import LoginVerificationComponent from "./components/LoginVerification";
 
 import { StrictMode } from "react";
 import { createRoot } from 'react-dom/client';
 import { createBrowserHistory } from "history";
-import { Route, Router } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import { DragGhost, HistoryAdaptedRouter, useUuiServices, UuiContext } from "@epam/uui-core";
 import { ErrorHandler } from "@epam/uui";
 import { Modals, Snackbar } from "@epam/uui-components";
@@ -29,16 +30,18 @@ function UuiEnhancedApp() {
         <UuiContext.Provider value={services}>
             <ErrorHandler>
                 <Router history={history}>
-                    <Route component={AppMainMenu} />
-                    <Route exact path="/" component={MainPage} />
-                    <Route path="/chat-room" component={ChatRoom} />
+                    <AppMainMenuComponent/>
+                    <Switch>
+                        <Route exact path="/" component={MainPage} />
+                        <Route path="/chat-room" component={ChatRoom} />
+                        <Route path="/login/sso-verification" component={LoginVerificationComponent} />
+                    </Switch>
                 </Router>
                 <Snackbar />
                 <Modals />
                 <DragGhost />
             </ErrorHandler>
         </UuiContext.Provider>
-
     );
 }
 

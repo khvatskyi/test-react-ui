@@ -1,12 +1,9 @@
 import { IAiMessage, IAiResponse } from '../models/ai.models';
 import { concatMap, delay, from, map, Observable, of } from 'rxjs';
 
-const DELAY = 500;
-const API_URL = 'https://api.example.com'; // Replace with your actual API URL
-
 export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
 
-    const path = API_URL + '/test-chat';
+    const path = process.env.REACT_APP_API_ROOT + '/api/chat';
     const body = {
         context: message.context,
         message: message.text
@@ -42,5 +39,5 @@ export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
     //         // { name: 'test' }
     //     ]
     // }
-    // return of(response).pipe(delay(DELAY));
+    // return of(response).pipe(delay(500));
 }

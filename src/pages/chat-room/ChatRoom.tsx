@@ -1,6 +1,5 @@
 import { IChatMessage } from '../../models/chat.models';
 import Chat from '../chat/chat';
-import css from './ChatRoom.module.scss';
 import { getMessages, isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
@@ -14,7 +13,6 @@ export const ChatRoom = () => {
     const dispatch = useAppDispatch();
     const isResponding = useAppSelector(isAiMessageLoading);
     const messages = useAppSelector(getMessages);
-    // console.log(useAppSelector((state) => state.ai));
 
     const chatProps: ChatProps = {
         messages: messages,
