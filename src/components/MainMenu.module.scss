@@ -1,0 +1,33 @@
+.root {
+  .icon {
+    height: 60px;
+    fill: var(--uui-main_menu-text);
+    padding-inline-start: 9px;
+    padding-inline-end: 9px;
+
+    &:global(.uui-button-box):global(.uui-link_button):hover {
+        fill: var(--uui-main_menu-text);
+        background-color: var(--uui-neutral-90);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    &.figma-icon {
+        :global(.uui-icon):nth-of-type(2) {
+            svg {
+                margin-inline-start: 3px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+
+    &.logo svg {
+        width: 168px;
+        height: 60px;
+    }
+  }
+}

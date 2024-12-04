@@ -5,7 +5,6 @@ import './index.module.scss';
 import AppMainMenuComponent from './components/MainMenu';
 import LoginVerificationComponent from "./components/LoginVerification";
 
-import { StrictMode } from "react";
 import { createRoot } from 'react-dom/client';
 import { createBrowserHistory } from "history";
 import { Route, Router, Switch } from "react-router-dom";
@@ -16,6 +15,7 @@ import { svc } from "./services";
 
 import { MainPage } from "./pages/MainPage";
 import { ChatRoom } from './pages/chat-room/ChatRoom';
+import { ProviderContextForm } from './pages/provider/ProviderContext';
 
 import { Provider } from 'react-redux'
 import { store } from './store';
@@ -35,6 +35,7 @@ function UuiEnhancedApp() {
                         <Route exact path="/" component={MainPage} />
                         <Route path="/chat-room" component={ChatRoom} />
                         <Route path="/login/sso-verification" component={LoginVerificationComponent} />
+                        <Route path="/provider-context" component={ProviderContextForm} />
                     </Switch>
                 </Router>
                 <Snackbar />
@@ -48,11 +49,9 @@ function UuiEnhancedApp() {
 function initApp() {
     const root = createRoot(window.document.getElementById('root') as Element);
     root.render(
-        <StrictMode>
-            <Provider store={store}>
-                <UuiEnhancedApp />
-            </Provider>
-        </StrictMode>
+        <Provider store={store}>
+            <UuiEnhancedApp />
+        </Provider>
     );
 }
 

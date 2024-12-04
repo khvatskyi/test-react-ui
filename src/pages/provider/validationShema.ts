@@ -1,0 +1,103 @@
+import { Metadata } from '@epam/uui-core';
+import { CompanyInfo } from './types';
+// import { uuiDayjs } from '../../../helpers';
+
+const fullNameRegExp = /^[a-zA-Z0-9\s'-]+$/;
+
+export const companyInfoSchema = (value: CompanyInfo): Metadata<CompanyInfo> => ({
+    props: {
+        name: {
+            isRequired: true,
+            // validators: [(fullName: string) => [!fullNameRegExp.exec(fullName)?.length && 'Full Name should contain only Latin alphabet characters and numbers!']],
+            validators: [
+              (fullName: string | undefined) => {
+                if (!fullName) {
+                  return ['Full Name is required.'];
+                }
+                //const fullNameRegExp = /^[a-zA-Z0-9 ]+$/;
+                return !fullNameRegExp.exec(fullName)?.length 
+                        ? ['Full Name should contain only Latin alphabet characters, numbers, and spaces!']
+                        : [];
+              }
+            ]
+        },
+
+        // birthdayDate: {
+        //     isRequired: false,
+        //     validators: [(birthdayDate: string) => [!(uuiDayjs.dayjs(birthdayDate).valueOf() <= uuiDayjs.dayjs().subtract(16, 'year').valueOf()) && 'User cannot be under 16 years old!']],
+        // },
+        // location: {
+        //     props: {
+        //         country: { isRequired: true },
+        //         city: {
+        //             isRequired: true,
+        //             isDisabled: !value.location?.country,
+        //         },
+        //     },
+        // },
+        // primaryInfo: {
+        //     isDisabled: value.role !== 'Admin',
+        // },
+        // education: {
+        //     props: {
+        //         institution: { isRequired: false },
+        //         faculty: { isRequired: false },
+        //         department: { isRequired: false },
+        //         degree: { isRequired: false },
+        //         speciality: { isRequired: false },
+        //         graduationYear: {
+        //             isRequired: false,
+        //             validators: [(graduationYear: number | null) => [graduationYear !== null && graduationYear < 1950 && 'The year of graduation can not be less than 1950!']],
+        //         },
+        //     },
+        // },
+        // languageInfo: {
+        //     all: {
+        //         props: {
+        //             language: { isRequired: false },
+        //             speakingLevel: { isRequired: false },
+        //             writingLevel: { isRequired: false },
+        //         },
+        //     },
+        // },
+        // travelVisas: {
+        //     props: {
+        //         visas: {
+        //             all: {
+        //                 props: {
+        //                     country: { isRequired: false },
+        //                     term: {
+        //                         props: {
+        //                             from: {
+        //                                 isRequired: false,
+        //                             },
+        //                             to: {
+        //                                 isRequired: false,
+        //                             },
+        //                         },
+        //                     },
+        //                 },
+        //             },
+        //         },
+        //         scans: {
+        //             all: {
+        //                 props: {
+        //                     progress: { isRequired: false },
+        //                     id: { isRequired: false },
+        //                     name: { isRequired: false },
+        //                     size: { isRequired: false },
+        //                     path: { isRequired: false },
+        //                     type: { isRequired: false },
+        //                     extension: { isRequired: false },
+        //                 },
+        //             },
+        //         },
+        //     },
+        // },
+        // otherInfo: {
+        //     props: {
+        //         tShirtSize: { isRequired: false },
+        //     },
+        // },
+    },
+});

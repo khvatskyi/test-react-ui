@@ -1,9 +1,14 @@
-import { BurgerButton, GlobalMenu, MainMenu, MainMenuAvatar, MainMenuButton, MainMenuIcon, FlexSpacer, FlexCell, DropdownMenuButton, DropdownMenuBody, Burger } from '@epam/uui';
-import { Dropdown, AdaptiveItemProps, MainMenuLogo } from '@epam/uui-components';
+import { BurgerButton, GlobalMenu, MainMenu, MainMenuAvatar, MainMenuButton, MainMenuIcon, FlexSpacer, FlexCell, DropdownMenuButton, 
+    DropdownMenuBody, Burger, IconContainer } from '@epam/uui';
+import { Dropdown, AdaptiveItemProps } from '@epam/uui-components';
 import { ReactComponent as HelpIcon } from '@epam/assets/icons/common/notification-help-outline-24.svg';
 import { access_sso } from '../environments/environment';
 import { selectUserContext } from '../store/session.state';
 import { useAppSelector } from '../hooks';
+import { Anchor, MainMenuCustomElement } from '@epam/uui-components';
+import { ReactComponent as LogoIcon } from '../icons/logo.svg';
+import cx from 'classnames';
+import css from './MainMenu.module.scss';
 
 interface RenderProps {
     id: string;
@@ -63,22 +68,34 @@ interface RenderProps {
             render: (p: RenderProps) => <Burger key={ p.id } width={ 300 } renderBurgerContent={ renderBurger } />,
         });
         items.push({
-            id: 'logo', priority: 99,
-            render: (p: RenderProps) => <MainMenuLogo key={ p.id } href="/" logoUrl="/icons/ai-copilot_magic-fill.svg" />,
-        });
-        items.push({
-            id: 'welcomePage', priority: 3, 
-            render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/" caption="Welcome page" />,
+            id: 'logo',
+            priority: 99,
+            render: () => (
+                <MainMenuCustomElement key="logo">
+                    <Anchor link={ { pathname: '/' } } href="/" >
+                        <IconContainer icon={ LogoIcon } cx={ cx(css.icon, css.logo) } />
+                    </Anchor>
+                </MainMenuCustomElement>
+            ),
+
         });
         if (isUserContextPresent) {
             items.push({
                 id: 'chatRoom', priority: 3, 
                 render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/chat-room" caption="Chat Room" />,
             });
+            items.push({
+                id: 'providerContext', priority: 3, 
+                render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/provider-context" caption="Provider Context" />,
+            });
         }
         items.push({
             id: 'flexSpacer', priority: 100, 
             render: (p: RenderProps) => <FlexSpacer key={ p.id } />,
+        });
+        items.push({
+            id: 'help', priority: 1, 
+            render: (p: RenderProps) => <MainMenuIcon key={ p.id } href="https://support.epam.com" target="_blank" icon={ HelpIcon } />,
         });
         if (isUserContextPresent) {
             items.push({
@@ -98,10 +115,6 @@ interface RenderProps {
                 />
             });
         }
-        items.push({
-            id: 'help', priority: 1, 
-            render: (p: RenderProps) => <MainMenuIcon key={ p.id } href="https://support.epam.com" target="_blank" icon={ HelpIcon } />,
-        });
         items.push({
             id: 'globalMenu', priority: 100, 
             render: (p: RenderProps) => <GlobalMenu key={ p.id } />,

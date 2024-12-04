@@ -1220,6 +1220,18 @@
   resolved "https://registry.yarnpkg.com/@epam/assets/-/assets-5.11.0.tgz#8142c02ff26007bfad7d990ef90a6da6b125ee1f"
   integrity sha512-ZGLbn0BuZ8ttnal3Yi4dKBuxHNJRLBJnlVsQoboTCs5lHXRhZMxEr6bczX+QfTp2pO4Em7nPg4glJZWRE8V87Q==
 
+"@epam/promo@^5.11.0":
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/@epam/promo/-/promo-5.11.0.tgz#36969b3483831550e425d973ad953d02e850bf1b"
+  integrity sha512-KUX+vqLMfK4oquVfmSgNBfdqbZsx+cW/LOMhxFfcJAJTt/9t6LMHBVP++I7WF3BJZCJSjd6faVnCSVGsHvcPuQ==
+  dependencies:
+    "@epam/assets" "5.11.0"
+    "@epam/uui" "5.11.0"
+    "@epam/uui-components" "5.11.0"
+    "@epam/uui-core" "5.11.0"
+    "@types/classnames" "2.2.6"
+    classnames "2.2.6"
+
 "@epam/uui-components@5.11.0", "@epam/uui-components@^5.11.0":
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/@epam/uui-components/-/uui-components-5.11.0.tgz#68f61417a5eca8000520de7fc4236b381ce58c0d"
@@ -1265,7 +1277,7 @@
     "@types/react-test-renderer" "18.0.0"
     react-test-renderer "18.2.0"
 
-"@epam/uui@^5.11.0":
+"@epam/uui@5.11.0", "@epam/uui@^5.11.0":
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/@epam/uui/-/uui-5.11.0.tgz#ab31cafe586eb2d8baa16d0a3db63ea9d726d07c"
   integrity sha512-nxvEjEn9k9ZeMzNlBK4AJ9jxMjLKv8XIym+byGYlElnPrz2kpRlXemM6KdjK+DxkNRQ0ZKaNBgD6qhavGWDjBQ==
