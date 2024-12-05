@@ -11,6 +11,7 @@ import { defaultData} from './defaultData';
 import { companyInfoSchema } from './validationShema';
 import css from './ProviderContext.module.scss';
 import { appData } from '../../data/source';
+import { ReactComponent as iconAI } from '@epam/assets/icons/ai-copilot_magic_small-fill.svg';
 
 
 export function ProviderContextForm() {
@@ -32,7 +33,7 @@ export function ProviderContextForm() {
       settingsKey: 'provider-context-form',
       value: defaultData,
       getMetadata: companyInfoSchema,
-      onSave: (person) => Promise.resolve({ form: person }),
+      onSave: (person) => Promise.resolve({ form: person }) /* place your save api call here */,
       onSuccess: () => {
           svc.uuiNotifications.show(
               (props) => (
@@ -52,8 +53,8 @@ export function ProviderContextForm() {
       <div className={ css.root }>
           <FlexCell width="100%">
                 <RichTextView >
-                  <h2 style={{textAlign: "center"}}>Provider Context</h2>
-                  <div style={{textAlign: "center"}}>Tell us a little bit about the company you are working with</div>
+                  <h2 style={{textAlign: "center"}}>Client Profile</h2>
+                  <div style={{textAlign: "center"}}>Tell us a little bit about the client you are working with</div>
                 </RichTextView>
                 <FlexSpacer />
           </FlexCell>
@@ -112,8 +113,9 @@ export function ProviderContextForm() {
                 </FlexRow>
                 {/* <hr className={ css.divider } /> */}
                 <FlexRow columnGap="12">
+                    <Button caption="Save client profile" color="primary" onClick={ save } />
+                    <Button caption="Fill with AI" icon={ iconAI } color="primary" fill="ghost" onClick={ save } />
                     <FlexSpacer />
-                    <Button caption="Save" color="primary" onClick={ save } />
                 </FlexRow>
             </FlexCell>
         </Panel>
