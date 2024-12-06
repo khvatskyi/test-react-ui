@@ -1,20 +1,29 @@
 @use '~@epam/promo/assets/styles/colors' as *;
 
 .root {
-  margin: 0 auto 102px;
-  max-width: 714px;
+  width: 100%;
 
-  .form-panel {
+  .buttonPanel {
+    height: 60px;
+    background-color: #FFFFFF;
+    padding-right: 12px;
+  }
+
+  .rootForm {
+    margin: 0 auto 102px;
     max-width: 714px;
-    padding: 24px;
 
-    .divider {
+    .formPanel {
+      max-width: 714px;
+      padding: 24px;
+
+      .divider {
         height: 1px;
         background-color: $gray40;
         margin-top: 18px;
         margin-bottom: 24px;
         border: 0 none;
+      }
     }
-
   }
 }

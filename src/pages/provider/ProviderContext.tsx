@@ -5,7 +5,7 @@ import type { TApi } from '../../data';
 import { ILens, useArrayDataSource } from '@epam/uui-core';
 import { 
   FlexCell, FlexRow, FlexSpacer, Panel, LabeledInput, RichTextView, TextInput, SuccessNotification, Text, TextArea, Button, 
-  PickerInput, RadioGroup, useForm 
+  PickerInput, RadioGroup, useForm
 } from '@epam/uui';
 import { defaultData} from './defaultData';
 import { companyInfoSchema } from './validationShema';
@@ -24,11 +24,8 @@ export function ProviderContextForm() {
       [],
   );
 
-  const [color, setColor] = useState<string | null>(null); //TODO: need redesign
-  // const handleColorChange = (newValue: string | null) => {
-  //   setColor(newValue);  // тепер це безпечно, оскільки setColor правильно типізований
-  // };
-  
+  const [size, setSize] = useState<string | null>('large'); //TODO: need redesign
+
   const { lens, save } = useForm<CompanyInfo>({
       settingsKey: 'provider-context-form',
       value: defaultData,
@@ -48,17 +45,26 @@ export function ProviderContextForm() {
       },
   });
   const info: ILens<CompanyInfo> = lens;
+  console.log(css.rootForm );
 
   return (
-      <div className={ css.root }>
-          <FlexCell width="100%">
+    <div className={ css.root }>
+        <Panel cx={ css.buttonPanel }>
+            <FlexRow columnGap="12" cx={ css.buttonPanel }>
+                <FlexSpacer />
+                <Button caption="Save client profile" color="primary" onClick={ save } />
+                <Button caption="Fill with AI" icon={ iconAI } fill="ghost" onClick={ save } />
+            </FlexRow>
+        </Panel>
+        <div className={ css.rootForm }>
+            <FlexCell width="100%">
                 <RichTextView >
                   <h2 style={{textAlign: "center"}}>Client Profile</h2>
                   <div style={{textAlign: "center"}}>Tell us a little bit about the client you are working with</div>
                 </RichTextView>
                 <FlexSpacer />
-          </FlexCell>
-          <Panel cx={ css.formPanel } >
+            </FlexCell>
+            <Panel cx={ css.formPanel } >
               <FlexCell width="100%">
                 <FlexRow vPadding="12">
                   <FlexCell minWidth={ 324 } width="100%">
@@ -97,8 +103,8 @@ export function ProviderContextForm() {
                               items={ [
                                   { id: 'small', name: 'Small' }, { id: 'medium', name: 'Medium' }, { id: 'large', name: 'Large' },
                               ] }
-                              value={ color }
-                              onValueChange={ setColor }
+                              value={ size }
+                              onValueChange={ setSize }
                               direction="horizontal"
                           />
                       </LabeledInput>
@@ -111,14 +117,9 @@ export function ProviderContextForm() {
                       </LabeledInput>
                   </FlexCell>
                 </FlexRow>
-                {/* <hr className={ css.divider } /> */}
-                <FlexRow columnGap="12">
-                    <Button caption="Save client profile" color="primary" onClick={ save } />
-                    <Button caption="Fill with AI" icon={ iconAI } color="primary" fill="ghost" onClick={ save } />
-                    <FlexSpacer />
-                </FlexRow>
-            </FlexCell>
-        </Panel>
-      </div>
+              </FlexCell>
+            </Panel>
+        </div>
+    </div>
   );
 }
