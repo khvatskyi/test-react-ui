@@ -9,12 +9,12 @@ import {
 } from '@epam/uui';
 import { defaultData} from './defaultData';
 import { companyInfoSchema } from './validationShema';
-import css from './ProviderContext.module.scss';
+import css from './Profile.module.scss';
 import { appData } from '../../data/source';
 import { ReactComponent as iconAI } from '@epam/assets/icons/ai-copilot_magic_small-fill.svg';
 
 
-export function ProviderContextForm() {
+export function ProfileForm() {
   const svc = useUuiContext<TApi, UuiContexts>();
 
   const industryDataSource = useArrayDataSource(
