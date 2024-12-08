@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { UuiContexts, useUuiContext } from '@epam/uui-core';
-import type { CompanyInfo} from './types';
+import type { ProfileInfo} from './ProfileTypes';
 import type { TApi } from '../../data';
 import { ILens, useArrayDataSource } from '@epam/uui-core';
 import { 
   FlexCell, FlexRow, FlexSpacer, Panel, LabeledInput, RichTextView, TextInput, SuccessNotification, Text, TextArea, Button, 
   PickerInput, RadioGroup, useForm
 } from '@epam/uui';
-import { defaultData} from './defaultData';
-import { companyInfoSchema } from './validationShema';
+import { defaultProfileData} from './defaultProfileData';
+import { profileInfoSchema } from './validationShema';
 import css from './Profile.module.scss';
 import { appData } from '../../data/source';
 import { ReactComponent as iconAI } from '@epam/assets/icons/ai-copilot_magic_small-fill.svg';
@@ -24,12 +24,12 @@ export function ProfileForm() {
       [],
   );
 
-  const [size, setSize] = useState<string | null>('large'); //TODO: need redesign
+  const [size, setSize] = useState<string | null>(defaultProfileData.size!); //TODO: need redesign
 
-  const { lens, save } = useForm<CompanyInfo>({
+  const { lens, save } = useForm<ProfileInfo>({
       settingsKey: 'provider-context-form',
-      value: defaultData,
-      getMetadata: companyInfoSchema,
+      value: defaultProfileData,
+      getMetadata: profileInfoSchema,
       onSave: (person) => Promise.resolve({ form: person }) /* place your save api call here */,
       onSuccess: () => {
           svc.uuiNotifications.show(
@@ -44,9 +44,8 @@ export function ProfileForm() {
           ).catch(() => null);
       },
   });
-  const info: ILens<CompanyInfo> = lens;
-  console.log(css.rootForm );
-
+  const info: ILens<ProfileInfo> = lens;
+  
   return (
     <div className={ css.root }>
         <Panel cx={ css.buttonPanel }>

@@ -1,8 +1,7 @@
 import { Metadata } from '@epam/uui-core';
-import { CompanyInfo } from './types';
-// import { uuiDayjs } from '../../../helpers';
+import { ProfileInfo } from './ProfileTypes';
 
-export const companyInfoSchema = (value: CompanyInfo): Metadata<CompanyInfo> => ({
+export const profileInfoSchema = (value: ProfileInfo): Metadata<ProfileInfo> => ({
     props: {
         name: {
             isRequired: true,

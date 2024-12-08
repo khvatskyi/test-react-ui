@@ -1,0 +1,23 @@
+@use '~@epam/promo/assets/styles/colors' as *;
+
+.root {
+  width: 100%;
+  background-color: white;
+
+  .buttonPanel {
+    height: 60px;
+    background-color: #FFFFFF;
+  }
+  .profileTitle {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .profileLabel {
+    padding-top: 12px;
+    padding-bottom: 0;
+  }
+  .formPanel{
+    padding: 12px;
+  }
+
+}

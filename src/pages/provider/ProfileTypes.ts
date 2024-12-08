@@ -1,7 +1,7 @@
-export interface CompanyInfo {
+export interface ProfileInfo {
   name?: string;
   description?: string;
   industry?: string;
-  size?:  'small' | 'medium' | 'large';
+  size?:  'Small' | 'Medium' | 'Large';
   coreProducts?: string;
 }

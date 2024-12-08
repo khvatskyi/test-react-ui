@@ -79,16 +79,20 @@ interface RenderProps {
             ),
 
         });
-        if (isUserContextPresent) {
+        // if (isUserContextPresent) { //development mode :)
             items.push({
                 id: 'chatRoom', priority: 3, 
                 render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/chat-room" caption="Chat Room" />,
             });
             items.push({
-                id: 'providerContext', priority: 3, 
-                render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/provider-context" caption="Provider Context" />,
+                id: 'profile', priority: 3, 
+                render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/profile" caption="Client Profile" />,
             });
-        }
+            items.push({
+                id: 'portfolio', priority: 3, 
+                render: (p: RenderProps) => <MainMenuButton key={ p.id } href="/portfolio" caption="Portfolios" />,
+            });
+        // }
         items.push({
             id: 'flexSpacer', priority: 100, 
             render: (p: RenderProps) => <FlexSpacer key={ p.id } />,

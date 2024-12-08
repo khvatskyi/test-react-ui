@@ -16,6 +16,7 @@ import { svc } from "./services";
 import { MainPage } from "./pages/MainPage";
 import { ChatRoom } from './pages/chat-room/ChatRoom';
 import { ProfileForm } from './pages/provider/Profile';
+import { PortfoliosPage } from './pages/portfolio/Portfolios';
 
 import { Provider } from 'react-redux'
 import { store } from './store';
@@ -35,7 +36,8 @@ function UuiEnhancedApp() {
                         <Route exact path="/" component={MainPage} />
                         <Route path="/chat-room" component={ChatRoom} />
                         <Route path="/login/sso-verification" component={LoginVerificationComponent} />
-                        <Route path="/provider-context" component={ProfileForm} />
+                        <Route path="/profile" component={ProfileForm} />
+                        <Route path="/portfolio" component={PortfoliosPage} />
                     </Switch>
                 </Router>
                 <Snackbar />
