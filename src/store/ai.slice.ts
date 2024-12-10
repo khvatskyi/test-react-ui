@@ -7,50 +7,50 @@ import { AiRole } from '../enums/ai-role.enum';
 import { IChatMessage } from '../models/chat.models';
 
 export interface AiState {
-    aiContext: IAiContext[];
-    isLoading: boolean;
+  aiContext: IAiContext[];
+  isLoading: boolean;
 }
 
 type StateModel = AiState;
 
 const initialState: StateModel = {
-    aiContext: [],
-    isLoading: false
+  aiContext: [],
+  isLoading: false
 };
 
 export const sendMessageToAi = createAsyncThunk(
-    'ai/sendMessageToAi',
-    async (message: string, thunkAPI) => {
+  'ai/sendMessageToAi',
+  async (message: string, thunkAPI) => {
 
-        const state = thunkAPI.getState() as StateModel;
+    const state = thunkAPI.getState() as StateModel;
 
-        const requestMessage: IAiMessage = {
-            text: message,
-            context: state.aiContext
-        };
+    const requestMessage: IAiMessage = {
+      text: message,
+      context: state.aiContext
+    };
 
-        thunkAPI.dispatch(isLoading(true));
-        const response = await firstValueFrom(sendMessage(requestMessage));
-        thunkAPI.dispatch(isLoading(false));
-        return response;
-    },
+    thunkAPI.dispatch(isLoading(true));
+    const response = await firstValueFrom(sendMessage(requestMessage));
+    thunkAPI.dispatch(isLoading(false));
+    return response;
+  },
 );
 
 export const aiSlice = createSlice({
-    name: 'ai',
-    // `createSlice` will infer the state type from the `initialState` argument
-    initialState,
-    reducers: {
-        isLoading: (state, action) => {
-            state.isLoading = action.payload
-        }
-    },
-    extraReducers: builder => {
-        builder.addCase(sendMessageToAi.fulfilled, (state, action) => {
-            state.aiContext.push({ role: AiRole.User, content: action.meta.arg });
-            state.aiContext.push({ role: AiRole.Assistant, content: JSON.stringify(action.payload) });
-        })
+  name: 'ai',
+  // `createSlice` will infer the state type from the `initialState` argument
+  initialState,
+  reducers: {
+    isLoading: (state, action) => {
+      state.isLoading = action.payload
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(sendMessageToAi.fulfilled, (state, action) => {
+      state.aiContext.push({ role: AiRole.User, content: action.meta.arg });
+      state.aiContext.push({ role: AiRole.Assistant, content: JSON.stringify(action.payload) });
+    })
+  }
 })
 
 const { isLoading } = aiSlice.actions;
@@ -64,12 +64,12 @@ const selectAiContext = (state: RootState) => state.ai.aiContext;
 
 // Memoized selector: Transform aiContext into IChatMessage[]
 export const getMessages = createSelector(
-    [selectAiContext], // Input selectors
-    (aiContext) =>
-        aiContext.map((x) => ({
-            text: x.role === AiRole.User ? x.content : (JSON.parse(x.content) as IAiResponse).message,
-            sentByUser: x.role === AiRole.User,
-        })) as IChatMessage[]
+  [selectAiContext], // Input selectors
+  (aiContext) =>
+    aiContext.map((x) => ({
+      text: x.role === AiRole.User ? x.content : (JSON.parse(x.content) as IAiResponse).message,
+      sentByUser: x.role === AiRole.User,
+    })) as IChatMessage[]
 );
 
 export default aiSlice.reducer;

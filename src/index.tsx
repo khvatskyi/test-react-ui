@@ -25,36 +25,36 @@ const history = createBrowserHistory();
 const router = new HistoryAdaptedRouter(history);
 
 function UuiEnhancedApp() {
-    const { services } = useUuiServices({ router });
-    Object.assign(svc, services);
-    return (
-        <UuiContext.Provider value={services}>
-            <ErrorHandler>
-                <Router history={history}>
-                    <AppMainMenuComponent/>
-                    <Switch>
-                        <Route exact path="/" component={MainPage} />
-                        <Route path="/chat-room" component={ChatRoom} />
-                        <Route path="/login/sso-verification" component={LoginVerificationComponent} />
-                        <Route path="/profile" component={ProfileForm} />
-                        <Route path="/portfolio" component={PortfoliosPage} />
-                    </Switch>
-                </Router>
-                <Snackbar />
-                <Modals />
-                <DragGhost />
-            </ErrorHandler>
-        </UuiContext.Provider>
-    );
+  const { services } = useUuiServices({ router });
+  Object.assign(svc, services);
+  return (
+    <UuiContext.Provider value={services}>
+      <ErrorHandler>
+        <Router history={history}>
+          <AppMainMenuComponent />
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route path="/chat-room" component={ChatRoom} />
+            <Route path="/login/sso-verification" component={LoginVerificationComponent} />
+            <Route path="/profile" component={ProfileForm} />
+            <Route path="/portfolio" component={PortfoliosPage} />
+          </Switch>
+        </Router>
+        <Snackbar />
+        <Modals />
+        <DragGhost />
+      </ErrorHandler>
+    </UuiContext.Provider>
+  );
 }
 
 function initApp() {
-    const root = createRoot(window.document.getElementById('root') as Element);
-    root.render(
-        <Provider store={store}>
-            <UuiEnhancedApp />
-        </Provider>
-    );
+  const root = createRoot(window.document.getElementById('root') as Element);
+  root.render(
+    <Provider store={store}>
+      <UuiEnhancedApp />
+    </Provider>
+  );
 }
 
 initApp();

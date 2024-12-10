@@ -13,13 +13,13 @@ export function PortfoliosPage() {
     <FlexRow cx={css.root}>
       <FlexCell cx={css.leftSideProfile} minWidth={360}>
         <Panel background="surface-main" cx={css.panelProfile} shadow>
-          <ProfileLeftPanel/>
+          <ProfileLeftPanel />
         </Panel>
       </FlexCell>
       <FlexCell cx={css.panelPortfolio} width="100%">
         <PortfolioPlacehoder />
         {/* <PortfolioList /> */}
       </FlexCell>
-    </FlexRow> 
+    </FlexRow>
   );
 }

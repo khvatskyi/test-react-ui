@@ -2,14 +2,14 @@
 // import Chat from '../chat/chat';
 // import { getMessages, isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
 // import { useAppDispatch, useAppSelector } from '../../hooks';
-import { 
+import {
   // TextInput, SuccessNotification, TextArea, FlexCell, LabeledInput, PickerInput, RadioGroup, useForm
-  FlexRow, FlexSpacer, Panel, RichTextView, Button, Text, 
+  FlexRow, FlexSpacer, Panel, RichTextView, Button, Text,
 } from '@epam/uui';
 
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
-import type { ProfileInfo} from './ProfileTypes';
+import type { ProfileInfo } from './ProfileTypes';
 
 const LABELS = {
   Title: 'Client Profile',
@@ -37,38 +37,38 @@ export const ProfileLeftPanel = () => {
 
   const getLabel = (text: string) => (
     <Text cx={css.profileLabel} fontSize="16" fontWeight="700" lineHeight="18" >
-        { text }
+      {text}
     </Text>
   );
 
   const getText = (text: string) => (
     <Text fontSize="16" fontWeight="400" lineHeight="24" >
-        { text }
+      {text}
     </Text>
   );
 
   return (
-    <aside className={ css.root }>
-        <Panel cx={ css.formPanel } >
-          <FlexRow cx={ css.buttonPanel }>
-            <RichTextView>
-              <h2 className={css.profileTitle}> { LABELS.Title }</h2>
-            </RichTextView>
-            <FlexSpacer />
-            <Button caption="Edit" icon={ EditIcon } fill="outline" color="secondary" onClick={ editProfile } />
-          </FlexRow>
+    <aside className={css.root}>
+      <Panel cx={css.formPanel} >
+        <FlexRow cx={css.buttonPanel}>
+          <RichTextView>
+            <h2 className={css.profileTitle}> {LABELS.Title}</h2>
+          </RichTextView>
+          <FlexSpacer />
+          <Button caption="Edit" icon={EditIcon} fill="outline" color="secondary" onClick={editProfile} />
+        </FlexRow>
 
-          { getLabel(LABELS.Name) }
-          { getText(ProfileData.name!) }
-          { getLabel(LABELS.Desc) }
-          { getText(ProfileData.description!) }
-          { getLabel(LABELS.Industry) }
-          { getText(ProfileData.industry!) }
-          { getLabel(LABELS.Size) }
-          { getText(ProfileData.size!) }
-          { getLabel(LABELS.CoreProducts) }
-          { getText(ProfileData.coreProducts!) }
-        </Panel>
+        {getLabel(LABELS.Name)}
+        {getText(ProfileData.name!)}
+        {getLabel(LABELS.Desc)}
+        {getText(ProfileData.description!)}
+        {getLabel(LABELS.Industry)}
+        {getText(ProfileData.industry!)}
+        {getLabel(LABELS.Size)}
+        {getText(ProfileData.size!)}
+        {getLabel(LABELS.CoreProducts)}
+        {getText(ProfileData.coreProducts!)}
+      </Panel>
     </aside>
   );
 }

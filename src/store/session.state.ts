@@ -18,30 +18,30 @@ const initialState: SessionState = {
 
 export const signInWithSSOCode = createAsyncThunk(
   'session/signIn',
-  async (code: string, { rejectWithValue }) => {    
+  async (code: string, { rejectWithValue }) => {
     const basePath = process.env.REACT_APP_API_ROOT + '/api/get-sso-token';
     const params = new URLSearchParams({ code });
 
     return await fetch(`${basePath}?${params.toString()}`, {
       method: 'GET'
     })
-    .then(response => response.json())
-    .then((result: IUserResponse) => {
-      const newUserContext: IUserContext = {
-        accessToken: result.access_token,
-        refreshToken: result.refresh_token,
-        userName: result.username,
-        email: result.email,
-        name: result.name,
-        givenName: result.given_name,
-        familyName: result.family_name,
-        picture: result.picture,
-      };
-      return newUserContext;
-    })
-    .catch(error => {
-      return rejectWithValue('Error during sign in with SSO');
-    });
+      .then(response => response.json())
+      .then((result: IUserResponse) => {
+        const newUserContext: IUserContext = {
+          accessToken: result.access_token,
+          refreshToken: result.refresh_token,
+          userName: result.username,
+          email: result.email,
+          name: result.name,
+          givenName: result.given_name,
+          familyName: result.family_name,
+          picture: result.picture,
+        };
+        return newUserContext;
+      })
+      .catch(error => {
+        return rejectWithValue('Error during sign in with SSO');
+      });
   }
 );
 

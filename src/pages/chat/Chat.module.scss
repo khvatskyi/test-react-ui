@@ -1,90 +1,90 @@
 .chat-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 80vh;
-    max-width: 600px;
-    margin: 0 auto;
-    margin-top: 2em;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 2em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f9f9f9;
 }
 
 .messages-wrapper {
-    flex: 1;
-    padding: 16px;
-    overflow-y: auto;
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
 }
 
 .chat-message {
-    padding: 8px 12px;
-    margin-bottom: 8px;
-    border-radius: 16px;
-    max-width: 70%;
-    word-wrap: break-word;
-    font-size: 14px;
-    background-color: #e0e0e0;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+  background-color: #e0e0e0;
 }
 
 .chat-message:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .input-message-wrapper {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #fff;
 }
 
 .mat-form-field {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 4px 12px;
-    background-color: #f0f0f0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 4px 12px;
+  background-color: #f0f0f0;
 }
 
 .mat-input-element {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 14px;
-    padding: 4px 8px;
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  padding: 4px 8px;
 }
 
 .mat-input-element::placeholder {
-    color: #aaa;
+  color: #aaa;
 }
 
 .send-icon {
-    color: #007bff;
-    font-size: 20px;
-    cursor: pointer;
-    margin-left: 8px;
+  color: #007bff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 8px;
 }
 
 .send-icon:hover {
-    color: #0056b3;
+  color: #0056b3;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
+  background: #ccc;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #aaa;
+  background: #aaa;
 }
 
 
@@ -92,71 +92,70 @@
 
 
 .message-wrapper {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 16px;
-    margin-left: 15px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  margin-left: 15px;
 }
 
 .right-message {
-    justify-content: flex-end;
-    margin-right: 15px;
+  justify-content: flex-end;
+  margin-right: 15px;
 }
 
 .message {
-    display: flex;
-    align-items: flex-start;
-    border-radius: 8px;
-    padding: 8px;
-    max-width: 70%;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: flex-start;
+  border-radius: 8px;
+  padding: 8px;
+  max-width: 70%;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .ai-message {
-    background-color: transparent;
-    box-shadow: none;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .user-image {
-    min-width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-right: 8px;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 8px;
 }
 
-.ai-background {
-}
+.ai-background {}
 
 .text-wrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .username {
-    font-style: italic;
+  font-style: italic;
 }
 
 .message-text {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 .time {
-    font-size: 12px;
-    color: #888;
-    margin-left: 8px;
+  font-size: 12px;
+  color: #888;
+  margin-left: 8px;
 }
 
 @media (max-width: 768px) {
-    .message {
-        max-width: 100%;
-    }
+  .message {
+    max-width: 100%;
+  }
 }
