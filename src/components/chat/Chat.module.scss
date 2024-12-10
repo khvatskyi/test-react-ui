@@ -1,4 +1,4 @@
-.chat-wrapper {
+.chatWrapper {
   display: flex;
   flex-direction: column;
   height: 80vh;
@@ -11,7 +11,7 @@
   background-color: #f9f9f9;
 }
 
-.messages-wrapper {
+.messagesWrapper {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
@@ -19,7 +19,7 @@
   border-bottom: 1px solid #ddd;
 }
 
-.chat-message {
+.chatMessage {
   padding: 8px 12px;
   margin-bottom: 8px;
   border-radius: 16px;
@@ -29,18 +29,18 @@
   background-color: #e0e0e0;
 }
 
-.chat-message:last-child {
+.chatMessage:last-child {
   margin-bottom: 0;
 }
 
-.input-message-wrapper {
+.inputMessageWrapper {
   display: flex;
   align-items: center;
   padding: 8px 16px;
   background-color: #fff;
 }
 
-.mat-form-field {
+.matFormField {
   display: flex;
   flex: 1;
   align-items: center;
@@ -50,7 +50,7 @@
   background-color: #f0f0f0;
 }
 
-.mat-input-element {
+.matInputElement {
   flex: 1;
   border: none;
   outline: none;
@@ -59,18 +59,18 @@
   padding: 4px 8px;
 }
 
-.mat-input-element::placeholder {
+.matInputElement::placeholder {
   color: #aaa;
 }
 
-.send-icon {
+.sendIcon {
   color: #007bff;
   font-size: 20px;
   cursor: pointer;
   margin-left: 8px;
 }
 
-.send-icon:hover {
+.sendIcon:hover {
   color: #0056b3;
 }
 
@@ -87,18 +87,14 @@
   background: #aaa;
 }
 
-
-
-
-
-.message-wrapper {
+.messageWrapper {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 16px;
   margin-left: 15px;
 }
 
-.right-message {
+.rightMessage {
   justify-content: flex-end;
   margin-right: 15px;
 }
@@ -113,12 +109,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.ai-message {
+.aiMessage {
   background-color: transparent;
   box-shadow: none;
 }
 
-.user-image {
+.userImage {
   min-width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -129,9 +125,7 @@
   margin-right: 8px;
 }
 
-.ai-background {}
-
-.text-wrapper {
+.textWrapper {
   display: flex;
   flex-direction: column;
 }
@@ -144,7 +138,7 @@
   font-style: italic;
 }
 
-.message-text {
+.messageText {
   margin-top: 4px;
 }
 

@@ -15,7 +15,7 @@ const aiAnsweringMessage: IChatMessage = {
   sentByUser: false
 }
 
-const Chat: React.FC<ChatProps> = ({ messages, isResponding, onSendMessage }) => {
+const Chat = ({ messages, isResponding, onSendMessage }: ChatProps) => {
   const [currentInput, setCurrentInput] = useState('');
 
   const handleSendMessage = () => {
@@ -32,21 +32,21 @@ const Chat: React.FC<ChatProps> = ({ messages, isResponding, onSendMessage }) =>
   };
 
   return (
-    <div className={css['chat-wrapper']}>
-      <div className={css['messages-wrapper']}>
+    <div className={css.chatWrapper}>
+      <div className={css.messagesWrapper}>
         {messages.map((message, index) => (
           <Message key={index} message={message} />
         ))}
         {isResponding && <Message message={aiAnsweringMessage} />}
       </div>
-      <div className={css['input-message-wrapper']}>
-        <div className={css['mat-form-field']}>
+      <div className={css.inputMessageWrapper}>
+        <div className={css.matFormField}>
           <input
-            type="text"
+            type='text'
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyUp={handleKeyPress}
-            className={css['mat-input-element']}
+            className={css.matInputElement}
           />
           <Button
             onClick={handleSendMessage}

@@ -1,5 +1,5 @@
 import { IChatMessage } from '../../models/chat.models';
-import Chat from '../chat/chat';
+import Chat from '../../components/chat/chat';
 import { getMessages, isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
