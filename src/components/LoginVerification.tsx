@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { signInWithSSOCode } from '../store/session.state';
+import { signInWithSSOCode } from '../store/session.slice';
 import { useAppDispatch } from '../hooks';
 
 const LoginVerificationComponent = () => {

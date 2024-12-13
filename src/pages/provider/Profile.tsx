@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { UuiContexts, useUuiContext } from '@epam/uui-core';
-import type { ProfileInfo } from './ProfileTypes';
+import type { IProfileInfo } from './ProfileTypes';
 import type { TApi } from '../../data';
-import { ILens, useArrayDataSource } from '@epam/uui-core';
+import { useArrayDataSource } from '@epam/uui-core';
 import {
   FlexCell, FlexRow, FlexSpacer, Panel, LabeledInput, RichTextView, TextInput, SuccessNotification, Text, TextArea, Button,
   PickerInput, RadioGroup, useForm
@@ -24,13 +24,18 @@ export function ProfileForm() {
     [],
   );
 
-  const [size, setSize] = useState<string | null>(defaultProfileData.size!); //TODO: need redesign
+  const [size, setSize] = useState<string | null>(defaultProfileData.size); //TODO: needs redesign
 
-  const { lens, save } = useForm<ProfileInfo>({
+  const test = (person: IProfileInfo) => {
+
+    return Promise.resolve({form: person});
+  };
+
+  const { lens: info, save } = useForm<IProfileInfo>({
     settingsKey: 'provider-context-form',
     value: defaultProfileData,
     getMetadata: profileInfoSchema,
-    onSave: (person) => Promise.resolve({ form: person }) /* place your save api call here */,
+    onSave: test,
     onSuccess: () => {
       svc.uuiNotifications.show(
         (props) => (
@@ -44,7 +49,6 @@ export function ProfileForm() {
       ).catch(() => null);
     },
   });
-  const info: ILens<ProfileInfo> = lens;
 
   return (
     <div className={css.root}>

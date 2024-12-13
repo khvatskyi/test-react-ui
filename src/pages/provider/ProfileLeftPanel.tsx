@@ -9,7 +9,7 @@ import {
 
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
-import type { ProfileInfo } from './ProfileTypes';
+import type { IProfileInfo } from './ProfileTypes';
 
 const LABELS = {
   Title: 'Client Profile',
@@ -24,7 +24,7 @@ const editProfile = () => {
   alert('editProfile');
 };
 
-const ProfileData: ProfileInfo = {
+const ProfileData: IProfileInfo = {
   name: 'Travelers',
   description: 'Travelers Insurance is one of the largest and most established insurance companies in the United States, providing a wide array of property and casualty insurance products and services to businesses, organizations, and individuals. Founded in 1864, Travelers has built a reputation for financial strength, stability, and handling claims efficiently and fairly. The company focuses on innovation and comprehensive risk management to cater to the changing needs of its clients.',
   industry: 'Insurance',

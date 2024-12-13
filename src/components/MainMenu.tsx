@@ -5,7 +5,7 @@ import {
 import { Dropdown, AdaptiveItemProps } from '@epam/uui-components';
 import { ReactComponent as HelpIcon } from '@epam/assets/icons/common/notification-help-outline-24.svg';
 import { access_sso } from '../environments/environment';
-import { selectUserContext } from '../store/session.state';
+import { selectUserContext } from '../store/session.slice';
 import { useAppSelector } from '../hooks';
 import { Anchor, MainMenuCustomElement } from '@epam/uui-components';
 import { ReactComponent as LogoIcon } from '../icons/logo.svg';

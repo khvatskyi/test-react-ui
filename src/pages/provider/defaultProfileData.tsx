@@ -1,6 +1,6 @@
-import { ProfileInfo } from './ProfileTypes';
+import { IProfileInfo } from './ProfileTypes';
 
-export const defaultProfileData: ProfileInfo = {
+export const defaultProfileData: IProfileInfo = {
   name: '',
   description: '',
   industry: '',
