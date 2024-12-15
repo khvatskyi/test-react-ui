@@ -6,7 +6,7 @@ import { PortfolioCard } from "./components/PortfolioCard";
 import css from './PortfolioList.module.scss';
 
 interface PortfolioListProps {
-  portfolios: { id: number, name: string }[];
+  portfolios: { id: string; name: string; }[];
   onCreateClick: () => void;
 }
 

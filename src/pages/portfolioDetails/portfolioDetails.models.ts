@@ -1,6 +1,6 @@
 
 export interface IPortfolioDetails {
-  id?: number,
+  id?: string;
   name: string;
   description: string;
   industry?: string;

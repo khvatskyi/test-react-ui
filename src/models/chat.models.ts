@@ -1,5 +1,5 @@
 export interface ISimpleChat {
-  id: number;
+  id: string;
   name?: string;
 }
 
@@ -10,5 +10,5 @@ export interface IExtendedChat extends ISimpleChat {
 export interface IChatMessage {
   text: string;
   sentByUser: boolean;
-  chatId?: number;
+  chatId?: string;
 }

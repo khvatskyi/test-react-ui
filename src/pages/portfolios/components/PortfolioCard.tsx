@@ -5,7 +5,7 @@ import { Button } from '@epam/uui';
 import css from './PortfolioCard.module.scss';
 
 interface ISimplePortfolio {
-  id: number;
+  id: string;
   name: string;
 }
 

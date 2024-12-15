@@ -1,4 +1,4 @@
 export interface IPortfolio {
-  id?: number,
-  name: string
+  id?: string;
+  name: string;
 }

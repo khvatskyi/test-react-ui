@@ -10,13 +10,13 @@ import { useHistory } from 'react-router-dom';
 export function PortfoliosPage() {
 
   const history = useHistory();
-  const portfolios: { id: number, name: string }[] | null = [
-    { id: 1, name: 'Pesho' },
-    { id: 2, name: 'Gosho' },
-    { id: 3, name: 'Stamat' },
-    { id: 4, name: 'Test' }
+  const portfolios: { id: string; name: string; }[] | null = [
+    { id: '1', name: 'Pesho' },
+    { id: '2', name: 'Gosho' },
+    { id: '3', name: 'Stamat' },
+    { id: '4', name: 'Test' }
   ];
-  // const portfolios: { id: number, name: string }[] | null = null;
+  // const portfolios: { id: string, name: string }[] | null = null;
 
   const handlePortfolioCreate = () => {
     history.push('/portfolios/create');
