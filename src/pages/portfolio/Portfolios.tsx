@@ -1,20 +1,29 @@
-import { FlexCell, FlexRow } from '@epam/uui';
+import { FlexRow } from '@epam/uui';
 
 import { ProfileLeftPanel } from './components/ProfileLeftPanel';
-import { PortfolioPlacehoder } from './PortfolioPlacehoder';
-// import { PortfolioList } from './PortfolioList';
 
 import css from './Portfolios.module.scss';
+import { PortfolioList } from './PortfolioList';
+import { PortfolioPlacehoder } from './PortfolioPlacehoder';
 
 export function PortfoliosPage() {
+  const portfolios: { id: number, name: string }[] | null = [
+    { id: 1, name: 'Pesho' },
+    { id: 1, name: 'Gosho' },
+    { id: 1, name: 'Stamat' },
+    { id: 1, name: 'Test' }
+  ];
+
+  const handlePortfolioCreate = () => {
+
+  }
 
   return (
     <FlexRow cx={css.root}>
       <ProfileLeftPanel />
-      <FlexCell cx={css.panelPortfolio} width="100%">
-        <PortfolioPlacehoder />
-        {/* <PortfolioList /> */}
-      </FlexCell>
+      { !portfolios
+        ? <PortfolioPlacehoder onCreateClick={handlePortfolioCreate} />
+        : <PortfolioList portfolios={portfolios} onCreateClick={handlePortfolioCreate} /> }
     </FlexRow>
   );
 }
