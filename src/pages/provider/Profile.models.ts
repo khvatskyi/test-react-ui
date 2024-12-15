@@ -1,4 +1,5 @@
 export interface IProfileInfo {
+  id?: number;
   name?: string;
   description?: string;
   industry?: string;

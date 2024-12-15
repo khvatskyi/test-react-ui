@@ -1,4 +1,4 @@
-import { IProfileInfo } from './ProfileTypes';
+import { IProfileInfo } from './Profile.models';
 
 export const defaultProfileData: IProfileInfo = {
   name: '',

@@ -1,21 +1,16 @@
-import { FlexCell, FlexRow, Panel } from '@epam/uui';
-import css from './Portfolios.module.scss';
+import { FlexCell, FlexRow } from '@epam/uui';
 
-import { ProfileLeftPanel } from '../provider/ProfileLeftPanel';
+import { ProfileLeftPanel } from './components/ProfileLeftPanel';
 import { PortfolioPlacehoder } from './PortfolioPlacehoder';
 // import { PortfolioList } from './PortfolioList';
 
-
+import css from './Portfolios.module.scss';
 
 export function PortfoliosPage() {
 
   return (
     <FlexRow cx={css.root}>
-      <FlexCell cx={css.leftSideProfile} minWidth={360}>
-        <Panel background="surface-main" cx={css.panelProfile} shadow>
-          <ProfileLeftPanel />
-        </Panel>
-      </FlexCell>
+      <ProfileLeftPanel />
       <FlexCell cx={css.panelPortfolio} width="100%">
         <PortfolioPlacehoder />
         {/* <PortfolioList /> */}
