@@ -16,7 +16,7 @@ import { svc } from "./services";
 import { MainPage } from "./pages/MainPage";
 import { ChatRoom } from './pages/chat-room/ChatRoom';
 import { ProfileDetails } from './pages/provider/Profile';
-import { PortfoliosPage } from './pages/portfolio/Portfolios';
+import { PortfoliosPage } from './pages/portfolios/Portfolios';
 
 import { Provider } from 'react-redux'
 import { store } from './store';
