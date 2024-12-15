@@ -16,6 +16,7 @@ export function PortfoliosPage() {
     { id: 3, name: 'Stamat' },
     { id: 4, name: 'Test' }
   ];
+  // const portfolios: { id: number, name: string }[] | null = null;
 
   const handlePortfolioCreate = () => {
     history.push('/portfolios/create');

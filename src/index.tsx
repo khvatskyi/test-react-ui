@@ -15,7 +15,7 @@ import { svc } from './services';
 
 import { MainPage } from './pages/MainPage';
 import { ChatRoom } from './pages/chat-room/ChatRoom';
-import { ProfileDetails } from './pages/provider/Profile';
+import { ProfileDetails } from './pages/profile/Profile';
 import { PortfoliosPage } from './pages/portfolios/Portfolios';
 import { PortfolioDetails } from './pages/portfolioDetails/PortfolioDetails';
 

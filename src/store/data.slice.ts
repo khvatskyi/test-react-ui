@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { IProfileInfo } from '../pages/provider/Profile.models';
+import { IProfileInfo } from '../pages/profile/Profile.models';
 import { fetchWithAuth } from '../utilities/fetchWithAuth.utility';
 import { useAppSelector } from '../hooks';
 import { IPortfolio } from '../models/portfolio.model';

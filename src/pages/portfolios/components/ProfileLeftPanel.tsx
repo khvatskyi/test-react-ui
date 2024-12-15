@@ -5,7 +5,7 @@ import {
 
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
-import type { IProfileInfo } from '../../provider/Profile.models';
+import type { IProfileInfo } from '../../profile/Profile.models';
 import { useHistory } from 'react-router-dom';
 
 const LABELS = {
