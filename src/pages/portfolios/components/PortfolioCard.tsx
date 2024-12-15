@@ -1,6 +1,8 @@
-import css from './PortfolioCard.module.scss';
+import { useHistory } from 'react-router-dom';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import { Button } from '@epam/uui';
+
+import css from './PortfolioCard.module.scss';
 
 interface ISimplePortfolio {
   id: number;
@@ -15,9 +17,10 @@ type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
 export function PortfolioCard({ portfolio }: IPortfolioCardProps) {
 
+  const history = useHistory();
   const handleEditClick = (e: ClickEvent) => {
     e.stopPropagation();
-    alert(portfolio.name + ' clicked!');
+    history.push(`/portfolios/details/${portfolio.id}`);
   }
 
   return (<div className={css.portfolioCard}>

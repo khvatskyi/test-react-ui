@@ -16,7 +16,7 @@ interface IPortfolioPlacehoderProps {
 export function PortfolioPlacehoder({ onCreateClick }: IPortfolioPlacehoderProps) {
 
   return (
-    <FlexCell cx={css.root}>
+    <FlexCell cx={css.root} width="100%">
       <FlexSpacer />
       <FlexRow>
         <div style={{ textAlign: "center" }}>

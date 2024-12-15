@@ -19,7 +19,7 @@ export function PortfolioList({ portfolios, onCreateClick }: PortfolioListProps)
         <Button icon={PlusIcon} caption='Create a portfolio' color="primary" onClick={onCreateClick} />
       </FlexRow>
       <div className={css.portfolioListWrapper}>
-        {portfolios.map(x => <PortfolioCard portfolio={x} />)}
+        {portfolios.map(x => <PortfolioCard key={x.id} portfolio={x} />)}
       </div>
     </FlexCell>
   );

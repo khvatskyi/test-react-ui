@@ -3,20 +3,21 @@ import '@epam/uui/styles.css';
 import '@epam/assets/theme/theme_loveship.scss';
 import './index.module.scss';
 import AppMainMenuComponent from './components/MainMenu';
-import LoginVerificationComponent from "./components/LoginVerification";
+import LoginVerificationComponent from './components/LoginVerification';
 
 import { createRoot } from 'react-dom/client';
-import { createBrowserHistory } from "history";
-import { Route, Router, Switch } from "react-router-dom";
-import { DragGhost, HistoryAdaptedRouter, useUuiServices, UuiContext } from "@epam/uui-core";
-import { ErrorHandler } from "@epam/uui";
-import { Modals, Snackbar } from "@epam/uui-components";
-import { svc } from "./services";
+import { createBrowserHistory } from 'history';
+import { Route, Router, Switch } from 'react-router-dom';
+import { DragGhost, HistoryAdaptedRouter, useUuiServices, UuiContext } from '@epam/uui-core';
+import { ErrorHandler } from '@epam/uui';
+import { Modals, Snackbar } from '@epam/uui-components';
+import { svc } from './services';
 
-import { MainPage } from "./pages/MainPage";
+import { MainPage } from './pages/MainPage';
 import { ChatRoom } from './pages/chat-room/ChatRoom';
 import { ProfileDetails } from './pages/provider/Profile';
 import { PortfoliosPage } from './pages/portfolios/Portfolios';
+import { PortfolioDetails } from './pages/portfolioDetails/PortfolioDetails';
 
 import { Provider } from 'react-redux'
 import { store } from './store';
@@ -33,11 +34,13 @@ function UuiEnhancedApp() {
         <Router history={history}>
           <AppMainMenuComponent />
           <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route path="/chat-room" component={ChatRoom} />
-            <Route path="/login/sso-verification" component={LoginVerificationComponent} />
-            <Route path="/profile" component={ProfileDetails} />
-            <Route path="/portfolio" component={PortfoliosPage} />
+            <Route exact path='/' component={MainPage} />
+            <Route path='/chat-room' component={ChatRoom} />
+            <Route path='/login/sso-verification' component={LoginVerificationComponent} />
+            <Route path='/profile' component={ProfileDetails} />
+            <Route exact path='/portfolios' component={PortfoliosPage} />
+            <Route exact path='/portfolios/create' component={PortfolioDetails} />
+            <Route exact path='/portfolios/details/:id' component={PortfolioDetails} />
           </Switch>
         </Router>
         <Snackbar />

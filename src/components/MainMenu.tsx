@@ -22,22 +22,22 @@ export default function AppMainMenuComponent() {
   const renderBurger = (props: { onClose: () => void }) => (
     <>
       <BurgerButton
-        href="/"
-        caption="Welcome page"
+        href='/'
+        caption='Welcome page'
         onClick={() => {
           props.onClose && props.onClose();
         }}
       />
       <BurgerButton
-        href="/"
-        caption="Help"
+        href='/'
+        caption='Help'
         onClick={() => {
           props.onClose && props.onClose();
         }}
       />
       <BurgerButton
-        href="/"
-        caption="Log out"
+        href='/'
+        caption='Log out'
         onClick={() => {
           props.onClose && props.onClose();
         }}
@@ -48,16 +48,16 @@ export default function AppMainMenuComponent() {
   const renderAvatar = () => {
     return (
       <Dropdown
-        key="avatar"
+        key='avatar'
         renderTarget={(props) => (
           <MainMenuAvatar avatarUrl={userContext!.picture} isDropdown {...props} />
         )}
         renderBody={(props) => (
           <DropdownMenuBody {...props}>
-            <DropdownMenuButton caption="Profile" />
+            <DropdownMenuButton caption='Profile' />
           </DropdownMenuBody>
         )}
-        placement="bottom-end"
+        placement='bottom-end'
       />
     );
   };
@@ -74,8 +74,8 @@ export default function AppMainMenuComponent() {
         id: 'logo',
         priority: 99,
         render: () => (
-          <MainMenuCustomElement key="logo">
-            <Anchor link={{ pathname: '/' }} href="/" >
+          <MainMenuCustomElement key='logo'>
+            <Anchor link={{ pathname: '/' }} href='/' >
               <IconContainer icon={LogoIcon} cx={cx(css.icon, css.logo)} />
             </Anchor>
           </MainMenuCustomElement>
@@ -87,7 +87,7 @@ export default function AppMainMenuComponent() {
       },
       {
         id: 'help', priority: 1,
-        render: (p: RenderProps) => <MainMenuIcon key={p.id} href="https://support.epam.com" target="_blank" icon={HelpIcon} />,
+        render: (p: RenderProps) => <MainMenuIcon key={p.id} href='https://support.epam.com' target='_blank' icon={HelpIcon} />,
       }
     );
 
@@ -95,15 +95,15 @@ export default function AppMainMenuComponent() {
       items.push(
         {
           id: 'chatRoom', priority: 3,
-          render: (p: RenderProps) => <MainMenuButton key={p.id} href="/chat-room" caption="Chat Room" />
+          render: (p: RenderProps) => <MainMenuButton key={p.id} href='/chat-room' caption='Chat Room' />
         },
         {
           id: 'profile', priority: 3,
-          render: (p: RenderProps) => <MainMenuButton key={p.id} href="/profile" caption="Client Profile" />
+          render: (p: RenderProps) => <MainMenuButton key={p.id} href='/profile' caption='Client Profile' />
         },
         {
           id: 'portfolio', priority: 3,
-          render: (p: RenderProps) => <MainMenuButton key={p.id} href="/portfolio" caption="Portfolios" />
+          render: (p: RenderProps) => <MainMenuButton key={p.id} href='/portfolios' caption='Portfolios' />
         }
       );
     // }
@@ -118,7 +118,7 @@ export default function AppMainMenuComponent() {
         id: 'login', priority: 3,
         render: (p: RenderProps) => <MainMenuButton
           key={p.id}
-          caption="Login"
+          caption='Login'
           onClick={() => {
             const url = `${process.env.REACT_APP_SSO_ACCESS_URL}/auth/realms/plusx/protocol/openid-connect/auth?response_type=code&client_id=${access_sso.CLIENT_ID}&scope=${access_sso.SCOPE}&redirect_uri=${process.env.REACT_APP_SSO_REDIRECT_URI}`;
             window.location.href = url;
