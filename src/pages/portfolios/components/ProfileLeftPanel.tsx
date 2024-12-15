@@ -6,6 +6,7 @@ import {
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import type { IProfileInfo } from '../../provider/Profile.models';
+import { useHistory } from 'react-router-dom';
 
 const LABELS = {
   Title: 'Client Profile',
@@ -14,10 +15,6 @@ const LABELS = {
   Industry: 'INDUSTRY',
   Size: 'SIZE',
   CoreProducts: 'CORE PRODUCTOS / BUSINESS LINES',
-};
-
-const editProfile = () => {
-  alert('editProfile');
 };
 
 const DEFAULT_PROFILE_DATA: IProfileInfo = {
@@ -29,6 +26,12 @@ const DEFAULT_PROFILE_DATA: IProfileInfo = {
 }
 
 export const ProfileLeftPanel = () => {
+
+  const history = useHistory();
+
+  const editProfile = () => {
+    history.push('/profile')
+  };
 
   // TODO: grab profileData from state
   const profileData = true ? DEFAULT_PROFILE_DATA : null;
