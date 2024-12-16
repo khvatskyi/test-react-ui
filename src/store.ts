@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import aiReducer from './store/ai.slice';
 import sessionReducer from './store/session.slice';
+import aiReducer from './store/ai.slice';
+import dataReducer from './store/data.slice';
 
 export const store = configureStore({
   reducer: {
+    session: sessionReducer,
     ai: aiReducer,
-    session: sessionReducer
+    data: dataReducer
   }
 });
 
