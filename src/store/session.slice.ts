@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { deleteCookie, setCookie } from '@epam/uui-core';
-
 import { IUserContext, IUserResponse } from "../models/user-context.model";
 import { RootState } from '../store';
 import { SessionStorageItems } from '../enums/session-storage-items.enum';
+import { deleteCookie, setCookie } from '../utilities/cookies.utility';
 
 interface SessionState {
   userContext: IUserContext | null;
@@ -54,6 +53,7 @@ export const sessionSlice = createSlice({
   reducers: {
     setUserContext: (state, action: PayloadAction<IUserContext>) => {
       state.userContext = action.payload;
+
       setCookie('access_token', state.userContext.accessToken);
       setCookie('refresh_token', state.userContext.refreshToken);
       setCookie('email', state.userContext.email);
