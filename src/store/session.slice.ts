@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { deleteCookie, setCookie } from '@epam/uui-core';
+
 import { IUserContext, IUserResponse } from "../models/user-context.model";
 import { RootState } from '../store';
 import { SessionStorageItems } from '../enums/session-storage-items.enum';
@@ -51,10 +54,16 @@ export const sessionSlice = createSlice({
   reducers: {
     setUserContext: (state, action: PayloadAction<IUserContext>) => {
       state.userContext = action.payload;
+      setCookie('access_token', state.userContext.accessToken);
+      setCookie('refresh_token', state.userContext.refreshToken);
+      setCookie('email', state.userContext.email);
       sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
     },
     clearUserContext: (state) => {
       state.userContext = null;
+      deleteCookie('access_token');
+      deleteCookie('refresh_token');
+      deleteCookie('email');
       sessionStorage.removeItem(SessionStorageItems.UserContext);
     }
   },
@@ -65,6 +74,9 @@ export const sessionSlice = createSlice({
       })
       .addCase(signInWithSSOCode.fulfilled, (state, action) => {
         state.userContext = action.payload;
+        setCookie('access_token', state.userContext.accessToken);
+        setCookie('refresh_token', state.userContext.refreshToken);
+        setCookie('email', state.userContext.email);
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
         window.location.href = "/provider-context";
