@@ -7,6 +7,7 @@ import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import type { IProfileInfo } from '../../profile/Profile.models';
 import { useHistory } from 'react-router-dom';
+import { IPortfolioDetails } from '../../portfolioDetails/portfolioDetails.models';
 
 const LABELS = {
   Title: 'Client Profile',
@@ -25,7 +26,11 @@ const DEFAULT_PROFILE_DATA: IProfileInfo = {
   coreProducts: '',
 }
 
-export const ProfileLeftPanel = () => {
+interface IProfileLeftPanelProps {
+  profile: IProfileInfo;
+}
+
+export const ProfileLeftPanel = ({ profile: profileData }: IProfileLeftPanelProps ) => {
 
   const history = useHistory();
 
@@ -34,7 +39,7 @@ export const ProfileLeftPanel = () => {
   };
 
   // TODO: grab profileData from state
-  const profileData = true ? DEFAULT_PROFILE_DATA : null;
+  // const profileData = true ? DEFAULT_PROFILE_DATA : null;
 
   const getLabel = (text: string) => (
     <Text cx={css.profileLabel} fontSize="16" fontWeight="700" lineHeight="18" >

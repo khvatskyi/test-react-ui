@@ -1,16 +1,13 @@
 import { useHistory } from 'react-router-dom';
+
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import { Button } from '@epam/uui';
 
+import { IPortfolio } from '../../../models/portfolio.model';
 import css from './PortfolioCard.module.scss';
 
-interface ISimplePortfolio {
-  id: string;
-  name: string;
-}
-
 interface IPortfolioCardProps {
-  portfolio: ISimplePortfolio
+  portfolio: IPortfolio
 }
 
 type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;

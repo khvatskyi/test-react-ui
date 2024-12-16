@@ -4,9 +4,10 @@ import { ReactComponent as PlusIcon } from '@epam/assets/icons/action-add-fill.s
 import { PortfolioCard } from "./components/PortfolioCard";
 
 import css from './PortfolioList.module.scss';
+import { IPortfolio } from "../../models/portfolio.model";
 
 interface PortfolioListProps {
-  portfolios: { id: string; name: string; }[];
+  portfolios: IPortfolio[];
   onCreateClick: () => void;
 }
 

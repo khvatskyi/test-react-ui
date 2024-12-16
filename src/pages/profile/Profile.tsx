@@ -1,4 +1,4 @@
-import { UuiContexts, useUuiContext } from '@epam/uui-core';
+import { FormSaveResponse, UuiContexts, useUuiContext } from '@epam/uui-core';
 import { SuccessNotification, Text, useForm } from '@epam/uui';
 
 import { ProfileTopBar } from './components/ProfileTopBar';
@@ -8,15 +8,27 @@ import { profileValidationSchema } from './validation.schema';
 import type { TApi } from '../../data';
 import { ProfileForm } from './components/ProfileForm';
 import css from './Profile.module.scss';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadProfileInfo, saveProfileInfo, selectIsDataLoading, selectProfile } from '../../store/data.slice';
+import { useEffect } from 'react';
 
 export function ProfileDetails() {
+  const dispatch = useAppDispatch();
+  const dataFromStore = useAppSelector(selectProfile);
+  const isLoading = useAppSelector(selectIsDataLoading);
+
+  useEffect(() => {
+    dispatch(loadProfileInfo());
+  }, [dispatch]);
+
   const svc = useUuiContext<TApi, UuiContexts>();
-  const dataFromStore = null;
   const defaultFormData = dataFromStore ?? defaultProfileData;
 
   const onSave = (state: IProfileInfo) => {
-    return new Promise<void>(() => {});
+    return dispatch(saveProfileInfo(state))
+      .then(x => ({ form: x.payload as IProfileInfo } as FormSaveResponse<IProfileInfo>));
   }
+
   const onSuccess = () => {
     svc.uuiNotifications.show(
       (props) => (
@@ -31,17 +43,16 @@ export function ProfileDetails() {
   }
 
   const form = useForm<IProfileInfo>({
-    settingsKey: 'provider-context-form',
+    settingsKey: 'profile-form',
     value: defaultFormData,
     getMetadata: profileValidationSchema,
     onSave: onSave,
     onSuccess: onSuccess
   });
 
-  return (
+  return isLoading ? (<div>Loading...</div>) :
     <div className={css.root}>
       <ProfileTopBar save={form.save} />
       <ProfileForm form={form} defaultData={defaultFormData} />
-    </div>
-  );
+    </div>;
 }

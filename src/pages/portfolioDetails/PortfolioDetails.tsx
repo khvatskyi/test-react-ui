@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { useUuiContext, UuiContexts } from "@epam/uui-core";
+import { FormSaveResponse, useUuiContext, UuiContexts } from "@epam/uui-core";
 import { SuccessNotification, Text, useForm } from "@epam/uui";
 
 import { PortfolioDetailsTopBar } from "./components/PortfolioDetailsTopBar";
@@ -11,6 +10,9 @@ import { portfolioValidationSchema } from "./validation.schema";
 import { TApi } from "../../data";
 
 import css from './PortfolioDetails.module.scss';
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { loadPortfolio, selectPortfolioDetails, upsertPortfolio } from "../../store/data.slice";
+import { useEffect } from "react";
 
 const DEFAULT_DATA: IPortfolioDetails = {
   name: '',
@@ -23,28 +25,25 @@ const DEFAULT_DATA: IPortfolioDetails = {
   keySuppliers: ''
 }
 
-const CustomData: IPortfolioDetails = {
-  name: 'CustomData',
-  description: 'CustomData',
-  industry: 'Insurance',
-  goalsOrObjectives: 'CustomData',
-  businessCapabilities: 'CustomData',
-  industryStandards: 'CustomData',
-  keyPartners: 'CustomData',
-  keySuppliers: 'CustomData'
-}
-
-
 export function PortfolioDetails() {
-  const { id } = useParams<{ id?: string }>();
+  const dispatch = useAppDispatch();
   const history = useHistory();
+  const { id } = useParams<{ id?: string }>();
   const svc = useUuiContext<TApi, UuiContexts>();
-  const dataFromStore = id ? CustomData : null;
-  const defaultFormData = dataFromStore ?? structuredClone(DEFAULT_DATA);
 
   const onSave = (state: IPortfolioDetails) => {
-    return new Promise<void>(() => { alert('Saved') });
+    return dispatch(upsertPortfolio(state))
+    .then(x => ({ form: x.payload } as FormSaveResponse<IPortfolioDetails>));
   }
+
+  useEffect(() => {
+    if (id) {
+      dispatch(loadPortfolio(id));
+    }
+  }, [dispatch, id])
+
+  const dataFromStore = useAppSelector(selectPortfolioDetails);
+  const defaultFormData = dataFromStore ?? structuredClone(DEFAULT_DATA);
 
   const onSuccess = () => {
     svc.uuiNotifications.show(
@@ -70,7 +69,7 @@ export function PortfolioDetails() {
 
   const onCancel = () => {
     return new Promise<void>(() => {
-      form.revert()
+      form.revert();
       if (!id) {
         history.push('/portfolios');
       }
@@ -79,7 +78,7 @@ export function PortfolioDetails() {
 
   return (
     <div className={css.root}>
-      <PortfolioDetailsTopBar save={form.save} cancel={onCancel} />
+      <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} />
       <PortfolioDetailsForm form={form} />
     </div>
   )

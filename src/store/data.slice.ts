@@ -21,8 +21,8 @@ const initialState: IDataState = {
   pending: []
 }
 
-export const getProfileInfo = createAsyncThunk(
-  'data/getProfileInfo',
+export const loadProfileInfo = createAsyncThunk(
+  'data/loadProfileInfo',
   async (_, { rejectWithValue }) => {
 
     return getProfile().catch(error => rejectWithValue(error));
@@ -39,16 +39,16 @@ export const saveProfileInfo = createAsyncThunk(
 
 const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   builder
-  .addCase(getProfileInfo.pending, (state) => {
+  .addCase(loadProfileInfo.pending, (state) => {
     state.pending.push(true);
   })
-  .addCase(getProfileInfo.fulfilled, (state, action) => {
+  .addCase(loadProfileInfo.fulfilled, (state, action) => {
     state.profile = action.payload as IProfileInfo;
     state.pending.pop();
 
-    window.location.href = "/provider-context";
+    // window.location.href = "/provider-context";
   })
-  .addCase(getProfileInfo.rejected, (state) => {
+  .addCase(loadProfileInfo.rejected, (state) => {
     state.pending.pop();
   })
   .addCase(saveProfileInfo.pending, (state) => {
@@ -134,5 +134,6 @@ export const dataSlice = createSlice({
 export const selectProfile = (state: RootState) => state.data.profile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
+export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
 
 export default dataSlice.reducer;
