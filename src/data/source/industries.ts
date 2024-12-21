@@ -1,66 +1,72 @@
 export const industries = [
   {
     industry: 'Agriculture and Forestry',
-    id: '1',
+    id: 'Agriculture and Forestry',
   }, {
     industry: 'Automotive',
-    id: '2',
+    id: 'Automotive',
   }, {
     industry: 'Banking and Financial Services',
-    id: '3',
+    id: 'Banking and Financial Services',
   }, {
     industry: 'Biotechnology',
-    id: '4',
+    id: 'Biotechnology',
   }, {
     industry: 'Construction and Real Estate',
-    id: '5',
+    id: 'Construction and Real Estate',
   }, {
     industry: 'Consumer Goods',
-    id: '6',
+    id: 'Consumer Goods',
   }, {
     industry: 'Education',
-    id: '7',
+    id: 'Education',
   }, {
     industry: 'Energy',
-    id: '8',
+    id: 'Energy',
   }, {
     industry: 'Entertainment and Leisure',
-    id: '9',
+    id: 'Entertainment and Leisure',
   }, {
     industry: 'Food and Beverage',
-    id: '10',
+    id: 'Food and Beverage',
   }, {
     industry: 'Healthcare',
-    id: '11',
+    id: 'Healthcare',
   }, {
     industry: 'Information Technology',
-    id: '12',
+    id: 'Information Technology',
   }, {
     industry: 'Insurance',
-    id: '13',
+    id: 'Insurance',
   }, {
     industry: 'Manufacturing',
-    id: '14',
+    id: 'Manufacturing',
   }, {
     industry: 'Mining and Metals',
-    id: '15',
+    id: 'Mining and Metals',
   }, {
     industry: 'Pharmaceuticals',
-    id: '16',
+    id: 'Pharmaceuticals',
   }, {
     industry: 'Retail',
-    id: '17',
+    id: 'Retail',
   }, {
     industry: 'Telecommunications',
-    id: '18',
+    id: 'Telecommunications',
   }, {
     industry: 'Transportation and Logistics',
-    id: '19',
+    id: 'Transportation and Logistics',
   }, {
     industry: 'Utilities',
-    id: '20',
+    id: 'Utilities',
   }, {
     industry: 'Chemicals',
-    id: '21',
-  },
+    id: 'Chemicals',
+  }, {
+    industry: 'E-commerce, Cloud Computing',
+    id: 'E-commerce, Cloud Computing',
+  }, {
+    industry: 'Technology',
+    id: 'Technology',
+  }
 ];

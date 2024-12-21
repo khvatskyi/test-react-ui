@@ -1,6 +1,6 @@
 import '@epam/uui-components/styles.css';
 import '@epam/uui/styles.css';
-import '@epam/assets/theme/theme_loveship.scss';
+import '@epam/assets/css/theme/theme_electric.css';
 import './index.module.scss';
 import AppMainMenuComponent from './components/MainMenu';
 import LoginVerificationComponent from './components/LoginVerification';

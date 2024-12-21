@@ -32,7 +32,7 @@ export function PortfolioDetailsForm({ form: { lens } }: IPortfolioDetailsFormPr
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='portfolioName' label='Portfolio name' {...lens.prop('name').toProps()}>
-                <TextInput {...lens.prop('name').toProps()} id='portfolioName' placeholder='Enter a text' />
+                <TextInput {...lens.prop('name').toProps()} id='portfolioName' placeholder='Please type text' maxLength={72}/>
               </LabeledInput>
             </FlexCell>
           </FlexRow>
@@ -75,21 +75,21 @@ export function PortfolioDetailsForm({ form: { lens } }: IPortfolioDetailsFormPr
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='industryStandards' label='Industry Standards' info='Industry Standards' {...lens.prop('industryStandards').toProps()}>
-                <TextArea {...lens.prop('industryStandards').toProps()} id='industryStandards' placeholder='Enter a text' />
+                <TextArea {...lens.prop('industryStandards').toProps()} id='industryStandards' placeholder='Please type text' />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='keyPartners' label='Key Partners' info='Key Partners' {...lens.prop('keyPartners').toProps()}>
-                <TextArea {...lens.prop('keyPartners').toProps()} id='keyPartners' placeholder='Enter a text' />
+                <TextArea {...lens.prop('keyPartners').toProps()} id='keyPartners' placeholder='Please type text' />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='keySuppliers' label='Key Suppliers' info='Key Suppliers' {...lens.prop('keySuppliers').toProps()}>
-                <TextArea {...lens.prop('keySuppliers').toProps()} id='keySuppliers' placeholder='Enter a text' />
+                <TextArea {...lens.prop('keySuppliers').toProps()} id='keySuppliers' placeholder='Please type text' />
               </LabeledInput>
             </FlexCell>
           </FlexRow>

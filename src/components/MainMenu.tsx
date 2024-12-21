@@ -80,14 +80,6 @@ export default function AppMainMenuComponent() {
             </Anchor>
           </MainMenuCustomElement>
         )
-      },
-      {
-        id: 'flexSpacer', priority: 100,
-        render: (p: RenderProps) => <FlexSpacer key={p.id} />,
-      },
-      {
-        id: 'help', priority: 1,
-        render: (p: RenderProps) => <MainMenuIcon key={p.id} href='https://support.epam.com' target='_blank' icon={HelpIcon} />,
       }
     );
 
@@ -107,6 +99,17 @@ export default function AppMainMenuComponent() {
         }
       );
     // }
+    
+    items.push(
+      {
+        id: 'flexSpacer', priority: 100,
+        render: (p: RenderProps) => <FlexSpacer key={p.id} />,
+      },
+      {
+        id: 'help', priority: 1, 
+        render: (p: RenderProps) => <MainMenuIcon key={ p.id } href="https://support.epam.com" target="_blank" icon={ HelpIcon } />,
+      }
+    );
 
     if (isUserContextPresent) {
       items.push({

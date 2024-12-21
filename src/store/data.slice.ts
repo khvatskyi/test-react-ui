@@ -45,8 +45,6 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   .addCase(loadProfileInfo.fulfilled, (state, action) => {
     state.profile = action.payload as IProfileInfo;
     state.pending.pop();
-
-    // window.location.href = "/provider-context";
   })
   .addCase(loadProfileInfo.rejected, (state) => {
     state.pending.pop();

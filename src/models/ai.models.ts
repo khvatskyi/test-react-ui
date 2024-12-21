@@ -1,4 +1,3 @@
-import { IOption } from './option.model';
 
 export interface IAiMessage {
   context: IAiContext[];
@@ -17,5 +16,16 @@ export interface IAiContext {
 
 export interface IAiResponse {
   message: string;
-  options: IOption[];
+}
+
+export interface IAiProfileFillRequest {
+  name: string;
+}
+
+export interface IAiProfileFillResponse {
+    name?: string;
+    description?: string;
+    industry?: string;
+    size?: 'Small' | 'Medium' | 'Large';
+    coreProducts?: string;
 }

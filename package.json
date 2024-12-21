@@ -4,10 +4,11 @@
   "private": true,
   "dependencies": {
     "@epam/assets": "^5.11.0",
+    "@epam/electric": "^5.11.0",
+    "@epam/promo": "^5.11.0",
     "@epam/uui": "^5.11.0",
     "@epam/uui-components": "^5.11.0",
     "@epam/uui-core": "^5.11.0",
-    "@epam/promo": "^5.11.0",
     "@reduxjs/toolkit": "^2.3.0",
     "history": "^4.10.1",
     "react": "^18.2.0",

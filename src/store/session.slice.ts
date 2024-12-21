@@ -21,7 +21,7 @@ const initialState: SessionState = {
 export const signInWithSSOCode = createAsyncThunk(
   'session/signIn',
   async (code: string, { rejectWithValue }) => {
-    const basePath = process.env.REACT_APP_API_ROOT + '/api/get-sso-token';
+    const basePath = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
 
     return await fetch(`${basePath}?${params.toString()}`, {

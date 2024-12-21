@@ -21,12 +21,12 @@ export function PortfolioPlacehoder({ onCreateClick }: IPortfolioPlacehoderProps
       <FlexRow>
         <div style={{ textAlign: "center" }}>
           <FlexRow>
-            <IconContainer icon={PlacehoderIcon} />
+            {/* <IconContainer icon={ PlacehoderIcon } /> */}
+            <img src='/icons/portfolio-placehoder.svg' alt=''></img>
           </FlexRow>
           <FlexRow cx={css.labelContainer}>
             <FlexSpacer />
             <Text fontSize="24" fontWeight="600" lineHeight="30" > {LABELS.text}</Text>
-            {/* <Text cx={css.label}> { LABELS.Text }</Text> */}
             <FlexSpacer />
           </FlexRow>
           <FlexRow>

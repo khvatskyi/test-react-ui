@@ -61,6 +61,8 @@ export function PortfolioDetails() {
   const form = useForm<IPortfolioDetails>({
     settingsKey: 'portfolio-details-form',
     value: defaultFormData,
+    beforeLeave: () => Promise.resolve(false),
+    loadUnsavedChanges: () => Promise.resolve(),
     getMetadata: portfolioValidationSchema,
     onSave: onSave,
     onSuccess: onSuccess

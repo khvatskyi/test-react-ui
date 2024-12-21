@@ -1220,6 +1220,15 @@
   resolved "https://registry.yarnpkg.com/@epam/assets/-/assets-5.11.0.tgz#8142c02ff26007bfad7d990ef90a6da6b125ee1f"
   integrity sha512-ZGLbn0BuZ8ttnal3Yi4dKBuxHNJRLBJnlVsQoboTCs5lHXRhZMxEr6bczX+QfTp2pO4Em7nPg4glJZWRE8V87Q==
 
+"@epam/electric@^5.11.0":
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/@epam/electric/-/electric-5.11.0.tgz#32a6eb465dbdde9d3cb78b45757a80fd8aff4e09"
+  integrity sha512-CvqchW++gC29w88We/WIKivyOlIBLD8KtT6JRwHvxID5ZZKEcd0Gf9/kK7LKnETq25X8JGyNeHPTZBOo3UAjoQ==
+  dependencies:
+    "@epam/uui" "5.11.0"
+    "@epam/uui-components" "5.11.0"
+    "@epam/uui-core" "5.11.0"
+
 "@epam/promo@^5.11.0":
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/@epam/promo/-/promo-5.11.0.tgz#36969b3483831550e425d973ad953d02e850bf1b"

@@ -1,9 +1,9 @@
-import { IAiMessage, IAiResponse } from '../models/ai.models';
-import { concatMap, delay, from, map, Observable, of } from 'rxjs';
+import { IAiMessage, IAiResponse, IAiProfileFillRequest, IAiProfileFillResponse } from '../models/ai.models';
+import { concatMap, from, map, Observable} from 'rxjs';
 
 export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
 
-  const path = process.env.REACT_APP_API_ROOT + '/api/chat';
+  const path = process.env.REACT_APP_API_ROOT + '/chat/message';
   const body = {
     context: message.context,
     message: message.text
@@ -22,12 +22,13 @@ export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
     map((result: { message: string }) => {
       return {
         message: result.message,
-        messageForOptions: '',
-        options: []
       } as IAiResponse
     })
   );
 
+}
+
+export async function sendProfileFillMessage(message: IAiProfileFillRequest): Promise<IAiProfileFillResponse> {
 
   // MOCK DATA. Comment the code above and uncomment the code below:
 
@@ -40,4 +41,28 @@ export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
   //     ]
   // }
   // return of(response).pipe(delay(500));
+  
+  const path = process.env.REACT_APP_API_ROOT + '/assistant/profile/fill';
+  const body = {
+    name: message.name ? message.name : ''
+  };
+
+    const response = await fetch(path, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {      
+        throw new Error(response.statusText, {cause: {
+          body: await response.json(),
+          response: response
+        }});
+    }
+    return response.json()
+
+
+  
 }

@@ -1,6 +1,7 @@
 import { FlexRow } from '@epam/uui';
 
 import { ProfileLeftPanel } from './components/ProfileLeftPanel';
+import DataLoading from '../../components/DataLoading';
 
 import css from './Portfolios.module.scss';
 import { PortfolioList } from './PortfolioList';
@@ -27,10 +28,10 @@ export function PortfoliosPage() {
     history.push('/portfolios/create');
   }
 
-  return isLoading ? <div>Loading...</div> : (
+  return isLoading ? <DataLoading/> : (
     <FlexRow cx={css.root}>
       <ProfileLeftPanel profile={profile} />
-      { !portfolios
+      { !portfolios?.length
         ? <PortfolioPlacehoder onCreateClick={handlePortfolioCreate} />
         : <PortfolioList portfolios={portfolios} onCreateClick={handlePortfolioCreate} /> }
     </FlexRow>

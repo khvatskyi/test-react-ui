@@ -2,6 +2,7 @@
 .root {
   width: 100%;
   background-color: white;
+  min-height: calc(100vh - 60px) !important;
 
   .buttonPanel {
     height: 60px;
@@ -22,16 +23,4 @@
     padding: 12px;
   }
 
-  .leftSideProfile {
-    width: 360px;
-    height: 100%;
-    // background-color: red;
-  }
-  
-  .panelProfile {
-    width: 100%;
-    min-height: calc(100vh - 60px) !important;
-    padding: 12px;
-    // background-color: red;
-  }
 }

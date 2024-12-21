@@ -22,11 +22,11 @@ export const sendMessageToAi = createAsyncThunk(
   'ai/sendMessageToAi',
   async (message: string, thunkAPI) => {
 
-    const state = thunkAPI.getState() as StateModel;
+    const state = thunkAPI.getState() as RootState;
 
     const requestMessage: IAiMessage = {
       text: message,
-      context: state.aiContext
+      context: state.ai.aiContext
     };
 
     thunkAPI.dispatch(isLoading(true));
@@ -48,7 +48,7 @@ export const aiSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(sendMessageToAi.fulfilled, (state, action) => {
       state.aiContext.push({ role: AiRole.User, content: action.meta.arg });
-      state.aiContext.push({ role: AiRole.Assistant, content: JSON.stringify(action.payload) });
+      state.aiContext.push({ role: AiRole.Assistant, content: action.payload.message });
     })
   }
 })
@@ -58,7 +58,6 @@ const { isLoading } = aiSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const lastAiResponse = (state: RootState) => state.ai.aiContext.at(-1)?.content ?? null;
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading;
-// export const getMessages = (state: RootState): IChatMessage[] => state.ai.aiContext.map(x => ({ text: x.content, sentByUser: x.role === AiRole.User }));
 
 const selectAiContext = (state: RootState) => state.ai.aiContext;
 
@@ -67,7 +66,7 @@ export const getMessages = createSelector(
   [selectAiContext], // Input selectors
   (aiContext) =>
     aiContext.map((x) => ({
-      text: x.role === AiRole.User ? x.content : (JSON.parse(x.content) as IAiResponse).message,
+      text: x.content,
       sentByUser: x.role === AiRole.User,
     })) as IChatMessage[]
 );
