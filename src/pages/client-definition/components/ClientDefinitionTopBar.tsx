@@ -1,21 +1,21 @@
 import { Button, FlexRow, FlexSpacer, Panel } from "@epam/uui";
 import { ReactComponent as iconAI } from '@epam/assets/icons/ai-copilot_magic_small-fill.svg';
 
-import css from './ProfileTopBar.module.scss';
+import css from './ClientDefinitionTopBar.module.scss';
 
-interface ProfileTopBarProps {
+interface ClientDefinitionTopBarProps {
   onSave: () => void;
-  onFillProfileWithAI: () => void;
+  onFillFormWithAI: () => void;
 }
 
 
-export function ProfileTopBar({ onSave, onFillProfileWithAI }:  ProfileTopBarProps) {
+export function ClientDefinitionTopBar({ onSave, onFillFormWithAI }:  ClientDefinitionTopBarProps) {
   return (
     <Panel cx={css.buttonPanel}>
       <FlexRow columnGap="12" cx={css.buttonPanel}>
         <FlexSpacer />
         <Button caption="Save client definition" color="primary" onClick={onSave} />
-        <Button caption="Fill with AI" icon={iconAI} fill="ghost" onClick={onFillProfileWithAI} />
+        <Button caption="Fill with AI" icon={iconAI} fill="ghost" onClick={onFillFormWithAI} />
       </FlexRow>
     </Panel>
   )

@@ -1,4 +1,4 @@
-import { IAiMessage, IAiResponse, IAiProfileFillRequest, IAiProfileFillResponse } from '../models/ai.models';
+import { IAiMessage, IAiResponse, IAiClientDefinitionFillRequest, IAiClientDefinitionFillResponse } from '../models/ai.models';
 import { concatMap, from, map, Observable} from 'rxjs';
 
 export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
@@ -28,7 +28,7 @@ export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
 
 }
 
-export async function sendProfileFillMessage(message: IAiProfileFillRequest): Promise<IAiProfileFillResponse> {
+export async function sendClientDefinitionFillMessage(message: IAiClientDefinitionFillRequest): Promise<IAiClientDefinitionFillResponse> {
 
   // MOCK DATA. Comment the code above and uncomment the code below:
 
@@ -42,7 +42,7 @@ export async function sendProfileFillMessage(message: IAiProfileFillRequest): Pr
   // }
   // return of(response).pipe(delay(500));
   
-  const path = process.env.REACT_APP_API_ROOT + '/assistant/profile/fill';
+  const path = process.env.REACT_APP_API_ROOT + '/assistant/client-definition/fill';
   const body = {
     name: message.name ? message.name : ''
   };

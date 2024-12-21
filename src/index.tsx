@@ -15,7 +15,7 @@ import { svc } from './services';
 
 import { MainPage } from './pages/MainPage';
 import { ChatRoom } from './pages/chat-room/ChatRoom';
-import { ProfileDetails } from './pages/profile/Profile';
+import { ClientDefinitionDetails } from './pages/client-definition/ClientDefinition';
 import { PortfoliosPage } from './pages/portfolios/Portfolios';
 import { PortfolioDetails } from './pages/portfolioDetails/PortfolioDetails';
 
@@ -37,7 +37,7 @@ function UuiEnhancedApp() {
             <Route exact path='/' component={MainPage} />
             <Route path='/chat-room' component={ChatRoom} />
             <Route path='/login/sso-verification' component={LoginVerificationComponent} />
-            <Route path='/profile' component={ProfileDetails} />
+            <Route path='/client-definition' component={ClientDefinitionDetails} />
             <Route exact path='/portfolios' component={PortfoliosPage} />
             <Route exact path='/portfolios/create' component={PortfolioDetails} />
             <Route exact path='/portfolios/details/:id' component={PortfolioDetails} />

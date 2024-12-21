@@ -1,4 +1,4 @@
-export interface IProfileInfo {
+export interface IClientDefinitionInfo {
   id?: string;
   name?: string;
   description?: string;

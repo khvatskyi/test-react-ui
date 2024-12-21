@@ -4,15 +4,15 @@ import {
 } from '@epam/uui';
 import { IFormApi, useArrayDataSource } from '@epam/uui-core';
 
-import { IProfileInfo } from '../Profile.models';
+import { IClientDefinitionInfo } from '../ClientDefinition.models';
 import { appData } from '../../../data/source';
-import css from './ProfileForm.module.scss';
+import css from './ClientDefinitionForm.module.scss';
 
-interface IProfileFormProps {
-  form: IFormApi<IProfileInfo>
+interface IClientDefinitionFormProps {
+  form: IFormApi<IClientDefinitionInfo>
 }
 
-export function ProfileForm({ form: { lens } }: IProfileFormProps) {
+export function ClientDefinitionForm({ form: { lens } }: IClientDefinitionFormProps) {
 
   const industryDataSource = useArrayDataSource(
     {

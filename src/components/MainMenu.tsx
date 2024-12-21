@@ -90,8 +90,8 @@ export default function AppMainMenuComponent() {
           render: (p: RenderProps) => <MainMenuButton key={p.id} href='/chat-room' caption='Chat Room' />
         },
         {
-          id: 'profile', priority: 3,
-          render: (p: RenderProps) => <MainMenuButton key={p.id} href='/profile' caption='Client Profile' />
+          id: 'client-definition', priority: 3,
+          render: (p: RenderProps) => <MainMenuButton key={p.id} href='/client-definition' caption='Client Definition' />
         },
         {
           id: 'portfolio', priority: 3,

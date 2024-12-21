@@ -18,11 +18,11 @@ export interface IAiResponse {
   message: string;
 }
 
-export interface IAiProfileFillRequest {
+export interface IAiClientDefinitionFillRequest {
   name: string;
 }
 
-export interface IAiProfileFillResponse {
+export interface IAiClientDefinitionFillResponse {
     name?: string;
     description?: string;
     industry?: string;

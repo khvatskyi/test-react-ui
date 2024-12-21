@@ -5,9 +5,8 @@ import {
 
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
-import type { IProfileInfo } from '../../profile/Profile.models';
+import type { IClientDefinitionInfo } from '../../client-definition/ClientDefinition.models'; //TODO: change to IProfileInfo
 import { useHistory } from 'react-router-dom';
-import { IPortfolioDetails } from '../../portfolioDetails/portfolioDetails.models';
 
 const LABELS = {
   Title: 'Client Profile',
@@ -18,16 +17,8 @@ const LABELS = {
   CoreProducts: 'CORE PRODUCTOS / BUSINESS LINES',
 };
 
-const DEFAULT_PROFILE_DATA: IProfileInfo = {
-  name: 'Travelers',
-  description: 'Travelers Insurance is one of the largest and most established insurance companies in the United States, providing a wide array of property and casualty insurance products and services to businesses, organizations, and individuals. Founded in 1864, Travelers has built a reputation for financial strength, stability, and handling claims efficiently and fairly. The company focuses on innovation and comprehensive risk management to cater to the changing needs of its clients.',
-  industry: 'Insurance',
-  size: 'Large',
-  coreProducts: '',
-}
-
 interface IProfileLeftPanelProps {
-  profile: IProfileInfo;
+  profile: IClientDefinitionInfo;
 }
 
 export const ProfileLeftPanel = ({ profile: profileData }: IProfileLeftPanelProps ) => {
@@ -38,9 +29,7 @@ export const ProfileLeftPanel = ({ profile: profileData }: IProfileLeftPanelProp
     history.push('/profile')
   };
 
-  // TODO: grab profileData from state
-  // const profileData = true ? DEFAULT_PROFILE_DATA : null;
-
+ 
   const getLabel = (text: string) => (
     <Text cx={css.profileLabel} fontSize="16" fontWeight="700" lineHeight="18" >
       {text}
