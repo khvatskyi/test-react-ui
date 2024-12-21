@@ -1,3 +1,5 @@
+import { useHistory } from "react-router-dom";
+
 import { FormSaveResponse, UuiContexts, useUuiContext } from '@epam/uui-core';
 import { SuccessNotification, ErrorNotification, Text, useForm } from '@epam/uui';
 
@@ -18,6 +20,7 @@ import { sendClientDefinitionFillMessage } from '../../services/ai.service';
 
 export function ClientDefinitionDetails() {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const dataFromStore = useAppSelector(selectClientDefinition);
   const isLoading = useAppSelector(selectIsDataLoading);
 
@@ -71,8 +74,8 @@ export function ClientDefinitionDetails() {
   });
 
   const handleSaveClientDefinition = () => {
-    // generateClientProfile
-    form.save()
+    history.push('/client-profile');
+    // form.save()
   }
 
   const handleFillClientDefinitionWithAI = () => {

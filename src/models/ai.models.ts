@@ -29,3 +29,15 @@ export interface IAiClientDefinitionFillResponse {
     size?: 'Small' | 'Medium' | 'Large';
     coreProducts?: string;
 }
+
+export interface IAiClientProfileFillRequest {
+  name: string;
+}
+
+export interface IAiClientProfileFillResponse {
+    name?: string;
+    description?: string;
+    industry?: string;
+    size?: 'Small' | 'Medium' | 'Large';
+    coreProducts?: string;
+}

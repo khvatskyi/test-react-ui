@@ -1,14 +1,17 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import { IClientDefinitionInfo } from '../pages/client-definition/ClientDefinition.models';
+import { IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 import { IPortfolio } from '../models/portfolio.model';
 import { getClientDefinition, saveClientDefinition } from '../services/client-definition.service';
 import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
+import { getProfile, saveProfile } from '../services/profile.service';
 import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.models';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
+  clientProfile: IClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
   pending: boolean[];
@@ -16,10 +19,53 @@ interface IDataState {
 
 const initialState: IDataState = {
   clientDefinition: null,
+  clientProfile: null,
   portfolios: null,
   selectedPortfolio: null,
   pending: []
 }
+
+export const loadProfileInfo = createAsyncThunk(
+  'data/loadProfileInfo',
+  async (_, { rejectWithValue }) => {
+
+    return getProfile().catch(error => rejectWithValue(error));
+  }
+);
+
+export const saveProfileInfo = createAsyncThunk(
+  'data/saveProfileInfo',
+  async (profile: IClientProfileInfo, { rejectWithValue }) => {
+
+    return saveProfile(profile).catch(error => rejectWithValue(error));
+  }
+);
+
+const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
+  builder
+  .addCase(loadProfileInfo.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(loadProfileInfo.fulfilled, (state, action) => {
+    state.clientProfile = action.payload as IClientProfileInfo;
+    state.pending.pop();
+  })
+  .addCase(loadProfileInfo.rejected, (state) => {
+    state.pending.pop();
+  })
+  .addCase(saveProfileInfo.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(saveProfileInfo.fulfilled, (state, action) => {
+    state.clientProfile = action.payload as IClientProfileInfo;
+    state.pending.pop();
+  })
+  .addCase(saveProfileInfo.rejected, (state) => {
+    state.pending.pop();
+  })
+};
+
+
 
 export const loadClientDefinitionInfo = createAsyncThunk(
   'data/loadClientDefinitionInfo',
@@ -124,13 +170,14 @@ export const dataSlice = createSlice({
   initialState,
   reducers: { },
   extraReducers: (builder) => {
+    profileExtraReducers(builder);
     clientDefinitionExtraReducers(builder);
     portfolioExtraReducers(builder);
   }
 });
 
 export const selectClientDefinition = (state: RootState) => state.data.clientDefinition;
-export const selectProfile = (state: RootState) => state.data.clientDefinition; //TODO: change to  state.data.profile
+export const selectProfile = (state: RootState) => state.data.clientProfile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
