@@ -1,3 +1,4 @@
+import { delay } from '@epam/uui-test-utils';
 import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 
 let PROFILE_DATA: IExtendedClientProfileInfo = {
@@ -33,12 +34,12 @@ export function getProfile(): Promise<IExtendedClientProfileInfo> {
   return response.then(x => x.json() as Promise<IExtendedClientProfileInfo>);
 }
 
-export function saveProfile(profile: IClientProfileInfo): Promise<IExtendedClientProfileInfo> {
+export function saveProfile(profile: IExtendedClientProfileInfo): Promise<IExtendedClientProfileInfo> {
 
   // MOCK data
 //  PROFILE_DATA = structuredClone(profile);
  PROFILE_DATA.id = PROFILE_DATA.id ?? crypto.randomUUID();
- return Promise.resolve(PROFILE_DATA);
+ return delay(3000).then(() => Promise.resolve(PROFILE_DATA));
 
   const path = process.env.REACT_APP_API_ROOT + '/user/profile';
   const response = fetch(path, {

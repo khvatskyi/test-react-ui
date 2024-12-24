@@ -10,7 +10,6 @@ import { defaultProfileData } from './constants';
 import { profileValidationSchema } from './validation.schema';
 import type { TApi } from '../../data';
 import { ClientProfileForm } from './components/ClientProfileForm';
-import DataLoading from '../../components/DataLoading';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile } from '../../store/data.slice';
 import { sendClientDefinitionFillMessage } from '../../services/ai.service';
@@ -19,10 +18,8 @@ import { setClientDefinitionInfo } from '../../store/data.slice'
 
 import css from './ClientProfile.module.scss';
 
-
 export function ClientProfileDetails() {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const dataFromStore = useAppSelector(selectProfile);
   const clientDefinitionFromStore = useAppSelector(selectClientDefinition);
   // const dataFromStore = null;
@@ -132,14 +129,7 @@ export function ClientProfileDetails() {
     dispatch(clearClientProfile());
   };
 
-  const handleSaveClientProfile = () => {
-    // generateClientProfile
-    form.save();
-  };
-
-  // return <ItemList form={form} controlName='strengths' />;
-
-  return isLoading ? (<DataLoading />) :
+  return (
     <div className={css.root}>
       <ClientProfileTopBar isExtendedMode={isExtendedMode}
         onFillFormWithAI={handleFillClientDefinitionWithAI}
@@ -148,5 +138,6 @@ export function ClientProfileDetails() {
       <ClientProfileForm form={form}
         isExtendedForm={isExtendedMode}
         onEditClientDefinition={handleEditClientDefinition} />
-    </div>;
+    </div>
+  );
 }

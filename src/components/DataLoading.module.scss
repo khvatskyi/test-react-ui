@@ -1,5 +1,7 @@
 .root {
+  position: fixed;
   width: 100%;
-  background-color: white;
-  min-height: calc(100vh - 60px) !important;
+  height: 100%;
+  background-color: rgba(255,255,255,0.5);
+  z-index: 1000;
 }

@@ -35,9 +35,12 @@ export function ClientProfileForm({ form, isExtendedForm = false, onEditClientDe
         </RichTextView>
         <FlexSpacer />
       </FlexCell>
-      <Text fontSize="16" lineHeight="30" color="primary">
-        Please check enhanced client profile based on the information provided and do any corrections if needed.
-      </Text>
+      {
+        isExtendedForm &&
+        <Text fontSize="16" lineHeight="30" color="primary">
+          Please check enhanced client profile based on the information provided and do any corrections if needed.
+        </Text>
+      }
       <Panel cx={css.formPanel + (isExtendedForm ? ` ${css.extendedForm}` : '')} >
         <FlexCell width="100%">
           <FlexRow vPadding="24">

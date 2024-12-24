@@ -35,7 +35,7 @@ export const loadProfileInfo = createAsyncThunk(
 
 export const saveProfileInfo = createAsyncThunk(
   'data/saveProfileInfo',
-  async (profile: IClientProfileInfo, { rejectWithValue }) => {
+  async (profile: IExtendedClientProfileInfo, { rejectWithValue }) => {
 
     return saveProfile(profile).catch(error => rejectWithValue(error));
   }
@@ -47,7 +47,7 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
     state.pending.push(true);
   })
   .addCase(loadProfileInfo.fulfilled, (state, action) => {
-    state.clientProfile = action.payload as IExtendedClientProfileInfo;
+    state.clientProfile = action.payload;
     state.pending.pop();
   })
   .addCase(loadProfileInfo.rejected, (state) => {
@@ -57,15 +57,13 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
     state.pending.push(true);
   })
   .addCase(saveProfileInfo.fulfilled, (state, action) => {
-    state.clientProfile = action.payload as IExtendedClientProfileInfo;
+    state.clientProfile = action.payload;
     state.pending.pop();
   })
   .addCase(saveProfileInfo.rejected, (state) => {
     state.pending.pop();
   })
 };
-
-
 
 export const loadClientDefinitionInfo = createAsyncThunk(
   'data/loadClientDefinitionInfo',

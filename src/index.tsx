@@ -22,16 +22,22 @@ import { PortfolioDetails } from './pages/portfolioDetails/PortfolioDetails';
 
 import { Provider } from 'react-redux'
 import { store } from './store';
+import { useAppSelector } from './hooks';
+import { selectIsDataLoading } from './store/data.slice';
+import DataLoading from './components/DataLoading';
 
 const history = createBrowserHistory();
 const router = new HistoryAdaptedRouter(history);
 
 function UuiEnhancedApp() {
   const { services } = useUuiServices({ router });
+  const isLoading = useAppSelector(selectIsDataLoading);
+
   Object.assign(svc, services);
   return (
     <UuiContext.Provider value={services}>
       <ErrorHandler>
+        {isLoading && <DataLoading />}
         <Router history={history}>
           <AppMainMenuComponent />
           <Switch>
