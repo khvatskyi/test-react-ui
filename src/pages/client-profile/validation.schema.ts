@@ -1,7 +1,7 @@
 import { Metadata } from '@epam/uui-core';
-import { IClientProfileInfo } from './ClientProfile.models';
+import { IExtendedClientProfileInfo } from './ClientProfile.models';
 
-export const profileValidationSchema = (value: IClientProfileInfo): Metadata<IClientProfileInfo> => ({
+export const profileValidationSchema = (value: IExtendedClientProfileInfo): Metadata<IExtendedClientProfileInfo> => ({
   props: {
     name: {
       isRequired: true,

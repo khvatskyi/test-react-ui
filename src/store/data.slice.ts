@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
 import { IClientDefinitionInfo } from '../pages/client-definition/ClientDefinition.models';
-import { IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
+import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 import { IPortfolio } from '../models/portfolio.model';
 import { getClientDefinition, saveClientDefinition } from '../services/client-definition.service';
 import { RootState } from '../store';
@@ -11,7 +11,7 @@ import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.mo
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
-  clientProfile: IClientProfileInfo | null;
+  clientProfile: IExtendedClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
   pending: boolean[];
@@ -47,7 +47,7 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
     state.pending.push(true);
   })
   .addCase(loadProfileInfo.fulfilled, (state, action) => {
-    state.clientProfile = action.payload as IClientProfileInfo;
+    state.clientProfile = action.payload as IExtendedClientProfileInfo;
     state.pending.pop();
   })
   .addCase(loadProfileInfo.rejected, (state) => {
@@ -57,7 +57,7 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
     state.pending.push(true);
   })
   .addCase(saveProfileInfo.fulfilled, (state, action) => {
-    state.clientProfile = action.payload as IClientProfileInfo;
+    state.clientProfile = action.payload as IExtendedClientProfileInfo;
     state.pending.pop();
   })
   .addCase(saveProfileInfo.rejected, (state) => {
