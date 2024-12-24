@@ -13,9 +13,10 @@ import { ItemList } from './ItemList';
 interface IClientProfileFormProps {
   form: IFormApi<IExtendedClientProfileInfo>
   isExtendedForm?: boolean;
+  onEditClientDefinition: () => void;
 }
 
-export function ClientProfileForm({ form, isExtendedForm = false }: IClientProfileFormProps) {
+export function ClientProfileForm({ form, isExtendedForm = false, onEditClientDefinition }: IClientProfileFormProps) {
 
   const { lens } = form;
 
@@ -93,7 +94,7 @@ export function ClientProfileForm({ form, isExtendedForm = false }: IClientProfi
           </FlexRow>
           {isExtendedForm && (<>
             <FlexRow vPadding="24">
-              <Button caption='Edit client definition' color='primary' />
+              <Button caption='Edit client definition' color='primary' onClick={onEditClientDefinition} />
             </FlexRow>
             <FlexRow>
               <h3>Key Highlights</h3>

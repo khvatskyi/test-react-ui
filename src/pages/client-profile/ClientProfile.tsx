@@ -12,17 +12,19 @@ import type { TApi } from '../../data';
 import { ClientProfileForm } from './components/ClientProfileForm';
 import DataLoading from '../../components/DataLoading';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectIsDataLoading, selectProfile } from '../../store/data.slice';
+import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile } from '../../store/data.slice';
+import { sendClientDefinitionFillMessage } from '../../services/ai.service';
+import { IAiClientDefinitionFillRequest } from '../../models/ai.models';
+import { setClientDefinitionInfo } from '../../store/data.slice'
 
 import css from './ClientProfile.module.scss';
-import { IAiClientDefinitionFillRequest } from '../../models/ai.models';
-import { sendClientDefinitionFillMessage } from '../../services/ai.service';
-import { ItemList } from './components/ItemList';
+
 
 export function ClientProfileDetails() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const dataFromStore = useAppSelector(selectProfile);
+  const clientDefinitionFromStore = useAppSelector(selectClientDefinition);
   // const dataFromStore = null;
   const isLoading = useAppSelector(selectIsDataLoading);
 
@@ -31,7 +33,7 @@ export function ClientProfileDetails() {
   }, [dispatch]);
 
   const svc = useUuiContext<TApi, UuiContexts>();
-  const defaultFormData = dataFromStore ?? defaultProfileData;
+  const defaultFormData = dataFromStore ?? clientDefinitionFromStore ?? defaultProfileData;
   const isExtendedMode = Boolean(dataFromStore);
 
   const onSaveInitialData = (state: IClientProfileInfo) => {
@@ -115,10 +117,25 @@ export function ClientProfileDetails() {
 
   const form = useForm(formConfiguration);
 
+  const handleEditClientDefinition = () => {
+
+    const profile: IClientProfileInfo = {
+      id: defaultFormData.id,
+      name: form.value.name,
+      description: form.value.description,
+      industry: form.value.industry,
+      size: form.value.size,
+      coreProducts: form.value.name
+    }
+
+    dispatch(setClientDefinitionInfo(profile));
+    dispatch(clearClientProfile());
+  };
+
   const handleSaveClientProfile = () => {
     // generateClientProfile
-    form.save()
-  }
+    form.save();
+  };
 
   // return <ItemList form={form} controlName='strengths' />;
 
@@ -129,6 +146,7 @@ export function ClientProfileDetails() {
         onSave={form.save}
         disableButtons={isLoading} />
       <ClientProfileForm form={form}
-        isExtendedForm={isExtendedMode} />
+        isExtendedForm={isExtendedMode}
+        onEditClientDefinition={handleEditClientDefinition} />
     </div>;
 }

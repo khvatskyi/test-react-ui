@@ -99,7 +99,15 @@ const clientDefinitionExtraReducers = (builder: ActionReducerMapBuilder<IDataSta
     state.pending.push(true);
   })
   .addCase(saveClientDefinitionInfo.fulfilled, (state, action) => {
-    state.clientDefinition = action.payload as IClientDefinitionInfo;
+    state.clientDefinition = {
+      id: action.payload.id,
+      name: action.payload.name,
+      description: action.payload.description,
+      industry: action.payload.industry,
+      size: action.payload.size,
+      coreProducts: action.payload.coreProducts
+    };
+    state.clientProfile = action.payload;
     state.pending.pop();
   })
   .addCase(saveClientDefinitionInfo.rejected, (state) => {
@@ -168,7 +176,14 @@ const portfolioExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) =>
 export const dataSlice = createSlice({
   name: 'data',
   initialState,
-  reducers: { },
+  reducers: {
+    setClientDefinitionInfo: (state, action) => {
+      state.clientDefinition = action.payload
+    },
+    clearClientProfile: (state) => {
+      state.clientProfile = null;
+    }
+  },
   extraReducers: (builder) => {
     profileExtraReducers(builder);
     clientDefinitionExtraReducers(builder);
@@ -181,5 +196,7 @@ export const selectProfile = (state: RootState) => state.data.clientProfile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
+
+export const { setClientDefinitionInfo, clearClientProfile } = dataSlice.actions;
 
 export default dataSlice.reducer;
