@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { FormSaveResponse, UuiContexts, useUuiContext } from '@epam/uui-core';
 import { ErrorNotification, SuccessNotification, Text, useForm } from '@epam/uui';

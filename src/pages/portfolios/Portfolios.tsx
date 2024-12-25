@@ -7,7 +7,7 @@ import css from './Portfolios.module.scss';
 import { PortfolioList } from './PortfolioList';
 import { PortfolioPlacehoder } from './PortfolioPlacehoder';
 import { useHistory } from 'react-router-dom';
-import { loadPortfolios, loadClientDefinitionInfo, selectIsDataLoading, selectPortfolios, selectClientDefinition } from '../../store/data.slice';
+import { loadPortfolios, loadProfileInfo, selectIsDataLoading, selectPortfolios, selectProfile } from '../../store/data.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
 
@@ -16,11 +16,11 @@ export function PortfoliosPage() {
   const dispatch = useAppDispatch();
   const portfolios = useAppSelector(selectPortfolios);
   const isLoading = useAppSelector(selectIsDataLoading);
-  const profile = useAppSelector(selectClientDefinition)!; //TODO: change to clientDefinition selectClientDefinition
+  const profile = useAppSelector(selectProfile)!;
 
   useEffect(() => {
     dispatch(loadPortfolios());
-    dispatch(loadClientDefinitionInfo());
+    dispatch(loadProfileInfo());
   }, [dispatch]);
 
   const history = useHistory();

@@ -5,7 +5,7 @@ import {
 
 import css from './ProfileLeftPanel.module.scss';
 import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
-import type { IClientDefinitionInfo } from '../../client-definition/ClientDefinition.models'; //TODO: change to IProfileInfo
+import type { IClientProfileInfo } from '../../client-profile/ClientProfile.models';
 import { useHistory } from 'react-router-dom';
 
 const LABELS = {
@@ -18,7 +18,7 @@ const LABELS = {
 };
 
 interface IProfileLeftPanelProps {
-  profile: IClientDefinitionInfo;
+  profile: IClientProfileInfo;
 }
 
 export const ProfileLeftPanel = ({ profile: profileData }: IProfileLeftPanelProps ) => {

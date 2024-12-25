@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
-import { IClientDefinitionInfo } from '../pages/client-definition/ClientDefinition.models';
 import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 import { IPortfolio } from '../models/portfolio.model';
-import { getClientDefinition, saveClientDefinition } from '../services/client-definition.service';
+import { saveClientDefinition } from '../services/profile.service';
 import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
 import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.models';
 
 interface IDataState {
-  clientDefinition: IClientDefinitionInfo | null;
+  clientDefinition: IClientProfileInfo | null;
   clientProfile: IExtendedClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
@@ -65,17 +64,9 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   })
 };
 
-export const loadClientDefinitionInfo = createAsyncThunk(
-  'data/loadClientDefinitionInfo',
-  async (_, { rejectWithValue }) => {
-
-    return getClientDefinition().catch(error => rejectWithValue(error));
-  }
-);
-
 export const saveClientDefinitionInfo = createAsyncThunk(
   'data/saveClientDefinitionInfo',
-  async (clientDefinition: IClientDefinitionInfo, { rejectWithValue }) => {
+  async (clientDefinition: IClientProfileInfo, { rejectWithValue }) => {
 
     return saveClientDefinition(clientDefinition).catch(error => rejectWithValue(error));
   }
@@ -83,16 +74,6 @@ export const saveClientDefinitionInfo = createAsyncThunk(
 
 const clientDefinitionExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   builder
-  .addCase(loadClientDefinitionInfo.pending, (state) => {
-    state.pending.push(true);
-  })
-  .addCase(loadClientDefinitionInfo.fulfilled, (state, action) => {
-    state.clientDefinition = action.payload as IClientDefinitionInfo;
-    state.pending.pop();
-  })
-  .addCase(loadClientDefinitionInfo.rejected, (state) => {
-    state.pending.pop();
-  })
   .addCase(saveClientDefinitionInfo.pending, (state) => {
     state.pending.push(true);
   })
