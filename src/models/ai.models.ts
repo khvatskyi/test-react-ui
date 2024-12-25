@@ -27,7 +27,7 @@ export interface IAiClientDefinitionFillResponse {
     description?: string;
     industry?: string;
     size?: 'Small' | 'Medium' | 'Large';
-    coreProducts?: string;
+    core_products?: string;
 }
 
 export interface IAiClientProfileFillRequest {
@@ -39,5 +39,5 @@ export interface IAiClientProfileFillResponse {
     description?: string;
     industry?: string;
     size?: 'Small' | 'Medium' | 'Large';
-    coreProducts?: string;
+    core_products?: string;
 }

@@ -1,7 +1,6 @@
 import {
   FlexCell, FlexRow, FlexSpacer, Panel, LabeledInput, RichTextView, TextInput, TextArea,
-  PickerInput, RadioGroup, Text,
-  Button
+  PickerInput, RadioGroup, Text, Button
 } from '@epam/uui';
 import { IFormApi, useArrayDataSource } from '@epam/uui-core';
 
@@ -45,7 +44,7 @@ export function ClientProfileForm({ form, isExtendedForm = false, onEditClientDe
         <FlexCell width="100%">
           <FlexRow vPadding="24">
             <FlexCell minWidth={324} width="100%">
-              <LabeledInput htmlFor="companyName" label="Name" maxLength={72} {...lens.prop('name').toProps()}>
+              <LabeledInput htmlFor="companyName" label="Name" maxLength={72} charCounter={true} {...lens.prop('name').toProps()}>
                 <TextInput  {...lens.prop('name').toProps()} id="companyName" placeholder="Please type text" maxLength={72} isDisabled={isExtendedForm} />
               </LabeledInput>
             </FlexCell>
