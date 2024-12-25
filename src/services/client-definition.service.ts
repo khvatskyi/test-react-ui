@@ -51,7 +51,7 @@ export function saveClientDefinition(clientDefinition: IClientProfileInfo): Prom
 // PROFILE_DATA.id = PROFILE_DATA.id ?? crypto.randomUUID();
 // return delay(3000).then(() => Promise.resolve(PROFILE_DATA));
 
-  const path = process.env.REACT_APP_API_ROOT + '/user/client-definition';
+  const path = process.env.REACT_APP_API_ROOT + '/assistant/client-profile/fill';
   const response = fetch(path, {
     method: 'POST',
     credentials: 'include',
@@ -61,5 +61,27 @@ export function saveClientDefinition(clientDefinition: IClientProfileInfo): Prom
     }
   });
 
-  return response.then(x => x.json() as Promise<IExtendedClientProfileInfo>);
+  return response.then(x => x.json()).then(
+    x => {
+      const result: IExtendedClientProfileInfo = {
+        // id: x['id'],
+        name: x['name'],
+        description: x['description'],
+        industry: x['industry'],
+        size: x['size'],
+        coreProducts: x['core_products'],
+        strengths: x['key_highlights']['strengths'],
+        competitiveEdge: x['key_highlights']['competitive_edge'],
+        marketPosition: x['key_highlights']['market_position'],
+        headquarters: x['main_operations']['headquarters'],
+        primaryLocations: x['main_operations']['primary_locations'],
+        website: x['digital_presence']['website'],
+        linkedIn: x['digital_presence']['social_media']['linkedin'],
+        xDotCom: x['digital_presence']['social_media']['twitter'],
+        facebook: x['digital_presence']['social_media']['facebook'],
+        other: x['digital_presence']['social_media']['other'],
+      }
+      return result;
+    }
+  ) ;
 }

@@ -81,7 +81,7 @@ export function ClientProfileDetails() {
         size: data.size ?? form.lens.prop('size').toProps().value,
         description: data.description ?? form.lens.prop('description').toProps().value,
         industry: data.industry ?? form.lens.prop('industry').toProps().value,
-        coreProducts: data.coreProducts ?? form.lens.prop('coreProducts').toProps().value,
+        coreProducts: data.core_products ?? form.lens.prop('coreProducts').toProps().value,
       }
       form.replaceValue(set)
     }).catch(
