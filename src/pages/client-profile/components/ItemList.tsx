@@ -5,11 +5,11 @@ import { IFormApi } from '@epam/uui-core';
 import { ReactComponent as iconDelete } from '@epam/assets/icons/action-delete-fill.svg';
 import { ReactComponent as iconAdd } from '@epam/assets/icons/action-add-fill.svg';
 
-import { IExtendedClientProfileInfo } from '../ClientProfile.models';
+import { IClientProfileInfo } from '../ClientProfile.models';
 
 interface IItemListProps {
-  form: IFormApi<IExtendedClientProfileInfo>
-  controlName: keyof IExtendedClientProfileInfo;
+  form: IFormApi<IClientProfileInfo>
+  controlName: keyof IClientProfileInfo;
 }
 
 export function ItemList({ form: { lens }, controlName }: IItemListProps) {

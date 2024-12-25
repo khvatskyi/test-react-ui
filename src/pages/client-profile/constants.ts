@@ -1,6 +1,6 @@
-import { IClientProfileInfo } from './ClientProfile.models';
+import { IClientDefinitionInfo } from './ClientProfile.models';
 
-export const defaultProfileData: IClientProfileInfo = {
+export const defaultProfileData: IClientDefinitionInfo = {
   name: '',
   description: '',
   industry: '',

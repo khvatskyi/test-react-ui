@@ -4,7 +4,7 @@ import { FormSaveResponse, UuiContexts, useUuiContext } from '@epam/uui-core';
 import { ErrorNotification, SuccessNotification, Text, useForm } from '@epam/uui';
 
 import { ClientProfileTopBar } from './components/ClientProfileTopBar';
-import { IClientProfileInfo, IExtendedClientProfileInfo } from './ClientProfile.models';
+import { IClientDefinitionInfo, IClientProfileInfo } from './ClientProfile.models';
 import { defaultProfileData } from './constants';
 import { profileValidationSchema } from './validation.schema';
 import type { TApi } from '../../data';
@@ -32,14 +32,14 @@ export function ClientProfileDetails() {
   const defaultFormData = dataFromStore ?? clientDefinitionFromStore ?? defaultProfileData;
   const isExtendedMode = Boolean(dataFromStore);
 
-  const onSaveInitialData = (state: IClientProfileInfo) => {
+  const onSaveDefinitionData = (state: IClientDefinitionInfo) => {
     return dispatch(saveClientDefinitionInfo(state))
-      .then(x => ({ form: x.payload as IClientProfileInfo } as FormSaveResponse<IClientProfileInfo>));
+      .then(x => ({ form: x.payload as IClientDefinitionInfo } as FormSaveResponse<IClientDefinitionInfo>));
   }
 
-  const onSave = (state: IExtendedClientProfileInfo) => {
+  const onSave = (state: IClientProfileInfo) => {
     return dispatch(saveProfileInfo(state))
-      .then(x => ({ form: x.payload as IExtendedClientProfileInfo } as FormSaveResponse<IExtendedClientProfileInfo>));
+      .then(x => ({ form: x.payload as IClientProfileInfo } as FormSaveResponse<IClientProfileInfo>));
   }
 
   const onSuccess = () => {
@@ -75,7 +75,7 @@ export function ClientProfileDetails() {
     };
 
     sendClientDefinitionFillMessage(requestMessage).then(data => {
-      const set: React.SetStateAction<IClientProfileInfo> = {
+      const set: React.SetStateAction<IClientDefinitionInfo> = {
         name: data.name ?? form.lens.prop('name').toProps().value,
         size: data.size ?? form.lens.prop('size').toProps().value,
         description: data.description ?? form.lens.prop('description').toProps().value,
@@ -98,7 +98,7 @@ export function ClientProfileDetails() {
       getMetadata: profileValidationSchema,
       beforeLeave: () => Promise.resolve(false),
       loadUnsavedChanges: () => Promise.resolve(),
-      onSave: onSaveInitialData,
+      onSave: onSaveDefinitionData,
       onSuccess: onSuccess
     }
     : {
@@ -115,7 +115,7 @@ export function ClientProfileDetails() {
 
   const handleEditClientDefinition = () => {
 
-    const profile: IClientProfileInfo = {
+    const clientDefinition: IClientDefinitionInfo = {
       id: defaultFormData.id,
       name: form.value.name,
       description: form.value.description,
@@ -124,7 +124,7 @@ export function ClientProfileDetails() {
       coreProducts: form.value.name
     }
 
-    dispatch(setClientDefinitionInfo(profile));
+    dispatch(setClientDefinitionInfo(clientDefinition));
     dispatch(clearClientProfile());
   };
 

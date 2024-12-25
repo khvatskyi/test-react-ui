@@ -1,4 +1,4 @@
-import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
+import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 
 //let CLIENT_DEFINITION_DATA: IClientDefinitionInfo = {
 //  id: '1',
@@ -10,7 +10,7 @@ import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-
 //}
 
 
-export function saveClientDefinition(clientDefinition: IClientProfileInfo): Promise<IExtendedClientProfileInfo> {
+export function saveClientDefinition(clientDefinition: IClientDefinitionInfo): Promise<IClientProfileInfo> {
 
   // MOCK data
 // PROFILE_DATA = {...PROFILE_DATA, ...structuredClone(clientDefinition)};
@@ -29,7 +29,7 @@ export function saveClientDefinition(clientDefinition: IClientProfileInfo): Prom
 
   return response.then(x => x.json()).then(
     x => {
-      const result: IExtendedClientProfileInfo = {
+      const result: IClientProfileInfo = {
         // id: x['id'],
         name: x['name'],
         description: x['description'],
@@ -54,7 +54,7 @@ export function saveClientDefinition(clientDefinition: IClientProfileInfo): Prom
 
 
 
-//let PROFILE_DATA: IExtendedClientProfileInfo = {
+//let PROFILE_DATA: IClientProfileInfo = {
 //  id: '1',
 //  name: 'Travelers',
 //  description: 'Travelers Insurance is one of the largest and most established insurance companies in the United States, providing a wide array of property and casualty insurance products and services to businesses, organizations, and individuals. Founded in 1864, Travelers has built a reputation for financial strength, stability, and handling claims efficiently and fairly. The company focuses on innovation and comprehensive risk management to cater to the changing needs of its clients.',
@@ -73,7 +73,7 @@ export function saveClientDefinition(clientDefinition: IClientProfileInfo): Prom
 //  other: null,
 //}
 
-export function getProfile(): Promise<IExtendedClientProfileInfo> {
+export function getProfile(): Promise<IClientProfileInfo> {
 
   // MOCK data
 // return Promise.resolve(PROFILE_DATA);
@@ -84,10 +84,10 @@ export function getProfile(): Promise<IExtendedClientProfileInfo> {
     credentials: 'include'
   });
 
-  return response.then(x => x.json() as Promise<IExtendedClientProfileInfo>);
+  return response.then(x => x.json() as Promise<IClientProfileInfo>);
 }
 
-export function saveProfile(profile: IClientProfileInfo): Promise<IExtendedClientProfileInfo> {
+export function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProfileInfo> {
 
   // MOCK data
 //  PROFILE_DATA = structuredClone(profile);
@@ -104,5 +104,5 @@ export function saveProfile(profile: IClientProfileInfo): Promise<IExtendedClien
     }
   });
 
-  return response.then(x => x.json() as Promise<IExtendedClientProfileInfo>);
+  return response.then(x => x.json() as Promise<IClientProfileInfo>);
 }

@@ -4,13 +4,13 @@ import {
 } from '@epam/uui';
 import { IFormApi, useArrayDataSource } from '@epam/uui-core';
 
-import { IExtendedClientProfileInfo } from '../ClientProfile.models';
+import { IClientProfileInfo } from '../ClientProfile.models';
 import { appData } from '../../../data/source';
 import css from './ClientProfileForm.module.scss';
 import { ItemList } from './ItemList';
 
 interface IClientProfileFormProps {
-  form: IFormApi<IExtendedClientProfileInfo>
+  form: IFormApi<IClientProfileInfo>
   isExtendedForm?: boolean;
   onEditClientDefinition: () => void;
 }

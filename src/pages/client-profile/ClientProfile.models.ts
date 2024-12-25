@@ -1,4 +1,4 @@
-export interface IClientProfileInfo {
+export interface IClientDefinitionInfo {
   id?: string;
   name?: string;
   description?: string;
@@ -7,7 +7,7 @@ export interface IClientProfileInfo {
   coreProducts?: string;
 }
 
-export interface IExtendedClientProfileInfo extends IClientProfileInfo {
+export interface IClientProfileInfo extends IClientDefinitionInfo {
   strengths?: string[] | null;
   competitiveEdge?: string;
   marketPosition?: string;

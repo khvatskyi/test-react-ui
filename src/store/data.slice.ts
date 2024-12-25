@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
-import { IClientProfileInfo, IExtendedClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
+import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 import { IPortfolio } from '../models/portfolio.model';
 import { saveClientDefinition } from '../services/profile.service';
 import { RootState } from '../store';
@@ -9,8 +9,8 @@ import { getProfile, saveProfile } from '../services/profile.service';
 import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.models';
 
 interface IDataState {
-  clientDefinition: IClientProfileInfo | null;
-  clientProfile: IExtendedClientProfileInfo | null;
+  clientDefinition: IClientDefinitionInfo | null;
+  clientProfile: IClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
   pending: boolean[];
@@ -34,7 +34,7 @@ export const loadProfileInfo = createAsyncThunk(
 
 export const saveProfileInfo = createAsyncThunk(
   'data/saveProfileInfo',
-  async (profile: IExtendedClientProfileInfo, { rejectWithValue }) => {
+  async (profile: IClientProfileInfo, { rejectWithValue }) => {
 
     return saveProfile(profile).catch(error => rejectWithValue(error));
   }
@@ -66,7 +66,7 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
 
 export const saveClientDefinitionInfo = createAsyncThunk(
   'data/saveClientDefinitionInfo',
-  async (clientDefinition: IClientProfileInfo, { rejectWithValue }) => {
+  async (clientDefinition: IClientDefinitionInfo, { rejectWithValue }) => {
 
     return saveClientDefinition(clientDefinition).catch(error => rejectWithValue(error));
   }
