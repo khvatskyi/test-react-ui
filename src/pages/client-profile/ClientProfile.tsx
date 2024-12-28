@@ -34,7 +34,13 @@ export function ClientProfileDetails() {
 
   const onSaveDefinitionData = (state: IClientDefinitionInfo) => {
     return dispatch(saveClientDefinitionInfo(state))
-      .then(x => ({ form: x.payload as IClientDefinitionInfo } as FormSaveResponse<IClientDefinitionInfo>));
+      .then(x => ({ form: x.payload as IClientDefinitionInfo } as FormSaveResponse<IClientDefinitionInfo>))
+      .catch(
+      r => {
+        const errorText = r.cause?.body?.detail ?? r.message;
+        showError(errorText)
+      }
+    );
   }
 
   const onSave = (state: IClientProfileInfo) => {
@@ -116,12 +122,11 @@ export function ClientProfileDetails() {
   const handleEditClientDefinition = () => {
 
     const clientDefinition: IClientDefinitionInfo = {
-      id: defaultFormData.id,
       name: form.value.name,
       description: form.value.description,
       industry: form.value.industry,
       size: form.value.size,
-      coreProducts: form.value.name
+      coreProducts: form.value.coreProducts
     }
 
     dispatch(setClientDefinitionInfo(clientDefinition));

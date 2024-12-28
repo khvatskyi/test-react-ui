@@ -155,8 +155,8 @@ export function ClientProfileForm({ form, isExtendedForm = false, onEditClientDe
             </FlexRow>
             <FlexRow vPadding="24">
               <FlexCell minWidth={324} width="100%">
-                <LabeledInput htmlFor="xDotCom" label="Twitter" {...lens.prop('xDotCom').toProps()}>
-                  <TextInput {...lens.prop('xDotCom').toProps()} id="xDotCom" placeholder="Please type text" />
+                <LabeledInput htmlFor="twitter" label="Twitter" {...lens.prop('twitter').toProps()}>
+                  <TextInput {...lens.prop('twitter').toProps()} id="twitter" placeholder="Please type text" />
                 </LabeledInput>
               </FlexCell>
             </FlexRow>
@@ -169,8 +169,81 @@ export function ClientProfileForm({ form, isExtendedForm = false, onEditClientDe
             </FlexRow>
             <FlexCell>
               <LabeledInput label='Other' />
-              <ItemList form={form} controlName='other' />
+              <ItemList form={form} controlName='otherSocialMedia' />
             </FlexCell>
+
+            <FlexRow>
+              <h3>Business Details</h3>
+            </FlexRow>
+            <FlexRow vPadding="24">
+              <FlexCell minWidth={324} width="100%">
+                <LabeledInput htmlFor="revenue" label="Revenue" {...lens.prop('revenue').toProps()}>
+                  <TextInput {...lens.prop('revenue').toProps()} id="revenue" placeholder="Please type text" />
+                </LabeledInput>
+              </FlexCell>
+            </FlexRow>
+            <FlexRow vPadding="24">
+              <FlexCell minWidth={324} width="100%">
+                <LabeledInput htmlFor="numberOfEmployees" label="Number of Employees" {...lens.prop('numberOfEmployees').toProps()}>
+                  <TextInput {...lens.prop('numberOfEmployees').toProps()} id="numberOfEmployees" placeholder="Please type text" />
+                </LabeledInput>
+              </FlexCell>
+            </FlexRow>
+
+            <FlexRow>
+              <h4>Key Services or Products</h4>
+            </FlexRow>
+            <FlexCell>
+              {/* <ItemList form={form} controlName='key_services_or_products' /> wasa */}
+            </FlexCell>
+
+            <FlexRow>
+              <h3>Strategic Goals</h3>
+            </FlexRow>
+            <FlexCell>
+              <LabeledInput label='Short-term' />
+              <ItemList form={form} controlName='strategicGoalsShortTerm' />
+            </FlexCell>
+            <FlexCell>
+              <LabeledInput label='Long-term' />
+              <ItemList form={form} controlName='strategicGoalsLongTerm' />
+            </FlexCell>
+
+            <FlexRow>
+              <h3>Partnerships or Affiliations</h3>
+            </FlexRow>
+            <FlexCell>
+              <ItemList form={form} controlName='partnershipsOrAffiliations' />
+            </FlexCell>
+
+            <FlexRow>
+              <h3>Contact Information</h3>
+            </FlexRow>
+            <FlexRow vPadding="24">
+              <FlexCell minWidth={324} width="100%">
+                <LabeledInput htmlFor="phone" label="Phone" {...lens.prop('phone').toProps()}>
+                  <TextInput {...lens.prop('phone').toProps()} id="phone" placeholder="Please type text" />
+                </LabeledInput>
+              </FlexCell>
+            </FlexRow>
+
+            <FlexRow vPadding="24">
+              <FlexCell minWidth={324} width="100%">
+                <LabeledInput htmlFor="email" label="Email" {...lens.prop('email').toProps()}>
+                  <TextInput {...lens.prop('email').toProps()} id="email" placeholder="Please type text" />
+                </LabeledInput>
+              </FlexCell>
+            </FlexRow>
+
+            <FlexRow vPadding="24">
+              <FlexCell minWidth={324} width="100%">
+                <LabeledInput htmlFor="address" label="Address" {...lens.prop('address').toProps()}>
+                  <TextInput {...lens.prop('address').toProps()} id="address" placeholder="Please type text" />
+                </LabeledInput>
+              </FlexCell>
+            </FlexRow>
+
+
           </>)}
         </FlexCell>
       </Panel>

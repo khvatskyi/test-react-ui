@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs
 
 import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 import { IPortfolio } from '../models/portfolio.model';
-import { saveClientDefinition } from '../services/profile.service';
+import { saveClientDefinition } from '../services/ai.service';
 import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
@@ -79,7 +79,6 @@ const clientDefinitionExtraReducers = (builder: ActionReducerMapBuilder<IDataSta
   })
   .addCase(saveClientDefinitionInfo.fulfilled, (state, action) => {
     state.clientDefinition = {
-      id: action.payload.id,
       name: action.payload.name,
       description: action.payload.description,
       industry: action.payload.industry,

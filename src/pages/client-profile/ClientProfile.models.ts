@@ -1,5 +1,4 @@
 export interface IClientDefinitionInfo {
-  id?: string;
   name?: string;
   description?: string;
   industry?: string;
@@ -15,7 +14,21 @@ export interface IClientProfileInfo extends IClientDefinitionInfo {
   primaryLocations?: string[] | null;
   website?: string;
   linkedIn?: string;
-  xDotCom?: string;
+  twitter?: string;
   facebook?: string;
-  other?: string[] | null;
+  otherSocialMedia?: string[] | null;
+  revenue?: string;
+  numberOfEmployees?: string;
+  keyServicesOrProducts?: IKeyServicesOrProducts[] | null
+  strategicGoalsShortTerm?: string[] | null;
+  strategicGoalsLongTerm?: string[] | null;
+  partnershipsOrAffiliations?: string[] | null;
+  phone?: string;
+  email?: string;
+  address?: string;
+}
+
+export interface IKeyServicesOrProducts {
+  service?: string;
+  description?: string;
 }

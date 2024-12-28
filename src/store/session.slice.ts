@@ -21,10 +21,10 @@ const initialState: SessionState = {
 export const signInWithSSOCode = createAsyncThunk(
   'session/signIn',
   async (code: string, { rejectWithValue }) => {
-    const basePath = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
+    const path = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
 
-    return await fetch(`${basePath}?${params.toString()}`, {
+    return await fetch(`${path}?${params.toString()}`, {
       method: 'GET'
     })
       .then(response => response.json())

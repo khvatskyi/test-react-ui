@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import { IAiContext, IAiMessage, IAiResponse } from '../models/ai.models';
+import { IAiContext, IAiMessage } from '../models/ai.models';
 import { sendMessage } from '../services/ai.service';
 import { firstValueFrom } from 'rxjs';
 import { AiRole } from '../enums/ai-role.enum';
