@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 
-import css from './Chat.module.scss';
-import { IChatMessage } from '../../models/chat.models';
 import { Button } from '@epam/uui-components';
 
-interface ChatProps {
+import css from './Chat.module.scss';
+import { IChatMessage } from '../../typings/models/chat.models';
+import Message from './Message';
+
+export interface IChatProps {
   messages: IChatMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
 }
 
-const aiAnsweringMessage: IChatMessage = {
+const AI_ANSWERING_MESSAGE: IChatMessage = {
   text: '...',
   sentByUser: false
-}
+} as const;
 
-const Chat = ({ messages, isResponding, onSendMessage }: ChatProps) => {
+export default function Chat({ messages, isResponding, onSendMessage }: IChatProps) {
   const [currentInput, setCurrentInput] = useState('');
 
   const handleSendMessage = () => {
@@ -37,7 +39,7 @@ const Chat = ({ messages, isResponding, onSendMessage }: ChatProps) => {
         {messages.map((message, index) => (
           <Message key={index} message={message} />
         ))}
-        {isResponding && <Message message={aiAnsweringMessage} />}
+        {isResponding && <Message message={AI_ANSWERING_MESSAGE} />}
       </div>
       <div className={css.inputMessageWrapper}>
         <div className={css.matFormField}>
@@ -57,26 +59,3 @@ const Chat = ({ messages, isResponding, onSendMessage }: ChatProps) => {
     </div>
   );
 };
-
-type MessageProps = {
-  message: IChatMessage
-}
-
-const Message = ({ message }: MessageProps) => {
-  return (
-    <div
-      className={`${css['message-wrapper']} ${message.sentByUser ? css['right-message'] : ''}`}
-    >
-      <div className={`${css['message']} ${!message.sentByUser ? css['ai-message'] : ''}`}>
-        {!message.sentByUser && (
-          <div className={`${css['user-image']} ${css['ai-background']}`}></div>
-        )}
-        <div className={css['text-wrapper']}>
-          <span className={css['message-text']}>{message.text}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Chat;

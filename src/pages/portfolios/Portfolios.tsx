@@ -1,17 +1,14 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { FlexRow } from '@epam/uui';
 
-import { ProfileLeftPanel } from './components/ProfileLeftPanel';
-import DataLoading from '../../components/DataLoading';
-
 import css from './Portfolios.module.scss';
-import { PortfolioList } from './PortfolioList';
-import { PortfolioPlacehoder } from './PortfolioPlacehoder';
-import { useHistory } from 'react-router-dom';
+import { ProfileLeftPanel, PortfolioList, PortfolioPlacehoder } from './components';
 import { loadPortfolios, loadProfileInfo, selectIsDataLoading, selectPortfolios, selectProfile } from '../../store/data.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect } from 'react';
 
-export function PortfoliosPage() {
+export default function Portfolios() {
 
   const dispatch = useAppDispatch();
   const portfolios = useAppSelector(selectPortfolios);
@@ -28,12 +25,14 @@ export function PortfoliosPage() {
     history.push('/portfolios/create');
   }
 
-  return isLoading ? <DataLoading/> : (
+  return !isLoading && (
     <FlexRow cx={css.root}>
       <ProfileLeftPanel profile={profile} />
-      { !portfolios?.length
-        ? <PortfolioPlacehoder onCreateClick={handlePortfolioCreate} />
-        : <PortfolioList portfolios={portfolios} onCreateClick={handlePortfolioCreate} /> }
+      {
+        !portfolios?.length
+          ? <PortfolioPlacehoder onCreateClick={handlePortfolioCreate} />
+          : <PortfolioList portfolios={portfolios} onCreateClick={handlePortfolioCreate} />
+      }
     </FlexRow>
   );
 }

@@ -1,1 +1,1 @@
-export * from './apiDefinition';
+export * from './api-definition';

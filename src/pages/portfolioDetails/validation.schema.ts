@@ -1,7 +1,8 @@
 import { Metadata } from '@epam/uui-core';
-import { IPortfolioDetails } from './portfolioDetails.models';
 
-export const portfolioValidationSchema = (value: IPortfolioDetails): Metadata<IPortfolioDetails> => ({
+import { IPortfolioDetails } from '../../typings/models/portfolio.models';
+
+export const portfolioValidationSchema = (_: IPortfolioDetails): Metadata<IPortfolioDetails> => ({
   props: {
     name: {
       isRequired: true,

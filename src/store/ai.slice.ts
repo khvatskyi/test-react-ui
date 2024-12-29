@@ -1,17 +1,18 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
-import type { RootState } from '../store'
-import { IAiContext, IAiMessage } from '../models/ai.models';
-import { sendMessage } from '../services/ai.service';
 import { firstValueFrom } from 'rxjs';
-import { AiRole } from '../enums/ai-role.enum';
-import { IChatMessage } from '../models/chat.models';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
-export interface AiState {
+import type { RootState } from '../store'
+import { IAiContext, IAiMessage } from '../typings/models/ai.models';
+import { sendMessage } from '../services/ai.service';
+import { AiRole } from '../typings/enums/ai-role.enum';
+import { IChatMessage } from '../typings/models/chat.models';
+
+export interface IAiState {
   aiContext: IAiContext[];
   isLoading: boolean;
 }
 
-type StateModel = AiState;
+type StateModel = IAiState;
 
 const initialState: StateModel = {
   aiContext: [],

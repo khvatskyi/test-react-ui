@@ -1,7 +1,7 @@
 import { concatMap, from, map, Observable} from 'rxjs';
-import { IAiMessage, IAiResponse, IAiClientDefinitionFillRequest, IAiClientDefinitionFillResponse } from '../models/ai.models';
-import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
 
+import { IAiMessage, IAiResponse, IAiClientDefinitionFillRequest, IAiClientDefinitionFillResponse } from '../typings/models/ai.models';
+import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
 
 export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
 

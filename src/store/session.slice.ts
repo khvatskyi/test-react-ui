@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { IUserContext, IUserResponse } from "../models/user-context.model";
+import { IUserContext, IUserResponse } from '../typings/models/user.models';
 import { RootState } from '../store';
-import { SessionStorageItems } from '../enums/session-storage-items.enum';
+import { SessionStorageItems } from '../typings/enums/session-storage-items.enum';
 import { deleteCookie, setCookie } from '../utilities/cookies.utility';
 
-interface SessionState {
+interface ISessionState {
   userContext: IUserContext | null;
   pending: boolean;
 }
@@ -13,7 +13,7 @@ interface SessionState {
 const serializedUserContext: string | null = sessionStorage.getItem(SessionStorageItems.UserContext);
 const storedUserContext: IUserContext = serializedUserContext ? JSON.parse(serializedUserContext) : null;
 
-const initialState: SessionState = {
+const initialState: ISessionState = {
   userContext: storedUserContext || null,
   pending: false,
 };
@@ -79,7 +79,7 @@ export const sessionSlice = createSlice({
         setCookie('email', state.userContext.email);
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        window.location.href = "/profile";
+        window.location.href = '/profile';
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;

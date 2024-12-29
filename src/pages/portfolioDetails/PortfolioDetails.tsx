@@ -1,18 +1,16 @@
-import { useHistory, useParams } from "react-router-dom";
+import { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
-import { FormSaveResponse, useUuiContext, UuiContexts } from "@epam/uui-core";
-import { SuccessNotification, Text, useForm } from "@epam/uui";
-
-import { PortfolioDetailsTopBar } from "./components/PortfolioDetailsTopBar";
-import { PortfolioDetailsForm } from "./components/PortfolioForm";
-import { IPortfolioDetails } from "./portfolioDetails.models";
-import { portfolioValidationSchema } from "./validation.schema";
-import { TApi } from "../../data";
+import { FormSaveResponse, useUuiContext, UuiContexts } from '@epam/uui-core';
+import { SuccessNotification, Text, useForm } from '@epam/uui';
 
 import css from './PortfolioDetails.module.scss';
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { loadPortfolio, selectPortfolioDetails, upsertPortfolio } from "../../store/data.slice";
-import { useEffect } from "react";
+import { PortfolioDetailsTopBar, PortfolioDetailsForm } from './components';
+import { IPortfolioDetails } from '../../typings/models/portfolio.models';
+import { portfolioValidationSchema } from './validation.schema';
+import { TApi } from '../../data';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadPortfolio, selectPortfolioDetails, upsertPortfolio } from '../../store/data.slice';
 
 const DEFAULT_DATA: IPortfolioDetails = {
   name: '',
@@ -25,7 +23,7 @@ const DEFAULT_DATA: IPortfolioDetails = {
   keySuppliers: ''
 }
 
-export function PortfolioDetails() {
+export default function PortfolioDetails() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { id } = useParams<{ id?: string }>();
@@ -49,7 +47,7 @@ export function PortfolioDetails() {
     svc.uuiNotifications.show(
       (props) => (
         <SuccessNotification {...props}>
-          <Text size="36" fontSize="14">
+          <Text size='36' fontSize='14'>
             Data has been saved!
           </Text>
         </SuccessNotification>

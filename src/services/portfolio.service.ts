@@ -1,5 +1,5 @@
-import { IPortfolio } from '../models/portfolio.model';
-import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.models';
+import { IPortfolio } from '../typings/models/portfolio.models';
+import { IPortfolioDetails } from '../typings/models/portfolio.models';
 
 //const MOCK_DATA: IPortfolio[] = [
 //  { id: '1', name: 'Pesho' },

@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
-import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
-import { IPortfolio } from '../models/portfolio.model';
+import { IPortfolioDetails } from '../typings/models/portfolio.models';
+import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
+import { IPortfolio } from '../typings/models/portfolio.models';
 import { saveClientDefinition } from '../services/ai.service';
 import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
-import { IPortfolioDetails } from '../pages/portfolioDetails/portfolioDetails.models';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;

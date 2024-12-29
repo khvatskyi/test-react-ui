@@ -1,5 +1,4 @@
-import { IClientDefinitionInfo, IClientProfileInfo } from '../pages/client-profile/ClientProfile.models';
-
+import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
 
 //let PROFILE_DATA: IClientProfileInfo = {
 //  id: '1',
