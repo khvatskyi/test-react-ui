@@ -75,7 +75,7 @@ export default function MainMenu() {
         priority: 99,
         render: () => (
           <MainMenuCustomElement key='logo'>
-            <Anchor link={{ pathname: '/' }} href='/' >
+            <Anchor link={{ pathname: '/' }}>
               <IconContainer icon={LogoIcon} cx={cx(css.icon, css.logo)} />
             </Anchor>
           </MainMenuCustomElement>
@@ -87,15 +87,15 @@ export default function MainMenu() {
       items.push(
         {
           id: 'chatRoom', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} href='/chat-room' caption='Chat Room' />
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/chat-room' } } caption='Chat Room' />
         },
         {
           id: 'client-profile', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} href='/client-profile' caption='Client Profile' />
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/client-profile' } } caption='Client Profile' />
         },
         {
           id: 'portfolio', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} href='/portfolios' caption='Portfolios' />
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/portfolios' } } caption='Portfolios' />
         }
       );
     // }
