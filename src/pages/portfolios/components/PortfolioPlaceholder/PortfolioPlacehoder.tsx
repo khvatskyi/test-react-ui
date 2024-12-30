@@ -20,7 +20,7 @@ export default function PortfolioPlacehoder({ onCreateClick }: IPortfolioPlaceho
       <FlexRow>
         <div style={{ textAlign: 'center' }}>
           <FlexRow>
-            <img src='/assets/icons/portfolio-placehoder.svg' alt=''></img>
+            <img src='/icons/portfolio-placehoder.svg' alt=''></img>
           </FlexRow>
           <FlexRow cx={css.labelContainer}>
             <FlexSpacer />
