@@ -1,4 +1,5 @@
 import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
+import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
 //let PROFILE_DATA: IClientProfileInfo = {
 //  id: '1',
@@ -25,23 +26,16 @@ export async function getProfile(): Promise<IClientProfileInfo> {
   // return Promise.resolve(PROFILE_DATA);
 
   const path = process.env.REACT_APP_API_ROOT + '/user/profile';
-  const response = await fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'GET',
     credentials: 'include'
   });
-
-  if (!response.ok) {      
-    throw new Error(response.statusText, {cause: {
-      body: await response.json(),
-      response: response
-    }});
-  }
 
   const result: IClientProfileInfo = await response.json();
   return result;
 }
 
-export function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProfileInfo> {
+export async function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProfileInfo> {
 
   // MOCK data
   //  PROFILE_DATA = structuredClone(profile);
@@ -49,7 +43,7 @@ export function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProf
   //  return Promise.resolve(PROFILE_DATA);
 
   const path = process.env.REACT_APP_API_ROOT + '/user/profile';
-  const response = fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(profile),
@@ -58,5 +52,6 @@ export function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProf
     }
   });
 
-  return response.then(x => x.json() as Promise<IClientProfileInfo>);
+  const result: IClientProfileInfo = await response.json();
+  return result;
 }

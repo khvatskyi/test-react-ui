@@ -3,7 +3,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUserContext, IUserResponse } from '../typings/models/user.models';
 import { RootState } from '../store';
 import { SessionStorageItems } from '../typings/enums/session-storage-items.enum';
-import { deleteCookie, setCookie } from '../utilities/cookies.utility';
 
 interface ISessionState {
   userContext: IUserContext | null;
@@ -31,7 +30,6 @@ export const signInWithSSOCode = createAsyncThunk(
       .then((result: IUserResponse) => {
         const newUserContext: IUserContext = {
           accessToken: result.access_token,
-          refreshToken: result.refresh_token,
           userName: result.username,
           email: result.email,
           name: result.name,
@@ -53,17 +51,10 @@ export const sessionSlice = createSlice({
   reducers: {
     setUserContext: (state, action: PayloadAction<IUserContext>) => {
       state.userContext = action.payload;
-
-      setCookie('access_token', state.userContext.accessToken);
-      setCookie('refresh_token', state.userContext.refreshToken);
-      setCookie('email', state.userContext.email);
       sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
     },
     clearUserContext: (state) => {
       state.userContext = null;
-      deleteCookie('access_token');
-      deleteCookie('refresh_token');
-      deleteCookie('email');
       sessionStorage.removeItem(SessionStorageItems.UserContext);
     }
   },
@@ -74,9 +65,6 @@ export const sessionSlice = createSlice({
       })
       .addCase(signInWithSSOCode.fulfilled, (state, action) => {
         state.userContext = action.payload;
-        setCookie('access_token', state.userContext.accessToken);
-        setCookie('refresh_token', state.userContext.refreshToken);
-        setCookie('email', state.userContext.email);
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
         window.location.href = '/profile';

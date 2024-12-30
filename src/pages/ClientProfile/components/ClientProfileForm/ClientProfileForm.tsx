@@ -25,7 +25,7 @@ export default function ClientProfileForm({ form, isExtendedForm = false, onEdit
     <div className={css.rootForm}>
       <FlexCell width='100%'>
         <RichTextView >
-          <h2 style={{ textAlign: 'center' }}>Add client profile</h2>
+          <h2 style={{ textAlign: 'center' }}>{isExtendedForm ? 'Client profile' : 'Add client profile'}</h2>
         </RichTextView>
         <FlexSpacer />
       </FlexCell>

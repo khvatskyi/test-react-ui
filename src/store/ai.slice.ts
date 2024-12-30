@@ -1,4 +1,3 @@
-import { firstValueFrom } from 'rxjs';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../store'
@@ -31,7 +30,7 @@ export const sendMessageToAi = createAsyncThunk(
     };
 
     thunkAPI.dispatch(isLoading(true));
-    const response = await firstValueFrom(sendMessage(requestMessage));
+    const response = await sendMessage(requestMessage);
     thunkAPI.dispatch(isLoading(false));
     return response;
   },

@@ -1,9 +1,8 @@
-import { concatMap, from, map, Observable} from 'rxjs';
-
 import { IAiMessage, IAiResponse, IAiClientDefinitionFillRequest, IAiClientDefinitionFillResponse } from '../typings/models/ai.models';
 import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
+import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
-export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
+export async function sendMessage(message: IAiMessage): Promise<IAiResponse> {
 
   const path = process.env.REACT_APP_API_ROOT + '/chat/message';
   const body = {
@@ -11,23 +10,13 @@ export function sendMessage(message: IAiMessage): Observable<IAiResponse> {
     message: message.text
   };
 
-  const response = fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json'
-    }
   });
 
-  return from(response).pipe(
-    concatMap(x => x.json()),
-    map((result: { message: string }) => {
-      return {
-        message: result.message,
-      } as IAiResponse
-    })
-  );
-
+  const result: IAiResponse = await response.json();
+  return result;
 }
 
 export async function sendClientDefinitionFillMessage(message: IAiClientDefinitionFillRequest): Promise<IAiClientDefinitionFillResponse> {
@@ -49,20 +38,11 @@ export async function sendClientDefinitionFillMessage(message: IAiClientDefiniti
     name: message.name ? message.name : ''
   };
 
-  const response = await fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json'
-    }
   });
 
-  if (!response.ok) {      
-      throw new Error(response.statusText, {cause: {
-        body: await response.json(),
-        response: response
-      }});
-  }
   return response.json()
 
 }
@@ -75,21 +55,10 @@ export async function saveClientDefinition(clientDefinition: IClientDefinitionIn
   // return delay(3000).then(() => Promise.resolve(PROFILE_DATA));
 
   const path = process.env.REACT_APP_API_ROOT + '/assistant/client-profile/fill';
-  const response = await fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify(clientDefinition),
-    headers: {
-      'Content-Type': 'application/json'
-    }
   });
-
-  if (!response.ok) {      
-    throw new Error(response.statusText, {cause: {
-      body: await response.json(),
-      response: response
-    }});
-  }
 
   const result: IClientProfileInfo = await response.json();
   return result;

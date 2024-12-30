@@ -42,9 +42,9 @@ function UuiEnhancedApp() {
           <MainMenu />
           <Switch>
             <Route exact path='/' component={MainPage} />
-            <Route path='/chat-room' component={ChatRoom} />
+            <Route path='/interactive-chat' component={ChatRoom} />
             <Route path='/login/sso-verification' component={LoginVerification} />
-            <Route path='/client-profile' component={ClientProfile} />
+            <Route path='/profile' component={ClientProfile} />
             <Route exact path='/portfolios' component={Portfolios} />
             <Route exact path='/portfolios/create' component={PortfolioDetails} />
             <Route exact path='/portfolios/details/:id' component={PortfolioDetails} />

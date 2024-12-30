@@ -1,6 +1,5 @@
 export interface IUserContext {
   accessToken: string;
-  refreshToken: string;
   userName: string;
   name: string;
   givenName: string;
@@ -11,7 +10,6 @@ export interface IUserContext {
 
 export interface IUserResponse {
   access_token: string;
-  refresh_token: string;
   username: string;
   name: string;
   given_name: string;

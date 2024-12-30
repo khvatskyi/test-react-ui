@@ -54,7 +54,7 @@ export default function MainMenu() {
         )}
         renderBody={(props) => (
           <DropdownMenuBody {...props}>
-            <DropdownMenuButton caption='Profile' />
+            <DropdownMenuButton caption='Profile' link={ { pathname: '/profile' } } />
           </DropdownMenuBody>
         )}
         placement='bottom-end'
@@ -83,22 +83,18 @@ export default function MainMenu() {
       }
     );
 
-    // if (isUserContextPresent) { //development mode :)
+    if (isUserContextPresent) {
       items.push(
         {
-          id: 'chatRoom', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/chat-room' } } caption='Chat Room' />
+          id: 'interactiveChat', priority: 3,
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/interactive-chat' } } caption='Interactive Chat' />
         },
         {
-          id: 'client-profile', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/client-profile' } } caption='Client Profile' />
-        },
-        {
-          id: 'portfolio', priority: 3,
+          id: 'portfolios', priority: 3,
           render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/portfolios' } } caption='Portfolios' />
         }
       );
-    // }
+    }
     
     items.push(
       {

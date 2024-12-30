@@ -1,5 +1,6 @@
 import { IPortfolio } from '../typings/models/portfolio.models';
 import { IPortfolioDetails } from '../typings/models/portfolio.models';
+import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
 //const MOCK_DATA: IPortfolio[] = [
 //  { id: '1', name: 'Pesho' },
@@ -8,18 +9,21 @@ import { IPortfolioDetails } from '../typings/models/portfolio.models';
 //  { id: '4', name: 'Test' }
 //]
 
-export function getPortfolios(): Promise<IPortfolio[]> {
+export async function getPortfolios(): Promise<IPortfolio[]> {
 
   // MOCK data
-//  return Promise.resolve(MOCK_DATA);
+  //  return Promise.resolve(MOCK_DATA);
 
   const path = process.env.REACT_APP_API_ROOT + '/user/portfolios';
-  const response = fetch(path, {method: 'GET', credentials: 'include'});
+  const response = await fetchWithAuth(path, {
+    method: 'GET', 
+  });
 
-  return response.then(x => x.json() as Promise<IPortfolio[]>);
+  const result: IPortfolio[] = await response.json();
+  return result;
 }
 
-export function getPortfolio(id: string): Promise<IPortfolioDetails> {
+export async function getPortfolio(id: string): Promise<IPortfolioDetails> {
 
   // MOCK data
 //  return Promise.resolve({
@@ -34,12 +38,15 @@ export function getPortfolio(id: string): Promise<IPortfolioDetails> {
 //  } as IPortfolioDetails)
 
   const path = process.env.REACT_APP_API_ROOT + `/user/portfolio/${id}`;
-  const response = fetch(path, {method: 'GET', credentials: 'include'});
+  const response = await fetchWithAuth(path, {
+    method: 'GET', 
+  });
 
-  return response.then(x => x.json() as Promise<IPortfolioDetails>);
+  const result: IPortfolioDetails = await response.json();
+  return result;
 }
 
-export function savePortfolio(portfolio: IPortfolioDetails): Promise<IPortfolioDetails> {
+export async function savePortfolio(portfolio: IPortfolioDetails): Promise<IPortfolioDetails> {
 
   // MOCK
 //  let result = structuredClone(portfolio);
@@ -56,21 +63,22 @@ export function savePortfolio(portfolio: IPortfolioDetails): Promise<IPortfolioD
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + '/user/portfolio';
-  const response = fetch(path, {
+  const response = await fetchWithAuth(path, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify(portfolio),
-    headers: {
-      'Content-Type': 'application/json'
-    }
   });
 
-  return response.then(x => x.json() as Promise<IPortfolioDetails>);
+  const result: IPortfolioDetails = await response.json();
+  return result;
 }
 
-export function deletePortfolio(id: string): Promise<void> {
+export async function deletePortfolio(id: string): Promise<void> {
 
   const path = process.env.REACT_APP_API_ROOT + `/user/portfolio/${id}`;
 
-  return fetch(path, { method: 'DELETE' }).then(x => x.json());
+  const response = await fetchWithAuth(path, { 
+    method: 'DELETE'
+  });
+  
+  return response.json();
 }
