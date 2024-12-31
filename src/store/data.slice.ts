@@ -87,6 +87,7 @@ const clientDefinitionExtraReducers = (builder: ActionReducerMapBuilder<IDataSta
     };
     state.clientProfile = action.payload;
     state.pending.pop();
+    //updateCurrentUserContext //TODO: need to implement user data update
   })
   .addCase(saveClientDefinitionInfo.rejected, (state) => {
     state.pending.pop();

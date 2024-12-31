@@ -19,6 +19,7 @@ interface IRenderProps {
 export default function MainMenu() {
   const userContext = useAppSelector(selectUserContext);
   const isUserContextPresent = Boolean(userContext?.accessToken);
+  const showContextMenuItems = Boolean(userContext?.accessToken && userContext?.isProfileExist);
   const renderBurger = (props: { onClose: () => void }) => (
     <>
       <BurgerButton
@@ -83,7 +84,7 @@ export default function MainMenu() {
       }
     );
 
-    if (isUserContextPresent) {
+    if (showContextMenuItems) {
       items.push(
         {
           id: 'interactiveChat', priority: 3,

@@ -6,6 +6,7 @@ export interface IUserContext {
   familyName: string;
   email: string;
   picture: string;
+  isProfileExist: boolean;
 }
 
 export interface IUserResponse {
@@ -16,4 +17,5 @@ export interface IUserResponse {
   family_name: string;
   email: string;
   picture: string;
+  is_profile_exist: boolean;
 }

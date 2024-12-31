@@ -36,6 +36,7 @@ export const signInWithSSOCode = createAsyncThunk(
           givenName: result.given_name,
           familyName: result.family_name,
           picture: result.picture,
+          isProfileExist: result.is_profile_exist,
         };
         return newUserContext;
       })
@@ -67,7 +68,7 @@ export const sessionSlice = createSlice({
         state.userContext = action.payload;
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        window.location.href = '/profile';
+        window.location.href =  state.userContext.isProfileExist ?  '/' : '/profile';
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;
