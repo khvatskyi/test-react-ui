@@ -8,13 +8,13 @@ import '@epam/uui-components/styles.css';
 import '@epam/uui/styles.css';
 import '@epam/assets/css/theme/theme_electric.css';
 import { Modals, Snackbar } from '@epam/uui-components';
-import LoginVerification from './components/LoginVerification/LoginVerification';
+import { ErrorHandler } from '@epam/uui';
 
 import './index.module.scss';
-import { ErrorHandler } from '@epam/uui';
+import { LoginVerification } from './components';
 import { svc } from './services';
 
-import { DataLoading, MainMenu } from './components';
+import { DataLoading, GuardedRoute, MainMenu } from './components';
 import {
   ChatRoom,
   ClientProfile,
@@ -25,6 +25,7 @@ import {
 import { store } from './store';
 import { useAppSelector } from './hooks';
 import { selectIsDataLoading } from './store/data.slice';
+import { selectUserContext } from './store/session.slice';
 
 const history = createBrowserHistory();
 const router = new HistoryAdaptedRouter(history);
@@ -32,6 +33,8 @@ const router = new HistoryAdaptedRouter(history);
 function UuiEnhancedApp() {
   const { services } = useUuiServices({ router });
   const isLoading = useAppSelector(selectIsDataLoading);
+  const userContext = useAppSelector(selectUserContext);
+  const isUserContextPresent = Boolean(userContext?.accessToken);
 
   Object.assign(svc, services);
   return (
@@ -42,12 +45,12 @@ function UuiEnhancedApp() {
           <MainMenu />
           <Switch>
             <Route exact path='/' component={MainPage} />
-            <Route path='/interactive-chat' component={ChatRoom} />
+            <GuardedRoute path='/interactive-chat' component={ChatRoom} canActivate={isUserContextPresent} />
             <Route path='/login/sso-verification' component={LoginVerification} />
-            <Route path='/profile' component={ClientProfile} />
-            <Route exact path='/portfolios' component={Portfolios} />
-            <Route exact path='/portfolios/create' component={PortfolioDetails} />
-            <Route exact path='/portfolios/details/:id' component={PortfolioDetails} />
+            <GuardedRoute path='/profile' component={ClientProfile} canActivate={isUserContextPresent} />
+            <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={isUserContextPresent} />
+            <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={isUserContextPresent} />
+            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDetails} canActivate={isUserContextPresent} />
           </Switch>
         </Router>
         <Snackbar />
