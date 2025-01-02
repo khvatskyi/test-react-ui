@@ -7,6 +7,7 @@ import { saveClientDefinition } from '../services/ai.service';
 import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
+import { updateProfileAvailability } from './session.slice';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
@@ -66,9 +67,14 @@ const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
 
 export const saveClientDefinitionInfo = createAsyncThunk(
   'data/saveClientDefinitionInfo',
-  async (clientDefinition: IClientDefinitionInfo, { rejectWithValue }) => {
+  async (clientDefinition: IClientDefinitionInfo, { dispatch, rejectWithValue }) => {
 
-    return saveClientDefinition(clientDefinition).catch(error => rejectWithValue(error));
+    return saveClientDefinition(clientDefinition)
+      .then(result => {
+        dispatch(updateProfileAvailability(true));
+        return result;
+      })
+      .catch(error => rejectWithValue(error));
   }
 );
 
@@ -87,7 +93,6 @@ const clientDefinitionExtraReducers = (builder: ActionReducerMapBuilder<IDataSta
     };
     state.clientProfile = action.payload;
     state.pending.pop();
-    //updateCurrentUserContext //TODO: need to implement user data update
   })
   .addCase(saveClientDefinitionInfo.rejected, (state) => {
     state.pending.pop();
