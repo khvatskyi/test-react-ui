@@ -2,8 +2,7 @@ import cx from 'classnames';
 
 import {
   BurgerButton, GlobalMenu, MainMenu as EpamMainMenu, MainMenuAvatar, MainMenuButton, MainMenuIcon, FlexSpacer, FlexCell, DropdownMenuButton,
-  DropdownMenuBody, Burger, IconContainer, Dropdown, Anchor,
-  Button
+  DropdownMenuBody, Burger, IconContainer, Dropdown, Anchor, DropdownMenuSplitter
 } from '@epam/uui';
 import { AdaptiveItemProps, MainMenuCustomElement } from '@epam/uui-components';
 import { ReactComponent as HelpIcon } from '@epam/assets/icons/common/notification-help-outline-24.svg';
@@ -66,7 +65,8 @@ export default function MainMenu() {
         renderBody={(props) => (
           <DropdownMenuBody {...props}>
             <DropdownMenuButton caption='Profile' link={ { pathname: '/profile' } } />
-            <Button caption='Log out' onClick={handleLogout} color='critical' fill='ghost' />
+            <DropdownMenuSplitter />
+            <DropdownMenuButton caption='Log out' onClick={handleLogout} />
           </DropdownMenuBody>
         )}
         placement='bottom-end'

@@ -81,7 +81,7 @@ export const sessionSlice = createSlice({
   }
 });
 
-export const { setUserContext, clearUserContext } = sessionSlice.actions;
+export const { setUserContext, clearUserContext, updateProfileAvailability } = sessionSlice.actions;
 export const selectUserContext = (state: RootState) => state.session.userContext;
 export const selectIsPending = (state: RootState) => state.session.pending;
 

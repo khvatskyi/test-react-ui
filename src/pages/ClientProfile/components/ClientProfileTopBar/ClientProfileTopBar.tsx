@@ -24,8 +24,10 @@ export default function ClientProfileTopBar({ onSave, onFillFormWithAI, isExtend
     result = (
       <FlexRow columnGap='12' cx={css.buttonPanel}>
         <FlexSpacer />
+        {/* TODO: need to implement Import/Export functionality
         <Button caption='Upload json' fill='ghost' isDisabled={disableButtons} />
-        <Button caption='Export' fill='ghost' isDisabled={disableButtons} />
+        <Button caption='Export' fill='ghost' isDisabled={disableButtons} /> 
+        */}
         <Button caption='Save client profile' color='primary' onClick={onSave} isDisabled={disableButtons} />
       </FlexRow>
     );
