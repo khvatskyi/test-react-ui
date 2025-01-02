@@ -2,24 +2,34 @@ import cx from 'classnames';
 
 import {
   BurgerButton, GlobalMenu, MainMenu as EpamMainMenu, MainMenuAvatar, MainMenuButton, MainMenuIcon, FlexSpacer, FlexCell, DropdownMenuButton,
-  DropdownMenuBody, Burger, IconContainer, Dropdown, Anchor
+  DropdownMenuBody, Burger, IconContainer, Dropdown, Anchor,
+  Button
 } from '@epam/uui';
 import { AdaptiveItemProps, MainMenuCustomElement } from '@epam/uui-components';
 import { ReactComponent as HelpIcon } from '@epam/assets/icons/common/notification-help-outline-24.svg';
 
 import css from './MainMenu.module.scss';
-import { selectUserContext } from '../../store/session.slice';
-import { useAppSelector } from '../../hooks';
+import { clearUserContext, selectUserContext } from '../../store/session.slice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ReactComponent as LogoIcon } from '../../assets/icons/logo.svg';
+import { useHistory } from 'react-router-dom';
 
 interface IRenderProps {
   id: string;
 }
 
 export default function MainMenu() {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
   const userContext = useAppSelector(selectUserContext);
   const isUserContextPresent = Boolean(userContext?.accessToken);
-  const showContextMenuItems = Boolean(userContext?.accessToken && userContext?.isProfileExist);
+  const showContextMenuItems = Boolean(userContext?.accessToken && userContext?.hasProfile);
+
+  const handleLogout = () => {
+    dispatch(clearUserContext());
+    history.push('');
+  }
+
   const renderBurger = (props: { onClose: () => void }) => (
     <>
       <BurgerButton
@@ -56,6 +66,7 @@ export default function MainMenu() {
         renderBody={(props) => (
           <DropdownMenuBody {...props}>
             <DropdownMenuButton caption='Profile' link={ { pathname: '/profile' } } />
+            <Button caption='Log out' onClick={handleLogout} color='critical' fill='ghost' />
           </DropdownMenuBody>
         )}
         placement='bottom-end'
@@ -83,6 +94,11 @@ export default function MainMenu() {
         )
       }
     );
+
+    const redirectToSSO = () => {
+      const url = `${process.env.REACT_APP_SSO_ACCESS_URL}/auth/realms/plusx/protocol/openid-connect/auth?response_type=code&client_id=${process.env.REACT_APP_SSO_CLIENT_ID}&scope=${process.env.REACT_APP_SSO_SCOPE}&redirect_uri=${process.env.REACT_APP_SSO_REDIRECT_URI}`;
+      window.location.href = url;
+    };
 
     if (showContextMenuItems) {
       items.push(
@@ -119,10 +135,7 @@ export default function MainMenu() {
         render: (p: IRenderProps) => <MainMenuButton
           key={p.id}
           caption='Login'
-          onClick={() => {
-            const url = `${process.env.REACT_APP_SSO_ACCESS_URL}/auth/realms/plusx/protocol/openid-connect/auth?response_type=code&client_id=${process.env.REACT_APP_SSO_CLIENT_ID}&scope=${process.env.REACT_APP_SSO_SCOPE}&redirect_uri=${process.env.REACT_APP_SSO_REDIRECT_URI}`;
-            window.location.href = url;
-          }}
+          onClick={redirectToSSO}
         />
       });
     }

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUserContext, IUserResponse } from '../typings/models/user.models';
 import { RootState } from '../store';
 import { SessionStorageItems } from '../typings/enums/session-storage-items.enum';
+import { deleteAllCookies } from '../utilities/cookies.utility';
 
 interface ISessionState {
   userContext: IUserContext | null;
@@ -36,7 +37,7 @@ export const signInWithSSOCode = createAsyncThunk(
           givenName: result.given_name,
           familyName: result.family_name,
           picture: result.picture,
-          isProfileExist: result.is_profile_exist,
+          hasProfile: result.has_profile,
         };
         return newUserContext;
       })
@@ -57,6 +58,7 @@ export const sessionSlice = createSlice({
     clearUserContext: (state) => {
       state.userContext = null;
       sessionStorage.removeItem(SessionStorageItems.UserContext);
+      deleteAllCookies();
     }
   },
   extraReducers: (builder) => {
@@ -68,7 +70,7 @@ export const sessionSlice = createSlice({
         state.userContext = action.payload;
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        window.location.href =  state.userContext.isProfileExist ?  '/' : '/profile';
+        window.location.href =  state.userContext.hasProfile ?  '/' : '/profile';
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;
