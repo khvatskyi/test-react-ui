@@ -1,0 +1,33 @@
+.root {
+    &:global(.uui-button-box) {
+        min-height: 48px;
+        height: auto;
+        align-items: center;
+        padding-inline-start: 11px;
+        font-size: 16px;
+        width: 100%;
+        min-width: auto;
+        padding-inline-end: 12px;
+    }
+
+    :global(.uui-caption) {
+        min-width: 0;
+        text-align: start;
+        flex: 1 1 auto;
+        font-family: var(--uui-font);
+        font-weight: 600;
+        user-select: none;
+        font-size: 16px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        height: auto;
+    }
+
+    &.indent-12 {
+        padding-left: 24px;
+    }
+
+    &.indent-24 {
+        padding-left: 48px;
+    }
+}

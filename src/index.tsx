@@ -19,12 +19,13 @@ import {
   ChatRoom,
   ClientProfile,
   MainPage,
+  PortfolioDashboard,
   PortfolioDetails,
   Portfolios
 } from './pages';
 import { store } from './store';
 import { useAppSelector } from './hooks';
-import { selectIsDataLoading, selectProfile } from './store/data.slice';
+import { selectIsDataLoading } from './store/data.slice';
 import { selectUserContext } from './store/session.slice';
 
 const history = createBrowserHistory();
@@ -50,7 +51,7 @@ function UuiEnhancedApp() {
             <GuardedRoute path='/profile' component={ClientProfile} canActivate={!!userContext} />
             <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={hasProfile} />
             <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={hasProfile} />
-            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDetails} canActivate={hasProfile} />
+            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDashboard} canActivate={hasProfile} />
           </Switch>
         </Router>
         <Snackbar />

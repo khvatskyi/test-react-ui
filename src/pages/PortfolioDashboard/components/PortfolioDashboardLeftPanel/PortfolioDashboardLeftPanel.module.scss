@@ -1,0 +1,27 @@
+
+.root {
+  min-width: 300px;
+  // width: 100%;
+  background-color: white;
+  min-height: calc(100vh - 60px) !important;
+
+  .buttonPanel {
+    height: 60px;
+    background-color: #FFFFFF;
+  }
+
+  .profileTitle {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .profileLabel {
+    padding-top: 12px;
+    padding-bottom: 0;
+  }
+
+  .formPanel {
+    padding: 12px;
+  }
+
+}

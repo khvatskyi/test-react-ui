@@ -1,0 +1,10 @@
+.root {
+  width: 100%;
+  min-height: calc(100vh - 60px) !important;
+  align-items: flex-start;
+  // background-color: green;
+}
+
+.portfolioListWrapper {
+  align-self: flex-start;
+}
