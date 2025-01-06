@@ -24,7 +24,7 @@ import {
 } from './pages';
 import { store } from './store';
 import { useAppSelector } from './hooks';
-import { selectIsDataLoading } from './store/data.slice';
+import { selectIsDataLoading, selectProfile } from './store/data.slice';
 import { selectUserContext } from './store/session.slice';
 
 const history = createBrowserHistory();
@@ -34,7 +34,7 @@ function UuiEnhancedApp() {
   const { services } = useUuiServices({ router });
   const isLoading = useAppSelector(selectIsDataLoading);
   const userContext = useAppSelector(selectUserContext);
-  const isUserContextPresent = Boolean(userContext?.accessToken);
+  const hasProfile = Boolean(userContext?.hasProfile);
 
   Object.assign(svc, services);
   return (
@@ -45,12 +45,12 @@ function UuiEnhancedApp() {
           <MainMenu />
           <Switch>
             <Route exact path='/' component={MainPage} />
-            <GuardedRoute path='/interactive-chat' component={ChatRoom} canActivate={isUserContextPresent} />
+            <GuardedRoute path='/interactive-chat' component={ChatRoom} canActivate={hasProfile} />
             <Route path='/login/sso-verification' component={LoginVerification} />
-            <GuardedRoute path='/profile' component={ClientProfile} canActivate={isUserContextPresent} />
-            <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={isUserContextPresent} />
-            <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={isUserContextPresent} />
-            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDetails} canActivate={isUserContextPresent} />
+            <GuardedRoute path='/profile' component={ClientProfile} canActivate={!!userContext} />
+            <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={hasProfile} />
+            <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={hasProfile} />
+            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDetails} canActivate={hasProfile} />
           </Switch>
         </Router>
         <Snackbar />

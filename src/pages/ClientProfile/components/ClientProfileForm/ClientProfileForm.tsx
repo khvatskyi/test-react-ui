@@ -7,7 +7,7 @@ import { IFormApi, useArrayDataSource } from '@epam/uui-core';
 import css from './ClientProfileForm.module.scss';
 import { IClientProfileInfo } from '../../../../typings/models/client-info.models';
 import { industries } from '../../../../constants';
-import { ItemList } from '..';
+import { ItemList, KeyServicesOrProducts } from '..';
 
 export interface IClientProfileFormProps {
   form: IFormApi<IClientProfileInfo>
@@ -84,7 +84,7 @@ export default function ClientProfileForm({ form, isExtendedForm = false, onEdit
           </FlexRow>
           <FlexRow vPadding='24'>
             <FlexCell minWidth={324} width='100%'>
-              <LabeledInput htmlFor='coreProducts' label='Core products / Business lines' info='Core products / Business lines' isOptional={true} {...lens.prop('coreProducts').toProps()}>
+              <LabeledInput cx={css.optionalInfoOnTheRightSide} htmlFor='coreProducts' label='Core products / Business lines' info='Core products / Business lines' isOptional={true} {...lens.prop('coreProducts').toProps()}>
                 <TextArea {...lens.prop('coreProducts').toProps()} id='coreProducts' placeholder='Please type text' isDisabled={isExtendedForm} />
               </LabeledInput>
             </FlexCell>
@@ -189,7 +189,7 @@ export default function ClientProfileForm({ form, isExtendedForm = false, onEdit
               <h4>Key Services or Products</h4>
             </FlexRow>
             <FlexCell>
-              {/* <ItemList form={form} controlName='key_services_or_products' /> wasa */}
+              <KeyServicesOrProducts form={form} controlName='keyServicesOrProducts' />
             </FlexCell>
 
             <FlexRow>
