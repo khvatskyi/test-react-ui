@@ -12,7 +12,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile } from '../../store/data.slice';
 import { sendClientDefinitionFillMessage } from '../../services/ai.service';
 import { IAiClientDefinitionFillRequest } from '../../typings/models/ai.models';
-import { setClientDefinitionInfo } from '../../store/data.slice'
+import { setClientDefinitionInfo } from '../../store/data.slice';
+import { industries as defaultIndustries } from '../../constants';
 
 const DEFAULT_PROFILE_DATA: IClientDefinitionInfo = {
   name: '',
@@ -35,6 +36,11 @@ export default function ClientProfile() {
   const svc = useUuiContext<TApi, UuiContexts>();
   const defaultFormData = dataFromStore ?? clientDefinitionFromStore ?? DEFAULT_PROFILE_DATA;
   const isExtendedMode = Boolean(dataFromStore);
+  const industries = structuredClone(defaultIndustries);
+
+  if (defaultFormData?.industry && industries.every(x => x.industry.toUpperCase() !== defaultFormData.industry.toUpperCase())) {
+    industries.push({ id: defaultFormData.industry, industry: defaultFormData.industry });
+  }
 
   const onSaveDefinitionData = (state: IClientDefinitionInfo) => {
     return dispatch(saveClientDefinitionInfo(state))
@@ -145,6 +151,7 @@ export default function ClientProfile() {
         disableButtons={isLoading} />
       <ClientProfileForm form={form}
         isExtendedForm={isExtendedMode}
+        industries={industries}
         onEditClientDefinition={handleEditClientDefinition} />
     </div>
   );

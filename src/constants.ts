@@ -1,7 +1,4 @@
-interface ISimpleIndustry {
-  id: string;
-  industry: string;
-}
+import { ISimpleIndustry } from "./typings/models/industry.model";
 
 export const industries: ISimpleIndustry[] = [
   {

@@ -6,19 +6,19 @@ import { IFormApi, useArrayDataSource } from '@epam/uui-core';
 
 import css from './ClientProfileForm.module.scss';
 import { IClientProfileInfo } from '../../../../typings/models/client-info.models';
-import { industries } from '../../../../constants';
 import { ItemList, KeyServicesOrProducts } from '..';
+import { ISimpleIndustry } from '../../../../typings/models/industry.model';
 
 export interface IClientProfileFormProps {
   form: IFormApi<IClientProfileInfo>
+  industries: ISimpleIndustry[];
   isExtendedForm?: boolean;
   onEditClientDefinition: () => void;
 }
 
-export default function ClientProfileForm({ form, isExtendedForm = false, onEditClientDefinition }: IClientProfileFormProps) {
+export default function ClientProfileForm({ form, isExtendedForm = false, industries, onEditClientDefinition }: IClientProfileFormProps) {
 
   const { lens } = form;
-
   const industryDataSource = useArrayDataSource({ items: structuredClone(industries) }, []);
 
   return (
