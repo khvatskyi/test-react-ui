@@ -103,12 +103,28 @@ export default function MainMenu() {
     if (showContextMenuItems) {
       items.push(
         {
-          id: 'interactiveChat', priority: 3,
+          id: 'dashboard', priority: 3,
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/dashboard' } } caption='Dashboard' />
+        },
+        {
+          id: 'interactive-chat', priority: 3,
           render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/interactive-chat' } } caption='Interactive Chat' />
         },
         {
           id: 'portfolios', priority: 3,
           render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/portfolios' } } caption='Portfolios' />
+        },
+        {
+          id: 'playground', priority: 3,
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/playground' } } caption='Playground' />
+        },
+        {
+          id: 'accelerators', priority: 3,
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/accelerators' } } caption='Accelerators' />
+        },
+        {
+          id: 'framework', priority: 3,
+          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/framework' } } caption='Framework' />
         }
       );
     }
