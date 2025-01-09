@@ -4,13 +4,14 @@ import {
   FlexRow, FlexSpacer, Panel, RichTextView, Button, Text,
   FlexCell,
 } from '@epam/uui';
-import { ReactComponent as EditIcon } from '@epam/assets/icons/content-edit-fill.svg';
+import { ReactComponent as ChevronRightIcon } from '@epam/assets/icons/navigation-chevron_right-outline.svg';
+
 
 import css from './ProfileLeftPanel.module.scss';
 import type { IClientProfileInfo } from '../../../../typings/models/client-info.models';
 
 const LABELS = {
-  Title: 'Client Profile',
+  Title: 'Client Summary',
   Name: 'NAME',
   Desc: 'DESCRIPTION',
   Industry: 'INDUSTRY',
@@ -49,10 +50,10 @@ export default function ProfileLeftPanel({ profile: profileData }: IProfileLeftP
             <Panel cx={css.formPanel} >
               <FlexRow cx={css.buttonPanel}>
                 <RichTextView>
-                  <h2 className={css.profileTitle}> {LABELS.Title}</h2>
+                  <h3 className={css.profileTitle}> {LABELS.Title}</h3>
                 </RichTextView>
                 <FlexSpacer />
-                <Button caption='Edit' icon={EditIcon} fill='outline' color='secondary' onClick={editProfile} />
+                <Button caption='All details' icon={ChevronRightIcon} iconPosition='right'  fill='outline' color='primary' onClick={editProfile} />
               </FlexRow>
 
               {getLabel(LABELS.Name)}

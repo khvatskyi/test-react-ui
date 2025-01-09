@@ -73,7 +73,7 @@ export const sessionSlice = createSlice({
         state.userContext = action.payload;
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        window.location.href =  state.userContext.hasProfile ?  '/' : '/profile';
+        window.location.href =  state.userContext.hasProfile ?  '/portfolios' : '/profile';
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;

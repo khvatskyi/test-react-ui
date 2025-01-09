@@ -26,19 +26,17 @@ import { ReactComponent as LockIcon } from  '@epam/assets/icons/action-lock-fill
 //     component?: any;
 //   }
 
-export interface DocItem {
+export interface PortfolioStateItem {
     id: string;
     name: string;
+    parentId?: string;
     component?: any;
     icon?: Icon;
     iconPosition?: 'left' | 'right';
-    parentId?: string;
-    order?: number;
     isLocked?: boolean;
-    tags?: string[];
 }
   
-export const items: DocItem[] = [
+export const items: PortfolioStateItem[] = [
     { id: 'about', name: 'About Portfolio', icon: FillInfoIcon },
     { id: 'discover', name: 'Discover'},
     { id: 'journeys', name: 'API Product Journeys', parentId: 'discover'},
@@ -50,9 +48,13 @@ export const items: DocItem[] = [
     { id: 'aignment', name: 'Portfolio Alignment', parentId: 'discover' },
     { id: 'roadmap', name: 'Roadmap', parentId: 'discover' },
     { id: 'proposition', name: 'Value Proposition', parentId: 'discover' },
-    { id: 'define', name: 'Define', icon: LockIcon, iconPosition: 'right' },
-    { id: 'design', name: 'Design', icon: LockIcon, iconPosition: 'right' },
-    { id: 'develop', name: 'Develop', icon: LockIcon, iconPosition: 'right' },
-    { id: 'deliver', name: 'Deliver', icon: LockIcon, iconPosition: 'right' },
+    { id: 'define', name: 'Define', icon: LockIcon, isLocked: true},
+    { id: 'define-item', name: 'Item', parentId: 'define'},
+    { id: 'design', name: 'Design', icon: LockIcon, isLocked: true},
+    { id: 'design-item', name: 'Item', parentId: 'design'},
+    { id: 'develop', name: 'Develop', icon: LockIcon, isLocked: true},
+    { id: 'develop-item', name: 'Item', parentId: 'develop'},
+    { id: 'deliver', name: 'Deliver', icon: LockIcon, isLocked: true},
+    { id: 'deliver-item', name: 'Item', parentId: 'deliver'},
   ];
   

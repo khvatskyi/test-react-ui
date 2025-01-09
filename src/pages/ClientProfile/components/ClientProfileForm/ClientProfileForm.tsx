@@ -8,6 +8,8 @@ import css from './ClientProfileForm.module.scss';
 import { IClientProfileInfo } from '../../../../typings/models/client-info.models';
 import { ItemList, KeyServicesOrProducts } from '..';
 import { ISimpleIndustry } from '../../../../typings/models/industry.model';
+import { selectUserContext } from '../../../../store/session.slice';
+import { useAppSelector } from '../../../../hooks';
 
 export interface IClientProfileFormProps {
   form: IFormApi<IClientProfileInfo>
@@ -20,12 +22,13 @@ export default function ClientProfileForm({ form, isExtendedForm = false, indust
 
   const { lens } = form;
   const industryDataSource = useArrayDataSource({ items: structuredClone(industries) }, []);
+  const userContext = useAppSelector(selectUserContext);  
 
   return (
     <div className={css.rootForm}>
       <FlexCell width='100%'>
         <RichTextView >
-          <h2 style={{ textAlign: 'center' }}>{isExtendedForm ? 'Client profile' : 'Add client profile'}</h2>
+          <h2 style={{ textAlign: 'center' }}>{userContext?.hasProfile ? 'Client profile' : 'Add client profile'}</h2>
         </RichTextView>
         <FlexSpacer />
       </FlexCell>

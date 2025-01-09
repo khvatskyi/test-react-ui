@@ -4,7 +4,7 @@ import { ScrollBars } from '@epam/promo';
 import { Tree, TreeListItem } from '@epam/uui-components';
 import { SidebarButton } from './SidebarButton';
 import { DataRowProps, DataSourceState, Link/*, useUuiContext */ } from '@epam/uui-core';
-import { DocItem} from '../structure';
+import { PortfolioStateItem} from '../structure';
 
 // import { analyticsEvents } from '../../analyticsEvents';
 
@@ -48,7 +48,7 @@ export function Sidebar<TItem extends TreeListItem>(props: SidebarProps<TItem>) 
     const handleClick = React.useCallback((row: DataRowProps<TItem, string>) => {
         row.isFoldable && row.onFold(row);
         // const type = row.isFoldable ? 'folder' : 'document';
-        alert(row.value.name)
+        // alert(row.value.name)
         // uuiAnalytics.sendEvent(analyticsEvents.document.clickDocument(type, row.value.name, row.parentId));
     // }, [uuiAnalytics]);
     }, []);
@@ -64,13 +64,13 @@ export function Sidebar<TItem extends TreeListItem>(props: SidebarProps<TItem>) 
                         renderRow={ (row) => (
                             <SidebarButton
                                 key={ row.key }
-                                // link={ props.getItemLink(row) }
+                                link={ props.getItemLink(row) }
                                 indent={ (row.indent - 1) * 12 }
                                 isOpen={ !row.isFolded }
                                 isDropdown={ row.isFoldable }
-                                isDisabled={ (row.value as DocItem).isLocked }
-                                icon={ (row.value as DocItem).icon }
-                                iconPosition={  (row.value as DocItem).iconPosition }
+                                icon={ (row.value as PortfolioStateItem).icon }
+                                iconPosition={ (row.value as PortfolioStateItem).iconPosition }
+                                isDisabled={ (row.value as PortfolioStateItem).isLocked }                                
                                 isActive={ row.id === props.value }
                                 caption={ row.value.name }
                                 onClick={ () => handleClick(row) }

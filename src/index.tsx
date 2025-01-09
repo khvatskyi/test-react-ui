@@ -19,7 +19,7 @@ import {
   ChatRoom,
   ClientProfile,
   MainPage,
-  PortfolioDashboard,
+  PortfolioStages,
   PortfolioDetails,
   Portfolios
 } from './pages';
@@ -51,7 +51,8 @@ function UuiEnhancedApp() {
             <GuardedRoute path='/profile' component={ClientProfile} canActivate={!!userContext} />
             <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={hasProfile} />
             <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={hasProfile} />
-            <GuardedRoute exact path='/portfolios/details/:id' component={PortfolioDashboard} canActivate={hasProfile} />
+            <GuardedRoute exact path='/portfolio/details/:id' component={PortfolioDetails} canActivate={hasProfile} />
+            <GuardedRoute exact path='/portfolio/stages/:id' component={PortfolioStages} canActivate={hasProfile} />
           </Switch>
         </Router>
         <Snackbar />

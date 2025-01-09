@@ -3,11 +3,10 @@
 @use '~@epam/promo/assets/styles/fonts' as *;
 
 .root {
-    min-width: 300px;
+    width: 300px;
     min-height: calc(100vh - 60px);
+    height: 100%;
     background-color: var(--uui-surface-main);
-    display: flex;
-    flex-direction: column;
 
     .tree {
         overflow: auto;
@@ -18,9 +17,4 @@
         flex-shrink: 0;
         flex-basis: 0;
     }
-}
-
-.search {
-    --uui-text_input-border-radius: 0;
-    padding: 0 12px;
 }

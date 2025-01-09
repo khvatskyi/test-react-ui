@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  width: 100%; 
+}
+
+.sidebar {
+  width: 300px; 
+}
+
+.content {
+  flex-grow: 1; 
+}

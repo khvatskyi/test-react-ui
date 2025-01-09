@@ -1,8 +1,9 @@
-import React from 'react';
+// import React from 'react';
+import { useParams } from 'react-router-dom';
 import { DataRowProps } from '@epam/uui-core';
 import { TreeListItem } from '@epam/uui-components';
 
-import { DocItem, items as docsMenuStructure} from './structure';
+import { PortfolioStateItem, items as docsMenuStructure} from './structure';
 import { Sidebar } from './sidebar';
 // import { useQuery } from '../../helpers';
 // import { useQuery } from '../../../../utilities/getQuery';
@@ -24,16 +25,17 @@ import { Sidebar } from './sidebar';
 //         query,
 //     });
 
-export default function PortfolioDashboardSidebar() {
+export default function PortfolioStagesSidebar() {
     // const { docsMenuStructure } = svc.uuiApp;
     // const mode = useQuery<DocsQuery['mode']>('mode') || TMode.doc;
     const queryParamId = 'about'; // const queryParamId: string = useQuery('id');
+    const portfolioId = useParams<{ id?: string }>();
     
     // const isSkin = useQuery<DocsQuery['isSkin']>('isSkin');
     // const theme = useQuery<DocsQuery['theme']>('theme');
 
     const onChange = (row: DataRowProps<TreeListItem, string>) => {
-      alert('onChange')
+      // alert('onChange')
         // if (row.parentId === 'components') {
         //     redirectTo({
         //         category: row.parentId,
@@ -48,19 +50,19 @@ export default function PortfolioDashboardSidebar() {
     };
 
     return (
-        <Sidebar<DocItem>
+        <Sidebar<PortfolioStateItem>
             value={ queryParamId }
             onValueChange={ onChange }
             items={ docsMenuStructure }
             getSearchFields={ (i) => [i.name] }
             getItemLink={ (row) =>
                 !row.isFoldable && {
-                    pathname: '/documents',
+                    pathname: `/portfolio/stages/${portfolioId}`,                    
                     query: {
-                        id: row.id,
+                        stage: row.id,
                         // mode: (row.parentId && mode),
                         // isSkin: (row.parentId && isSkin),
-                        category: row.parentId,
+                        // category: row.parentId,
                     },
                 } }
         />
