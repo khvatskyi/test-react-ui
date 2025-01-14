@@ -24,6 +24,10 @@ export default function MainMenu() {
   const isUserContextPresent = Boolean(userContext?.accessToken);
   const showContextMenuItems = Boolean(userContext?.accessToken && userContext?.hasProfile);
 
+  if (!isUserContextPresent) {
+    return <></>;
+  }
+
   const handleLogout = () => {
     dispatch(clearUserContext());
     history.push('');
