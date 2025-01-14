@@ -1,19 +1,19 @@
 import { useEffect } from 'react';
 
-import { FormSaveResponse, UuiContexts, useUuiContext } from '@epam/uui-core';
-import { ErrorNotification, SuccessNotification, Text, useForm } from '@epam/uui';
+import { FormSaveResponse } from '@epam/uui-core';
+import { useForm } from '@epam/uui';
 
 import css from './ClientProfile.module.scss';
 import { ClientProfileTopBar, ClientProfileForm } from './components';
 import { IClientDefinitionInfo, IClientProfileInfo } from '../../typings/models/client-info.models';
 import { getClientProfileValidationSchema } from './validation.schema';
-import type { TApi } from '../../data';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile } from '../../store/data.slice';
 import { sendClientDefinitionFillMessage } from '../../services/ai.service';
 import { IAiClientDefinitionFillRequest } from '../../typings/models/ai.models';
 import { setClientDefinitionInfo } from '../../store/data.slice';
 import { industries as defaultIndustries } from '../../constants';
+import { useShowErrorNotification, useShowSuccessNotification } from '../../utilities/notifications.utility';
 
 const DEFAULT_PROFILE_DATA: IClientDefinitionInfo = {
   name: '',
@@ -26,14 +26,12 @@ export default function ClientProfile() {
   const dispatch = useAppDispatch();
   const dataFromStore = useAppSelector(selectProfile);
   const clientDefinitionFromStore = useAppSelector(selectClientDefinition);
-  // const dataFromStore = null;
   const isLoading = useAppSelector(selectIsDataLoading);
 
   useEffect(() => {
     dispatch(loadProfileInfo());
   }, [dispatch]);
 
-  const svc = useUuiContext<TApi, UuiContexts>();
   const defaultFormData = dataFromStore ?? clientDefinitionFromStore ?? DEFAULT_PROFILE_DATA;
   const isExtendedMode = Boolean(dataFromStore);
   const industries = structuredClone(defaultIndustries);
@@ -42,13 +40,16 @@ export default function ClientProfile() {
     industries.push({ id: defaultFormData.industry, industry: defaultFormData.industry });
   }
 
+  const showErrorNotification = useShowErrorNotification();
+  const showSuccessNotification = useShowSuccessNotification();
+
   const onSaveDefinitionData = (state: IClientDefinitionInfo) => {
     return dispatch(saveClientDefinitionInfo(state))
       .then(x => ({ form: x.payload as IClientDefinitionInfo } as FormSaveResponse<IClientDefinitionInfo>))
       .catch(
       r => {
         const errorText = r.cause?.body?.detail ?? r.message;
-        showError(errorText)
+        showErrorNotification(errorText)
       }
     );
   }
@@ -59,29 +60,7 @@ export default function ClientProfile() {
   }
 
   const onSuccess = () => {
-    svc.uuiNotifications.show(
-      (props) => (
-        <SuccessNotification {...props}>
-          <Text size='36' fontSize='14'>
-            Data has been saved!
-          </Text>
-        </SuccessNotification>
-      ),
-      { duration: 2 },
-    ).catch(() => null);
-  }
-
-  const showError = (message: string) => {
-    svc.uuiNotifications.show(
-      (props) => (
-        <ErrorNotification {...props}>
-          <Text size='36' fontSize='14'>
-            {message}
-          </Text>
-        </ErrorNotification>
-      ),
-      { duration: 3 },
-    ).catch(() => null);
+    showSuccessNotification('Data has been saved!')
   }
 
   const handleFillClientDefinitionWithAI = () => {
@@ -102,7 +81,7 @@ export default function ClientProfile() {
     }).catch(
       r => {
         const errorText = r.cause?.body?.detail ?? r.message;
-        showError(errorText)
+        showErrorNotification(errorText)
       }
     );
   }

@@ -1,22 +1,25 @@
 import { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { PortfolioStagesLeftPanel, PortfolioStagesContent } from './components';
 import { loadPortfolio, selectPortfolioDetails } from '../../store/data.slice';
 import css from './PortfolioStages.module.scss';
+import { useParamId, useQuery } from '../../utilities/route.utility';
+import { STATE_CODES } from './components/PortfolioStagesLeftPanel/structure';
 
 type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
 export default function PortfolioStages() {
   const dispatch = useAppDispatch();
-  const { id } = useParams<{ id?: string }>();
+  const portfolioId = useParamId();
+  const selectedStage = useQuery('stage', STATE_CODES.AboutPortfolio);
 
   useEffect(() => {
-    if (id) {
-      dispatch(loadPortfolio(id));
+    if (portfolioId) {
+      dispatch(loadPortfolio(portfolioId));
     }
-  }, [dispatch, id])
+  }, [dispatch, portfolioId])
 
   const portfolio = useAppSelector(selectPortfolioDetails); //TODO: need to change to PortfolioStages
 
@@ -32,7 +35,7 @@ export default function PortfolioStages() {
         <PortfolioStagesLeftPanel />
       </div>
       <div className={css.content}>
-        <PortfolioStagesContent portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} />
+        { (selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
       </div>    
     </div>    
   );

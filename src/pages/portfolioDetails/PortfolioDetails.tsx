@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { FormSaveResponse, useUuiContext, UuiContexts } from '@epam/uui-core';
 import { SuccessNotification, Text, useForm } from '@epam/uui';
@@ -10,8 +10,9 @@ import { IPortfolioDetails } from '../../typings/models/portfolio.models';
 import { portfolioValidationSchema } from './validation.schema';
 import { TApi } from '../../data';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadPortfolio, selectPortfolioDetails, upsertPortfolio } from '../../store/data.slice';
+import { loadPortfolio, selectPortfolioDetails, upsertPortfolio, clearPortfolioDetails } from '../../store/data.slice';
 import { PortfolioDetailsForm } from '../../components';
+import { useParamId } from '../../utilities/route.utility';
 
 const DEFAULT_DATA: IPortfolioDetails = {
   name: '',
@@ -27,7 +28,7 @@ const DEFAULT_DATA: IPortfolioDetails = {
 export default function PortfolioDetails() {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { id } = useParams<{ id?: string }>();
+  const portfolioId = useParamId();  
   const svc = useUuiContext<TApi, UuiContexts>();
 
   const onSave = (state: IPortfolioDetails) => {
@@ -36,10 +37,12 @@ export default function PortfolioDetails() {
   }
 
   useEffect(() => {
-    if (id) {
-      dispatch(loadPortfolio(id));
+    if (portfolioId) {
+      dispatch(loadPortfolio(portfolioId));
+    } else {
+      dispatch(clearPortfolioDetails());
     }
-  }, [dispatch, id])
+  }, [dispatch, portfolioId])
 
   const dataFromStore = useAppSelector(selectPortfolioDetails);
   const defaultFormData = dataFromStore ?? structuredClone(DEFAULT_DATA);
@@ -78,7 +81,7 @@ export default function PortfolioDetails() {
   return (
     <div className={css.root}>
       <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} />
-      <PortfolioDetailsForm form={form} />
+      <PortfolioDetailsForm form={form} showCaption={true} />
     </div>
   )
 }

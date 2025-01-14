@@ -1,31 +1,31 @@
-// import {
-//     ContextProviderDoc, ApiContextDoc, ModalContextDoc,
-//     NotificationContextDoc, IconsDoc, DownloadsDoc, ProjectsDoc, ReleaseNotesDoc,
-//     LockContextDoc, InternationalizationDoc, TeamDoc, AnalyticsContextDoc, DragAndDropDoc,
-//     EmptyStatesDoc, LayoutsDoc, LoadersDoc, ValidationDoc, VisualExamplesDoc, GettingStartedDoc, UtGuideBasicsDoc, UtGuideToolsDoc,
-//     UtGuideCookbookDoc, DataSourcesGettingStartedDoc, DataSourcesRowOptionsDoc, DataSourcesBaseDataSourcePropsDoc,
-//     DataSourcesDataSourceStateDoc, DataSourcesArrayDataSourceDoc, DataSourcesAsyncDataSourceDoc,
-//     DataSourcesLazyDataSourceDoc, DataSourcesUsageDoc, OverviewDoc,
-//     ThemingOverview, Tokens, AccessibilityDoc, UtGuideGettingStartedDoc, LensesDoc,
-// } from '../docs';
-// import { CoreConceptsDoc } from '../docs/CoreConcepts';
-// import { componentsStructure } from './structureComponents';
 import { Icon } from '@epam/uui-core';
 import { ReactComponent as FillInfoIcon } from '@epam/assets/icons/notification-info-fill.svg';
 import { ReactComponent as SuccessIcon } from  '../../../../assets/icons/success.svg'
 import { ReactComponent as LockIcon } from  '@epam/assets/icons/action-lock-fill.svg'
 
 
-
-// export interface DocItem {
-//     id: string;
-//     parentId?: string;
-//     name: string;
-//     icon?: Icon;
-//     isLocked?: boolean;
-//     component?: any;
-//   }
-
+export const STATE_CODES = {
+    AboutPortfolio: 'about-portfolio',
+    Discover: 'discover',
+    APIProductJourneys: 'api-product-journeys',
+    BusinessModels: 'business-models',
+    Capabilities: 'capabilities',
+    Consumers: 'consumers',
+    ConsumerNeeds: 'consumer-needs',
+    GoalsKPIs: 'goals-kpis',
+    PortfolioAlignment: 'portfolio-alignment',
+    Roadmap: 'roadmap',
+    ValueProposition: 'value-proposition',
+    Define: 'define',
+    DefineItem: 'define-item',
+    Design: 'design',
+    DesignItem: 'design-item',
+    Develop: 'develop',
+    DevelopItem: 'develop-item',
+    Deliver: 'deliver',
+    DeliverItem: 'deliver-item',
+  };
+  
 export interface PortfolioStateItem {
     id: string;
     name: string;
@@ -36,25 +36,25 @@ export interface PortfolioStateItem {
     isLocked?: boolean;
 }
   
-export const items: PortfolioStateItem[] = [
-    { id: 'about', name: 'About Portfolio', icon: FillInfoIcon },
-    { id: 'discover', name: 'Discover'},
-    { id: 'journeys', name: 'API Product Journeys', parentId: 'discover'},
-    { id: 'models', name: 'Business Models', parentId: 'discover'},
-    { id: 'capabilities', name: 'Capabilities', parentId: 'discover'},
-    { id: 'consumers', name: 'Consumers', parentId: 'discover'},
-    { id: 'needs', name: 'Consumer Needs', parentId: 'discover', icon: SuccessIcon},
-    { id: 'goals', name: 'Goals & KPIs', parentId: 'discover'},
-    { id: 'aignment', name: 'Portfolio Alignment', parentId: 'discover' },
-    { id: 'roadmap', name: 'Roadmap', parentId: 'discover' },
-    { id: 'proposition', name: 'Value Proposition', parentId: 'discover' },
-    { id: 'define', name: 'Define', icon: LockIcon, isLocked: true},
-    { id: 'define-item', name: 'Item', parentId: 'define'},
-    { id: 'design', name: 'Design', icon: LockIcon, isLocked: true},
-    { id: 'design-item', name: 'Item', parentId: 'design'},
-    { id: 'develop', name: 'Develop', icon: LockIcon, isLocked: true},
-    { id: 'develop-item', name: 'Item', parentId: 'develop'},
-    { id: 'deliver', name: 'Deliver', icon: LockIcon, isLocked: true},
-    { id: 'deliver-item', name: 'Item', parentId: 'deliver'},
+export const menuItems: PortfolioStateItem[] = [
+    { id: STATE_CODES.AboutPortfolio, name: 'About Portfolio', icon: FillInfoIcon },
+    { id: STATE_CODES.Discover, name: 'Discover'},
+    { id: STATE_CODES.APIProductJourneys, name: 'API Product Journeys', parentId: 'discover'},
+    { id: STATE_CODES.BusinessModels, name: 'Business Models', parentId: 'discover'},
+    { id: STATE_CODES.Capabilities, name: 'Capabilities', parentId: 'discover'},
+    { id: STATE_CODES.Consumers, name: 'Consumers', parentId: 'discover'},
+    { id: STATE_CODES.ConsumerNeeds, name: 'Consumer Needs', parentId: 'discover', icon: SuccessIcon},
+    { id: STATE_CODES.GoalsKPIs, name: 'Goals & KPIs', parentId: 'discover'},
+    { id: STATE_CODES.PortfolioAlignment, name: 'Portfolio Alignment', parentId: 'discover' },
+    { id: STATE_CODES.Roadmap, name: 'Roadmap', parentId: 'discover' },
+    { id: STATE_CODES.ValueProposition, name: 'Value Proposition', parentId: 'discover' },
+    { id: STATE_CODES.Define, name: 'Define', icon: LockIcon, isLocked: true},
+    { id: STATE_CODES.DefineItem, name: 'Item', parentId: 'define'},
+    { id: STATE_CODES.Design, name: 'Design', icon: LockIcon, isLocked: true},
+    { id: STATE_CODES.DesignItem, name: 'Item', parentId: 'design'},
+    { id: STATE_CODES.Develop, name: 'Develop', icon: LockIcon, isLocked: true},
+    { id: STATE_CODES.DevelopItem, name: 'Item', parentId: 'develop'},
+    { id: STATE_CODES.Deliver, name: 'Deliver', icon: LockIcon, isLocked: true},
+    { id: STATE_CODES.DeliverItem, name: 'Item', parentId: 'deliver'},
   ];
   

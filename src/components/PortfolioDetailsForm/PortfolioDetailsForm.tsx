@@ -7,21 +7,24 @@ import { industries } from '../../constants';
 import css from './PortfolioDetailsForm.module.scss';
 
 export interface IPortfolioDetailsFormProps {
-  form: IFormApi<IPortfolioDetails>
+  form: IFormApi<IPortfolioDetails>,
+  showCaption: Boolean,
 }
 
-export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormDisabled } }: IPortfolioDetailsFormProps) {
+export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormDisabled }, showCaption }: IPortfolioDetailsFormProps) {
 
   const industryDataSource = useArrayDataSource({ items: structuredClone(industries) }, []);
 
   return (
     <div className={css.rootForm}>
-      <FlexCell width='100%'>
-        <RichTextView >
-          <h2 style={{ textAlign: 'center' }}>{lens.prop('name').toProps().value || '_'}</h2>
-        </RichTextView>
-        <FlexSpacer />
-      </FlexCell>
+      { showCaption &&
+        <FlexCell width='100%'>
+          <RichTextView >
+            <h2 style={{ textAlign: 'center' }}>{lens.prop('name').toProps().value || '_'}</h2>
+          </RichTextView>
+          <FlexSpacer />
+        </FlexCell>
+      }
       <Panel cx={css.formPanel + `${isFormDisabled ? ` ${css.formDisabled}` : ''}`} >
         <FlexCell width='100%'>
           <FlexRow vPadding='12'>

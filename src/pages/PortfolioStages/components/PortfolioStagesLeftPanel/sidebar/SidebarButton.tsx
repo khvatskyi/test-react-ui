@@ -22,7 +22,6 @@ export class SidebarButton extends React.Component<SidebarButtonProps, any> {
                     'aria-disabled': this.props.isDisabled,
                     'aria-current': this.props.isActive,
                 } }
-                // isOpen={ this.props.isOpen }
                 isLinkActive={ this.props.isActive }
                 cx={ cx(
                     css.root,

@@ -1,10 +1,6 @@
 import { useForm } from '@epam/uui';
-// import { useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
 
 import { IPortfolioDetails } from '../../../../typings/models/portfolio.models';
-// import { useAppDispatch, useAppSelector } from '../../../../hooks';
-// import { selectPortfolioDetails } from '../../../../store/data.slice';
 
 import css from './PortfolioStagesContent.module.scss';
 import { portfolioValidationSchema } from '../../../PortfolioDetails/validation.schema';
@@ -17,16 +13,6 @@ export interface IPortfolioStagesContentProps {
 }
 
 export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPortfolioStagesContentProps) {
-  // const dispatch = useAppDispatch();
-  // const { id } = useParams<{ id?: string }>();
-
-  // useEffect(() => {
-  //   if (id) {
-  //     dispatch(loadPortfolio(id));
-  //   }
-  // }, [dispatch, id])
-
-  // const dataFromStore = useAppSelector(selectPortfolioDetails);
 
   const form = useForm<IPortfolioDetails>({
     settingsKey: 'portfolio-details-form',
@@ -41,7 +27,7 @@ export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPo
   return (
     <div className={css.root}>
       <PortfolioStagesTopBar title='About Portfolio' onUpdateClick={onUpdateClick} />
-      <PortfolioDetailsForm form={form} />
+      <PortfolioDetailsForm form={form} showCaption={false}/>
     </div>
   )
 }

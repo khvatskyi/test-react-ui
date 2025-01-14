@@ -4,6 +4,7 @@ import { IUserContext, IUserResponse } from '../typings/models/user.models';
 import { RootState } from '../store';
 import { SessionStorageItems } from '../typings/enums/session-storage-items.enum';
 import { deleteAllCookies } from '../utilities/cookies.utility';
+import { useShowErrorNotification } from '../utilities/notifications.utility';
 
 interface ISessionState {
   userContext: IUserContext | null;
@@ -23,11 +24,18 @@ export const signInWithSSOCode = createAsyncThunk(
   async (code: string, { rejectWithValue }) => {
     const path = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
+    const showErrorNotification = useShowErrorNotification();
 
     return await fetch(`${path}?${params.toString()}`, {
       method: 'GET'
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          showErrorNotification(`Error: ${response.statusText} (${response.status})`)
+        } else {
+          return response.json();
+        }
+      })
       .then((result: IUserResponse) => {
         const newUserContext: IUserContext = {
           accessToken: result.access_token,
@@ -41,8 +49,10 @@ export const signInWithSSOCode = createAsyncThunk(
         };
         return newUserContext;
       })
-      .catch(error => {
-        return rejectWithValue('Error during sign in with SSO');
+      .catch(e => {
+        const error_message = `Error during sign in with SSO: ${e.message} `
+        showErrorNotification(error_message)
+        return rejectWithValue(error_message);
       });
   }
 );
@@ -73,7 +83,11 @@ export const sessionSlice = createSlice({
         state.userContext = action.payload;
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        window.location.href =  state.userContext.hasProfile ?  '/portfolios' : '/profile';
+        if (state.userContext.accessToken) {
+          window.location.href =  state.userContext.hasProfile ?  '/portfolios' : '/profile';
+        } else {
+          window.location.href = '/'          
+        }
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;

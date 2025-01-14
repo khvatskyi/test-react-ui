@@ -166,6 +166,9 @@ export const dataSlice = createSlice({
     },
     clearClientProfile: (state) => {
       state.clientProfile = null;
+    },
+    clearPortfolioDetails: (state) => {
+      state.selectedPortfolio = null;
     }
   },
   extraReducers: (builder) => {
@@ -181,6 +184,6 @@ export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
 
-export const { setClientDefinitionInfo, clearClientProfile } = dataSlice.actions;
+export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails } = dataSlice.actions;
 
 export default dataSlice.reducer;
