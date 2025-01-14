@@ -70,9 +70,7 @@ export default function PortfolioDetails() {
   const onCancel = () => {
     return new Promise<void>(() => {
       form.revert();
-      if (!id) {
-        history.push('/portfolios');
-      }
+      history.goBack();
     });
   }
 
