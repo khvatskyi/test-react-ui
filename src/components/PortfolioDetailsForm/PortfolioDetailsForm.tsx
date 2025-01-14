@@ -56,7 +56,7 @@ export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormD
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
-              <LabeledInput htmlFor='goalsOrObjectives' label='Goals ? Objectives' {...lens.prop('goalsOrObjectives').toProps()}>
+              <LabeledInput htmlFor='goalsOrObjectives' label='Goals / Objectives' {...lens.prop('goalsOrObjectives').toProps()}>
                 <TextArea {...lens.prop('goalsOrObjectives').toProps()} id='goalsOrObjectives' placeholder='What business is trying to achieve with this portfolio?' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
