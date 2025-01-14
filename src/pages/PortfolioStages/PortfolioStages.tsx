@@ -20,7 +20,6 @@ export default function PortfolioStages() {
 
   const portfolio = useAppSelector(selectPortfolioDetails); //TODO: need to change to PortfolioStages
 
-
   const history = useHistory();
   const handlePortfolioUpdate = (e: ClickEvent) => {
     e.stopPropagation();

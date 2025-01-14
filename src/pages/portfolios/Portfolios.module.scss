@@ -1,6 +1,8 @@
+@use '../../variables.scss' as globalVars;
+
 .root {
   width: 100%;
-  min-height: calc(100vh - 60px) !important;
+  min-height: globalVars.$min-content-height !important;
   align-items: flex-start;
   // background-color: green;
 }

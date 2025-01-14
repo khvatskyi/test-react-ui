@@ -1,8 +1,9 @@
+@use '../../../../variables.scss' as globalVars;
 
 .root {
   width: 100%;
   background-color: white;
-  min-height: calc(100vh - 60px) !important;
+  min-height: globalVars.$min-content-height !important;
 
   .buttonPanel {
     height: 60px;

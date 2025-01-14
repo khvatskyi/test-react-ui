@@ -7,10 +7,9 @@ import { IPortfolioDetails } from '../../../../typings/models/portfolio.models';
 // import { selectPortfolioDetails } from '../../../../store/data.slice';
 
 import css from './PortfolioStagesContent.module.scss';
-import { PortfolioDetailsForm } from '../../../PortfolioDetails/components';
 import { portfolioValidationSchema } from '../../../PortfolioDetails/validation.schema';
 import PortfolioStagesTopBar from '../PortfolioStagesTopBar/PortfolioStagesTopBar';
-
+import { PortfolioDetailsForm } from '../../../../components';
 
 export interface IPortfolioStagesContentProps {
   portfolio: IPortfolioDetails,
@@ -38,7 +37,7 @@ export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPo
     onSave: () => Promise.resolve(),
   });
   form.canRedo = false;
-
+  form.isDisabled = true;
   return (
     <div className={css.root}>
       <PortfolioStagesTopBar title='About Portfolio' onUpdateClick={onUpdateClick} />

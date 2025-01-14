@@ -1,8 +1,9 @@
+@use '../../../../variables' as globalVars;
+
 .root {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 60px) !important;
+  min-height: globalVars.$min-content-height !important;
   // background-color: pink;
 }
-

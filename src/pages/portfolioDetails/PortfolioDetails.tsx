@@ -5,12 +5,13 @@ import { FormSaveResponse, useUuiContext, UuiContexts } from '@epam/uui-core';
 import { SuccessNotification, Text, useForm } from '@epam/uui';
 
 import css from './PortfolioDetails.module.scss';
-import { PortfolioDetailsTopBar, PortfolioDetailsForm } from './components';
+import { PortfolioDetailsTopBar } from './components';
 import { IPortfolioDetails } from '../../typings/models/portfolio.models';
 import { portfolioValidationSchema } from './validation.schema';
 import { TApi } from '../../data';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loadPortfolio, selectPortfolioDetails, upsertPortfolio } from '../../store/data.slice';
+import { PortfolioDetailsForm } from '../../components';
 
 const DEFAULT_DATA: IPortfolioDetails = {
   name: '',
