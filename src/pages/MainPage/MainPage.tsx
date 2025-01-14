@@ -3,15 +3,19 @@ import { ReactComponent as LoginImage } from '../../assets/icons/login-icon.svg'
 
 import { Button, IconContainer } from '@epam/uui';
 
-import { useAppSelector } from "../../hooks";
-import { selectUserContext } from "../../store/session.slice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectUserContext, signInWithSSOCode } from "../../store/session.slice";
 
 export default function MainPage() {
 
+  const dispatch = useAppDispatch();
   const userContext = useAppSelector(selectUserContext);
   const isUserContextPresent = Boolean(userContext?.accessToken);
 
   const redirectToSSO = () => {
+    dispatch(signInWithSSOCode('test'));
+    return;
+
     const url = `${process.env.REACT_APP_SSO_ACCESS_URL}/auth/realms/plusx/protocol/openid-connect/auth?response_type=code&client_id=${process.env.REACT_APP_SSO_CLIENT_ID}&scope=${process.env.REACT_APP_SSO_SCOPE}&redirect_uri=${process.env.REACT_APP_SSO_REDIRECT_URI}`;
     window.location.href = url;
   };

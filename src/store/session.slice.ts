@@ -21,10 +21,21 @@ const initialState: ISessionState = {
 
 export const signInWithSSOCode = createAsyncThunk(
   'session/signIn',
-  async (code: string, { rejectWithValue }) => {
+  async (code: string, { dispatch, rejectWithValue }) => {
     const path = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
     const showErrorNotification = useShowErrorNotification();
+
+    return Promise.resolve<IUserContext>(({
+      accessToken: 'some_token',
+      userName: 'Vasyl',
+      email: 'test@test.test',
+      name: 'Vasyl Prodanchuk',
+      givenName: 'Given Vasyl',
+      familyName: 'Family Vasyl',
+      picture: null,
+      hasProfile: true
+    }));
 
     return await fetch(`${path}?${params.toString()}`, {
       method: 'GET'

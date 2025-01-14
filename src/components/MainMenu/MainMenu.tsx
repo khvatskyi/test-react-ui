@@ -8,7 +8,7 @@ import { AdaptiveItemProps, MainMenuCustomElement } from '@epam/uui-components';
 import { ReactComponent as HelpIcon } from '@epam/assets/icons/common/notification-help-outline-24.svg';
 
 import css from './MainMenu.module.scss';
-import { clearUserContext, selectUserContext } from '../../store/session.slice';
+import { clearUserContext, selectUserContext, signInWithSSOCode } from '../../store/session.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ReactComponent as LogoIcon } from '../../assets/icons/logo.svg';
 import { useHistory } from 'react-router-dom';
@@ -98,6 +98,9 @@ export default function MainMenu() {
     );
 
     const redirectToSSO = () => {
+      dispatch(signInWithSSOCode('test'));
+      return;
+
       const url = `${process.env.REACT_APP_SSO_ACCESS_URL}/auth/realms/plusx/protocol/openid-connect/auth?response_type=code&client_id=${process.env.REACT_APP_SSO_CLIENT_ID}&scope=${process.env.REACT_APP_SSO_SCOPE}&redirect_uri=${process.env.REACT_APP_SSO_REDIRECT_URI}`;
       window.location.href = url;
     };
