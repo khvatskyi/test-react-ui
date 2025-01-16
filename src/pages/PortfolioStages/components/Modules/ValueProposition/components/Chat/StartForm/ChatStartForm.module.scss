@@ -1,0 +1,24 @@
+@use '~@epam/promo/assets/styles/colors' as *;
+
+.root {
+  width: 100%;
+}
+
+.rootForm {
+  margin: 0 auto 102px;
+  
+  
+  .formPanel {
+    padding: 24px;
+    gap: 12px;
+    background: var(--core-surfaces-surface-main, #FFFFFF);
+    box-shadow: 0px 3px 6px 0px #1D1E261A;
+    box-shadow: 0px 0px 3px 0px #1D1E260D;
+
+    .header {
+      margin-top: 0px !important;
+    }
+
+  }
+
+}

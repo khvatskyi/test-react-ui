@@ -8,12 +8,15 @@ import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
 import { updateProfileAvailability } from './session.slice';
+import { IApiContext, IValuePropositionDetails } from '../typings/models/module.models';
+import { saveValuePropositionApiContext } from '../services/valueProposition.service';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
   clientProfile: IClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
+  selectedValueProposition: IValuePropositionDetails | null;
   pending: boolean[];
 }
 
@@ -22,6 +25,7 @@ const initialState: IDataState = {
   clientProfile: null,
   portfolios: null,
   selectedPortfolio: null,
+  selectedValueProposition: null,
   pending: []
 }
 
@@ -157,6 +161,30 @@ const portfolioExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) =>
   })
 };
 
+export const updateValueProposition = createAsyncThunk(
+  'data/updateValueProposition',
+  async (context: IApiContext, { rejectWithValue }) => {
+
+    return saveValuePropositionApiContext(context).catch(error => rejectWithValue(error));
+  }
+);
+
+
+const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
+  builder
+  .addCase(updateValueProposition.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(updateValueProposition.fulfilled, (state, action) => {
+    state.selectedValueProposition = action.payload;
+    state.pending.pop();
+  })
+  .addCase(updateValueProposition.rejected, (state) => {
+    state.pending.pop();
+  })
+};
+
+
 export const dataSlice = createSlice({
   name: 'data',
   initialState,
@@ -175,6 +203,7 @@ export const dataSlice = createSlice({
     profileExtraReducers(builder);
     clientDefinitionExtraReducers(builder);
     portfolioExtraReducers(builder);
+    valuePropositionExtraReducers(builder);
   }
 });
 
@@ -182,6 +211,7 @@ export const selectClientDefinition = (state: RootState) => state.data.clientDef
 export const selectProfile = (state: RootState) => state.data.clientProfile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
+export const selectValueProposition = (state: RootState) => state.data.selectedValueProposition;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
 
 export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails } = dataSlice.actions;

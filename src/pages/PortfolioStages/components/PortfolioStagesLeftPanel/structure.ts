@@ -35,8 +35,13 @@ export interface PortfolioStateItem {
     iconPosition?: 'left' | 'right';
     isLocked?: boolean;
 }
+
+export function getStateTitle(id: string): string | undefined {
+  const state = portfolioStates.find(state => state.id === id);
+  return state ? state.name : undefined;
+}
   
-export const menuItems: PortfolioStateItem[] = [
+export const portfolioStates: PortfolioStateItem[] = [
     { id: STATE_CODES.AboutPortfolio, name: 'About Portfolio', icon: FillInfoIcon },
     { id: STATE_CODES.Discover, name: 'Discover'},
     { id: STATE_CODES.APIProductJourneys, name: 'API Product Journeys', parentId: 'discover'},

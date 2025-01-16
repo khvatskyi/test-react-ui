@@ -1,23 +1,21 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Button, FlexRow, FlexCell, FlexSpacer, Panel, PickerInput } from '@epam/uui';
-import { useArrayDataSource } from '@epam/uui-core';
+import { Button, FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { loadPortfolio, loadPortfolios, selectPortfolioDetails, selectPortfolios } from '../../../../store/data.slice';
+import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../store/data.slice';
 
 import css from './PortfolioStagesTopBar.module.scss';
-import { IPortfolio } from '../../../../typings/models/portfolio.models';
+import PortfolioPicker from '../../../../components/PortfolioPicker/PortfolioPicker';
+import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
 
 export interface IPortfolioStagesTopBarProps {
-  title: string;
   onUpdateClick: () => void
 }
 
-export default function PortfolioStagesTopBar({ title, onUpdateClick}: IPortfolioStagesTopBarProps) {
+export default function PortfolioStagesTopBar({ onUpdateClick}: IPortfolioStagesTopBarProps) {
   const dispatch = useAppDispatch();
-  const portfolios = useAppSelector(selectPortfolios);
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const history = useHistory();
 
@@ -25,32 +23,17 @@ export default function PortfolioStagesTopBar({ title, onUpdateClick}: IPortfoli
     dispatch(loadPortfolios());
   }, [dispatch]);
 
-  const portfoliosDataSource = useArrayDataSource<IPortfolio, string, unknown>({ items: portfolios }, []); 
-
   const handlePortfolioChange = (id: string) => {
     dispatch(loadPortfolio(id));
-    history.push(`${id}`);
+    history.push(`${id}?stage=${STATE_CODES.AboutPortfolio}`);
   };
 
-  return selectedPortfolio && (
+  return (
     <Panel cx={css.buttonPanel}>
       <FlexRow columnGap='24' cx={css.buttonPanel}>
-        <h2>{title}</h2>
+        <h2>{getStateTitle(STATE_CODES.AboutPortfolio)}</h2>
         <FlexCell width='auto'>
-          <PickerInput
-            dataSource={ portfoliosDataSource }
-            value={ selectedPortfolio.id }
-            onValueChange={ handlePortfolioChange }
-            selectionMode='single'
-            getName={(item) => item.name}
-            valueType='id'
-            id={'select-portfolio'}
-            placeholder='Please select'
-            editMode='dropdown'
-            disableClear={ true }
-            isRequired={ true }
-            searchPosition='none'
-          />
+          <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange}/>
         </FlexCell>
         <FlexSpacer />
         <Button caption='Update portfolio' color='primary' fill='outline' onClick={onUpdateClick} />

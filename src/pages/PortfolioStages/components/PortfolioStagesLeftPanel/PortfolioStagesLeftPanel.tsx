@@ -1,4 +1,4 @@
-import { PortfolioStateItem, STATE_CODES, menuItems} from './structure';
+import { PortfolioStateItem, STATE_CODES, portfolioStates} from './structure';
 import { Sidebar } from './sidebar';
 import { useParamId, useQuery } from './../../../../utilities/route.utility';
 
@@ -10,7 +10,7 @@ export default function PortfolioStagesSidebar() {
     return (
         <Sidebar<PortfolioStateItem>
             value={ selectedStage }
-            items={ menuItems }
+            items={ portfolioStates }
             getItemLink={ (row) => ({
                 pathname: `/portfolio/stages/${portfolioId}`,
                 query: {

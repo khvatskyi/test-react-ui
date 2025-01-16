@@ -7,6 +7,7 @@ import { loadPortfolio, selectPortfolioDetails } from '../../store/data.slice';
 import css from './PortfolioStages.module.scss';
 import { useParamId, useQuery } from '../../utilities/route.utility';
 import { STATE_CODES } from './components/PortfolioStagesLeftPanel/structure';
+import ModuleValueProposition from './components/Modules/ValueProposition/ModuleValueProposition';
 
 type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
@@ -36,6 +37,7 @@ export default function PortfolioStages() {
       </div>
       <div className={css.content}>
         { (selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
+        { (selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition onUpdateClick={handlePortfolioUpdate} /> }
       </div>    
     </div>    
   );

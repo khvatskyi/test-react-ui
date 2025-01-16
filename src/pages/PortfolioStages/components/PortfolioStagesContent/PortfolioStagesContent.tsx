@@ -26,7 +26,7 @@ export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPo
   form.isDisabled = true;
   return (
     <div className={css.root}>
-      <PortfolioStagesTopBar title='About Portfolio' onUpdateClick={onUpdateClick} />
+      <PortfolioStagesTopBar onUpdateClick={onUpdateClick} />
       <PortfolioDetailsForm form={form} showCaption={false}/>
     </div>
   )
