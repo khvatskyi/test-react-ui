@@ -9,6 +9,7 @@ import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../
 import css from './PortfolioStagesTopBar.module.scss';
 import PortfolioPicker from '../../../../components/PortfolioPicker/PortfolioPicker';
 import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
+import { useQuery } from '../../../../utilities/route.utility';
 
 export interface IPortfolioStagesTopBarProps {
   onUpdateClick: () => void
@@ -18,6 +19,7 @@ export default function PortfolioStagesTopBar({ onUpdateClick}: IPortfolioStages
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const history = useHistory();
+  const selectedStage = useQuery('stage', STATE_CODES.AboutPortfolio);
 
   useEffect(() => {
     dispatch(loadPortfolios());
@@ -31,7 +33,7 @@ export default function PortfolioStagesTopBar({ onUpdateClick}: IPortfolioStages
   return (
     <Panel cx={css.buttonPanel}>
       <FlexRow columnGap='24' cx={css.buttonPanel}>
-        <h2>{getStateTitle(STATE_CODES.AboutPortfolio)}</h2>
+        <h2>{getStateTitle(selectedStage)}</h2>
         <FlexCell width='auto'>
           <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange}/>
         </FlexCell>

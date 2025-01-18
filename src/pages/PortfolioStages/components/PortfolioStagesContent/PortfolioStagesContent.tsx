@@ -9,10 +9,11 @@ import { PortfolioDetailsForm } from '../../../../components';
 
 export interface IPortfolioStagesContentProps {
   portfolio: IPortfolioDetails,
-  onUpdateClick: (e?: any) => void
+  onUpdateClick: (e?: any) => void,
+  showOnlyTopBar: boolean,
 }
 
-export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPortfolioStagesContentProps) {
+export default function PortfolioStagesContent({ portfolio, onUpdateClick, showOnlyTopBar }: IPortfolioStagesContentProps) {
 
   const form = useForm<IPortfolioDetails>({
     settingsKey: 'portfolio-details-form',
@@ -27,7 +28,7 @@ export default function PortfolioStagesContent({ portfolio, onUpdateClick }: IPo
   return (
     <div className={css.root}>
       <PortfolioStagesTopBar onUpdateClick={onUpdateClick} />
-      <PortfolioDetailsForm form={form} showCaption={false}/>
+      {!showOnlyTopBar && <PortfolioDetailsForm form={form} showCaption={false}/> }
     </div>
   )
 }

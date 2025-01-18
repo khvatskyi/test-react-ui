@@ -21,8 +21,6 @@ export default function ChatRoom() {
   };
 
   return (
-    <div>
-      <Chat {...chatProps} />
-    </div>
+    <Chat {...chatProps} />
   );
 }

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button } from '@epam/uui-components';
+import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput } from '@epam/uui';
 
 import css from './Chat.module.scss';
 import { IChatMessage } from '../../typings/models/chat.models';
 import Message from './Message';
+import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
+// import { useAppSelector } from '../../hooks';
+// import { selectValuePropositionChatInfo } from '../../store/data.slice';
 
 export interface IChatProps {
   messages: IChatMessage[];
@@ -35,27 +38,30 @@ export default function Chat({ messages, isResponding, onSendMessage }: IChatPro
 
   return (
     <div className={css.chatWrapper}>
-      <div className={css.messagesWrapper}>
-        {messages.map((message, index) => (
-          <Message key={index} message={message} />
-        ))}
-        {isResponding && <Message message={AI_ANSWERING_MESSAGE} />}
-      </div>
-      <div className={css.inputMessageWrapper}>
-        <div className={css.matFormField}>
-          <input
-            type='text'
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyUp={handleKeyPress}
-            className={css.matInputElement}
-          />
-          <Button
-            onClick={handleSendMessage}
-            caption='Send'
-          />
+        <div className={css.messagesWrapper}>
+          {messages.map((message, index) => (
+            <Message key={index} message={message} />
+          ))}
+          {isResponding && <Message message={AI_ANSWERING_MESSAGE} />}
         </div>
-      </div>
+        <FlexRow vPadding='12' columnGap={12}>
+        {/* <div className={css.inputMessageWrapper}> */}
+          {/* <div className={css.matFormField}> */}
+            <TextInput //<input
+              type='text'
+              value={currentInput}
+              onValueChange={(v) => setCurrentInput(v)}
+              onKeyDown={handleKeyPress}
+              cx={css.matInputElement}
+            />
+            {/* <Button
+              onClick={handleSendMessage}
+              caption='Send'
+            /> */}
+            <Button icon={sendIcon} color="primary" /* icon={iconStart} iconPosition='right'*/ onClick={handleSendMessage}/>
+          {/* </div> */}
+        {/* </div> */}
+        </FlexRow>
     </div>
   );
 };

@@ -1,24 +1,30 @@
 @use '~@epam/promo/assets/styles/colors' as *;
 
-.root {
-  width: 100%;
-}
 
 .rootForm {
-  margin: 0 auto 102px;
-  
+  padding-top: 24px;
+  margin: 0 auto;
+  width: 590px;
   
   .formPanel {
     padding: 24px;
     gap: 12px;
-    background: var(--core-surfaces-surface-main, #FFFFFF);
-    box-shadow: 0px 3px 6px 0px #1D1E261A;
-    box-shadow: 0px 0px 3px 0px #1D1E260D;
 
     .header {
       margin-top: 0px !important;
     }
+  }
 
+  .panelTip {
+    padding:  0px 12px;
+    border-radius: 6px;
+    border: 1px;
+    background: var(--core-semantic-primary-5, #F3F8FE);
+    border: 1px solid var(--core-semantic-primary-20, #85B4F8)    
+  }
+
+  .panelTip svg {
+    fill: var(--core-semantic-info-50, #0A68F1);
   }
 
 }

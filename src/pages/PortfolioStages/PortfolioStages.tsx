@@ -30,14 +30,19 @@ export default function PortfolioStages() {
     history.push(`/portfolio/details/${portfolio.id}`); 
   }
 
+  const implementedStates = [STATE_CODES.AboutPortfolio, STATE_CODES.ValueProposition]
+
   return (
     <div className={css.root}>
       <div className={css.sidebar} >
         <PortfolioStagesLeftPanel />
       </div>
       <div className={css.content}>
-        { (selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
-        { (selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition onUpdateClick={handlePortfolioUpdate} /> }
+        { (selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent showOnlyTopBar={false} portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
+        { (selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition /> }
+        
+        {/* temporary */}
+        { !implementedStates.includes(selectedStage)  && <PortfolioStagesContent showOnlyTopBar={true} portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
       </div>    
     </div>    
   );

@@ -4,13 +4,7 @@ export interface IApiContext {
   description?: string;
 }
 
-export interface IValuePropositionDetails {
-  properties?: IPropertyValueProposition[] | null  
-}
-
-
-export interface IPropertyValueProposition {
-    propertyName: string;
-    question: string;
-    answer: string;
+export interface IValuePropositionChatInfo {
+  quantityOfQuestions: number;
+  currentQuestion: number;
 }

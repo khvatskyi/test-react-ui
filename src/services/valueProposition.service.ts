@@ -1,9 +1,9 @@
-import { IApiContext, IValuePropositionDetails } from "../typings/models/module.models";
+import { IApiContext, IValuePropositionChatInfo } from "../typings/models/module.models";
 import { fetchWithAuth } from "../utilities/fetch-with-auth.utility";
 
   
   
-export async function saveValuePropositionApiContext(context: IApiContext): Promise<IValuePropositionDetails> {
+export async function startValuePropositionChat(context: IApiContext): Promise<IValuePropositionChatInfo> {
   
   // MOCK
   //  let result = structuredClone(portfolio);
@@ -25,6 +25,6 @@ export async function saveValuePropositionApiContext(context: IApiContext): Prom
       body: JSON.stringify(context),
     });
   
-    const result: IValuePropositionDetails = await response.json();
+    const result: IValuePropositionChatInfo = await response.json();
     return result;
   }

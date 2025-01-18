@@ -8,15 +8,15 @@ import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
 import { updateProfileAvailability } from './session.slice';
-import { IApiContext, IValuePropositionDetails } from '../typings/models/module.models';
-import { saveValuePropositionApiContext } from '../services/valueProposition.service';
+import { IApiContext, IValuePropositionChatInfo } from '../typings/models/module.models';
+import { startValuePropositionChat } from '../services/valueProposition.service';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
   clientProfile: IClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
-  selectedValueProposition: IValuePropositionDetails | null;
+  selectedValuePropositionChatInfo: IValuePropositionChatInfo | null;
   pending: boolean[];
 }
 
@@ -25,7 +25,7 @@ const initialState: IDataState = {
   clientProfile: null,
   portfolios: null,
   selectedPortfolio: null,
-  selectedValueProposition: null,
+  selectedValuePropositionChatInfo: null,
   pending: []
 }
 
@@ -161,25 +161,33 @@ const portfolioExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) =>
   })
 };
 
-export const updateValueProposition = createAsyncThunk(
-  'data/updateValueProposition',
+export const sendStartValuePropositionChat = createAsyncThunk(
+  'data/startValuePropositionChat',
   async (context: IApiContext, { rejectWithValue }) => {
-
-    return saveValuePropositionApiContext(context).catch(error => rejectWithValue(error));
+    
+    const response = startValuePropositionChat(context)
+    .catch(
+      r => { 
+        const errorText = r.cause?.body?.detail ?? r.message;
+        console.log(errorText);
+        return rejectWithValue(r);
+      }
+    );
+    return response;
   }
 );
 
 
 const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   builder
-  .addCase(updateValueProposition.pending, (state) => {
+  .addCase(sendStartValuePropositionChat.pending, (state) => {
     state.pending.push(true);
   })
-  .addCase(updateValueProposition.fulfilled, (state, action) => {
-    state.selectedValueProposition = action.payload;
+  .addCase(sendStartValuePropositionChat.fulfilled, (state, action) => {
+    state.selectedValuePropositionChatInfo = action.payload;
     state.pending.pop();
   })
-  .addCase(updateValueProposition.rejected, (state) => {
+  .addCase(sendStartValuePropositionChat.rejected, (state) => {
     state.pending.pop();
   })
 };
@@ -197,7 +205,11 @@ export const dataSlice = createSlice({
     },
     clearPortfolioDetails: (state) => {
       state.selectedPortfolio = null;
-    }
+    }, 
+    clearValuePropositionChatInfo: (state) => {
+      state.selectedValuePropositionChatInfo = null;
+    }, 
+
   },
   extraReducers: (builder) => {
     profileExtraReducers(builder);
@@ -211,9 +223,9 @@ export const selectClientDefinition = (state: RootState) => state.data.clientDef
 export const selectProfile = (state: RootState) => state.data.clientProfile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
-export const selectValueProposition = (state: RootState) => state.data.selectedValueProposition;
+export const selectValuePropositionChatInfo = (state: RootState) => state.data.selectedValuePropositionChatInfo;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
 
-export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails } = dataSlice.actions;
+export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails, clearValuePropositionChatInfo } = dataSlice.actions;
 
 export default dataSlice.reducer;

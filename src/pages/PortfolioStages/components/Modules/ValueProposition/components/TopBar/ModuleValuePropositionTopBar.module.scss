@@ -1,3 +1,5 @@
+@use '../../../../../../../variables' as globalVars;
+
 .root {
   width: 100%;
   height: 60px;
@@ -5,7 +7,7 @@
 
 .buttonPanel {
   width: 100%;
-  height: 60px;
+  height: globalVars.$top-bar-height !important;
   padding-right: 32px;
   padding-left: 12px;
   justify-content: space-between;

@@ -4,17 +4,14 @@ import { useHistory } from 'react-router-dom';
 import { Button, FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from '../../../../../../../hooks';
-import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
+import { clearValuePropositionChatInfo, loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
 
 import css from './ModuleValuePropositionTopBar.module.scss';
 import PortfolioPicker from '../../../../../../../components/PortfolioPicker/PortfolioPicker';
 import { getStateTitle, STATE_CODES } from '../../../../PortfolioStagesLeftPanel/structure';
 
-export interface IModuleValuePropositionTopBarProps {
-  onUpdateClick: () => void
-}
 
-export default function ModuleValuePropositionTopBar({ onUpdateClick}: IModuleValuePropositionTopBarProps) {
+export default function ModuleValuePropositionTopBar() {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const history = useHistory();
@@ -22,6 +19,11 @@ export default function ModuleValuePropositionTopBar({ onUpdateClick}: IModuleVa
   useEffect(() => {
     dispatch(loadPortfolios());
   }, [dispatch]);
+
+
+  const handleResetClick = () => {
+    dispatch(clearValuePropositionChatInfo());
+  }
 
   const handlePortfolioChange = (id: string) => {
     dispatch(loadPortfolio(id));
@@ -36,7 +38,7 @@ export default function ModuleValuePropositionTopBar({ onUpdateClick}: IModuleVa
           <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange}/>
         </FlexCell>
         <FlexSpacer />
-        <Button caption='Reset progress' color='critical' fill='outline' onClick={onUpdateClick} />
+        <Button caption='Reset progress' color='critical' fill='outline' onClick={handleResetClick} />
       </FlexRow>        
     </Panel>
   );
