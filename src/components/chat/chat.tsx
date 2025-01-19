@@ -3,21 +3,22 @@ import React, { useState } from 'react';
 import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput } from '@epam/uui';
 
 import css from './Chat.module.scss';
-import { IChatMessage } from '../../typings/models/chat.models';
+// import { IChatMessage } from '../../typings/models/chat.models';
 import Message from './Message';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
+import { IInteractiveChatMessage } from '../../typings/models/module.models';
 // import { useAppSelector } from '../../hooks';
-// import { selectValuePropositionChatInfo } from '../../store/data.slice';
+// import { selectValuePropositionChatContext } from '../../store/data.slice';
 
 export interface IChatProps {
-  messages: IChatMessage[];
+  messages: IInteractiveChatMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
 }
 
-const AI_ANSWERING_MESSAGE: IChatMessage = {
-  text: '...',
-  sentByUser: false
+const AI_ANSWERING_MESSAGE: IInteractiveChatMessage = {
+  question: '...',
+  // sentByUser: false
 } as const;
 
 export default function Chat({ messages, isResponding, onSendMessage }: IChatProps) {

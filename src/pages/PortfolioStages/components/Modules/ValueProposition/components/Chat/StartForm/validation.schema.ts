@@ -1,8 +1,8 @@
 import { Metadata } from '@epam/uui-core';
-import { IApiContext } from '../../../../../../../../typings/models/module.models';
+import { IStartChatInfo } from '../../../../../../../../typings/models/module.models';
 
 
-export const apiContextValidationSchema = (_: IApiContext): Metadata<IApiContext> => ({
+export const apiContextValidationSchema = (_: IStartChatInfo): Metadata<IStartChatInfo> => ({
   props: {
     name: {
       isRequired: true,

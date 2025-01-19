@@ -1,7 +1,7 @@
 import { FormSaveResponse, useForm } from '@epam/uui-core';
 import { FlexCell, FlexRow, LabeledInput, Panel, Button, Text, TextArea, TextInput, Badge, IconContainer } from '@epam/uui';
 
-import { IApiContext } from '../../../../../../../../typings/models/module.models';
+import { IStartChatInfo } from '../../../../../../../../typings/models/module.models';
 import { apiContextValidationSchema } from './validation.schema';
 import { ReactComponent as iconStart } from '@epam/assets/icons/navigation-chevron_right-outline.svg';
 import { ReactComponent as iconInfo } from '@epam/assets/icons/content-interest-fill.svg';
@@ -11,12 +11,6 @@ import css from './ChatStartForm.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../../../../../../hooks';
 import { selectPortfolioDetails, sendStartValuePropositionChat } from '../../../../../../../../store/data.slice';
 import { useShowErrorNotification } from '../../../../../../../../utilities/notifications.utility';
-
-
-const DEFAULT_API_CONTEXT_DATA: IApiContext = {  
-  name: 'TEST: Business insurance quote enablement',
-  description: "TEST: The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
-} as const;
 
 
 const MODULE_TAGS = [
@@ -33,23 +27,25 @@ const LABELS = {
   apiTitle: 'API context',
   tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
 }
+
+// const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = { name: '', description: '' } as const;
+// for test 
+const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {  
+  name: 'Business insurance quote enablement',
+  description: "The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
+} as const;
+
+
 export default function ChatStartForm() {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
 
-  const dataFromPortfolio: IApiContext = {  
-    name: selectedPortfolio.name,
-    description: selectedPortfolio.description,
-  } 
-    
-  const dataFromStore = null; //useAppSelector(selectProfile);
-  const defaultFormData = dataFromStore ?? dataFromPortfolio ?? DEFAULT_API_CONTEXT_DATA;
   const showErrorNotification = useShowErrorNotification();    
   
-  const onSave = (state: IApiContext) => {
+  const onSave = (state: IStartChatInfo) => {
     state.portfolioId = selectedPortfolio.id
     const result = dispatch(sendStartValuePropositionChat(state))
-    .then(x => ({ form: x.payload } as FormSaveResponse<IApiContext>))
+    .then(x => ({ form: x.payload } as FormSaveResponse<IStartChatInfo>))
     .catch(
       r => {
         const errorText = r.cause?.body?.detail ?? r.message;//TODO: need check if it works
@@ -60,9 +56,9 @@ export default function ChatStartForm() {
   };
 
 
-  const form = useForm<IApiContext>({
+  const form = useForm<IStartChatInfo>({
     settingsKey: 'chat-start-form',
-    value: defaultFormData,
+    value: DEFAULT_API_CONTEXT_DATA,
     beforeLeave: () => Promise.resolve(false),
     loadUnsavedChanges: () => Promise.resolve(),
     getMetadata: apiContextValidationSchema,

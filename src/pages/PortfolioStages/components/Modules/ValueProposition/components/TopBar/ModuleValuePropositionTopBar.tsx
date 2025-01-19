@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from '../../../../../../../hooks';
-import { clearValuePropositionChatInfo, loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
+import { clearValuePropositionChatContext, loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
 
 import css from './ModuleValuePropositionTopBar.module.scss';
 import PortfolioPicker from '../../../../../../../components/PortfolioPicker/PortfolioPicker';
@@ -22,7 +22,7 @@ export default function ModuleValuePropositionTopBar() {
 
 
   const handleResetClick = () => {
-    dispatch(clearValuePropositionChatInfo());
+    dispatch(clearValuePropositionChatContext());
   }
 
   const handlePortfolioChange = (id: string) => {

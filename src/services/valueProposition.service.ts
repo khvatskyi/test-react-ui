@@ -1,9 +1,9 @@
-import { IApiContext, IValuePropositionChatInfo } from "../typings/models/module.models";
+import { IStartChatInfo, IInteractiveChatMessage } from "../typings/models/module.models";
 import { fetchWithAuth } from "../utilities/fetch-with-auth.utility";
 
   
   
-export async function startValuePropositionChat(context: IApiContext): Promise<IValuePropositionChatInfo> {
+export async function startValuePropositionChat(context: IStartChatInfo): Promise<IInteractiveChatMessage> {
   
   // MOCK
   //  let result = structuredClone(portfolio);
@@ -25,6 +25,6 @@ export async function startValuePropositionChat(context: IApiContext): Promise<I
       body: JSON.stringify(context),
     });
   
-    const result: IValuePropositionChatInfo = await response.json();
+    const result: IInteractiveChatMessage = await response.json();
     return result;
   }

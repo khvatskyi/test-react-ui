@@ -1,10 +1,12 @@
-export interface IApiContext {
+export interface IStartChatInfo {
   portfolioId?: string;
   name?: string;
   description?: string;
 }
 
-export interface IValuePropositionChatInfo {
-  quantityOfQuestions: number;
-  currentQuestion: number;
+export interface IInteractiveChatMessage {
+  question?: string;
+  example?: string;
+  totalOfQuestions?: number;
+  questionNumber?: number;
 }

@@ -1,10 +1,12 @@
-import { IChatMessage } from '../../typings/models/chat.models';
 import { Chat } from '../../components';
-import { getMessages, isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
+import { isAiMessageLoading, sendMessageToAi } from '../../store/ai.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { IInteractiveChatMessage } from '../../typings/models/module.models';
+import { selectValuePropositionChatContext } from '../../store/data.slice';
+
 
 export interface IChatProps {
-  messages: IChatMessage[];
+  messages: IInteractiveChatMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
 }
@@ -12,7 +14,7 @@ export interface IChatProps {
 export default function ChatRoom() {
   const dispatch = useAppDispatch();
   const isResponding = useAppSelector(isAiMessageLoading);
-  const messages = useAppSelector(getMessages);
+  const messages = useAppSelector(selectValuePropositionChatContext);
 
   const chatProps: IChatProps = {
     messages: messages,
