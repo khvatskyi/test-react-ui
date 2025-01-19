@@ -9,8 +9,9 @@ import { ReactComponent as iconInfo } from '@epam/assets/icons/content-interest-
 
 import css from './ChatStartForm.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../../../../../../hooks';
-import { selectPortfolioDetails, sendStartValuePropositionChat } from '../../../../../../../../store/data.slice';
+import { selectPortfolioDetails } from '../../../../../../../../store/data.slice';
 import { useShowErrorNotification } from '../../../../../../../../utilities/notifications.utility';
+import { sendStartValuePropositionChat } from '../../../../../../../../store/ai.slice';
 
 
 const MODULE_TAGS = [

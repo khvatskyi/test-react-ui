@@ -1,12 +1,15 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import { ActionReducerMapBuilder, createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../store'
 import { IAiContext, IAiMessage } from '../typings/models/ai.models';
-import { sendMessage } from '../services/ai.service';
+import { sendMessage, sendValuePropositionChatMessage } from '../services/ai.service';
 import { AiRole } from '../typings/enums/ai-role.enum';
 import { IChatMessage } from '../typings/models/chat.models';
+import { IStartChatInfo, IInteractiveChatMessage } from '../typings/models/module.models';
+import { startValuePropositionChat } from '../services/valueProposition.service';
 
 export interface IAiState {
+  ValuePropositionChatContext: IInteractiveChatMessage[] | null;
   aiContext: IAiContext[];
   isLoading: boolean;
 }
@@ -14,6 +17,7 @@ export interface IAiState {
 type StateModel = IAiState;
 
 const initialState: StateModel = {
+  ValuePropositionChatContext: null,
   aiContext: [],
   isLoading: false
 };
@@ -36,6 +40,62 @@ export const sendMessageToAi = createAsyncThunk(
   },
 );
 
+export const sendMessageValuePropositionChatToAi = createAsyncThunk(
+  'ai/sendMessageValuePropositionChatToAi',
+  async (message: string, thunkAPI) => {
+
+    const state = thunkAPI.getState() as RootState;
+
+    const requestMessage: IAiMessage = {
+      text: message,
+      context: state.ai.aiContext
+    };
+
+    thunkAPI.dispatch(isLoading(true));
+    const response = await sendValuePropositionChatMessage(requestMessage);
+    thunkAPI.dispatch(isLoading(false));
+    return response;
+  },
+);
+
+
+export const sendStartValuePropositionChat = createAsyncThunk(
+  'data/startValuePropositionChat',
+  async (context: IStartChatInfo, { rejectWithValue }) => {
+    
+    const response = startValuePropositionChat(context)
+    .catch(
+      r => { 
+        const errorText = r.cause?.body?.detail ?? r.message;
+        console.log(errorText);
+        return rejectWithValue(r);
+      }
+    );
+    return response;
+  }
+);
+
+
+const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
+  builder
+  .addCase(sendStartValuePropositionChat.pending, (state) => {
+    state.isLoading = true;
+  })
+  .addCase(sendStartValuePropositionChat.fulfilled, (state, action) => {
+    if (!state.ValuePropositionChatContext) {
+      state.ValuePropositionChatContext = [action.payload];
+    } else {
+      state.ValuePropositionChatContext.push(action.payload);
+      // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
+    }
+    state.isLoading = false;
+  })
+  .addCase(sendStartValuePropositionChat.rejected, (state) => {
+    state.isLoading = false;
+  })
+};
+
+
 export const aiSlice = createSlice({
   name: 'ai',
   // `createSlice` will infer the state type from the `initialState` argument
@@ -43,21 +103,27 @@ export const aiSlice = createSlice({
   reducers: {
     isLoading: (state, action) => {
       state.isLoading = action.payload
-    }
+    },
+    clearValuePropositionChatContext: (state) => {
+      state.ValuePropositionChatContext = null;
+    }, 
   },
   extraReducers: builder => {
     builder.addCase(sendMessageToAi.fulfilled, (state, action) => {
       state.aiContext.push({ role: AiRole.User, content: action.meta.arg });
       state.aiContext.push({ role: AiRole.Assistant, content: action.payload.message });
-    })
+    });
+    valuePropositionExtraReducers(builder);
   }
 })
 
 const { isLoading } = aiSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectValuePropositionChatContext = (state: RootState) => state.ai.ValuePropositionChatContext;
 export const lastAiResponse = (state: RootState) => state.ai.aiContext.at(-1)?.content ?? null;
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading;
+export const { clearValuePropositionChatContext } = aiSlice.actions;
 
 const selectAiContext = (state: RootState) => state.ai.aiContext;
 

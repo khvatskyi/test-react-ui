@@ -4,11 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { Button, FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from '../../../../../../../hooks';
-import { clearValuePropositionChatContext, loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
+import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
 
 import css from './ModuleValuePropositionTopBar.module.scss';
 import PortfolioPicker from '../../../../../../../components/PortfolioPicker/PortfolioPicker';
 import { getStateTitle, STATE_CODES } from '../../../../PortfolioStagesLeftPanel/structure';
+import { clearValuePropositionChatContext } from '../../../../../../../store/ai.slice';
 
 
 export default function ModuleValuePropositionTopBar() {

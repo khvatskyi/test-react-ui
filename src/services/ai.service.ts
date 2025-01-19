@@ -19,6 +19,22 @@ export async function sendMessage(message: IAiMessage): Promise<IAiResponse> {
   return result;
 }
 
+export async function sendValuePropositionChatMessage(message: IAiMessage): Promise<IAiResponse> {
+  const path = process.env.REACT_APP_API_ROOT + '/assistant/value-proposition/chat';
+  const body = {
+    context: message.context,
+    message: message.text
+  };
+
+  const response = await fetchWithAuth(path, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+
+  const result: IAiResponse = await response.json();
+  return result;
+} 
+
 export async function sendClientDefinitionFillMessage(message: IAiClientDefinitionFillRequest): Promise<IAiClientDefinitionFillResponse> {
 
   // MOCK DATA. Comment the code above and uncomment the code below:

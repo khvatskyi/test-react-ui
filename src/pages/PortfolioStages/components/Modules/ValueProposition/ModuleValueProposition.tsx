@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../../../../hooks';
-import { selectValuePropositionChatContext } from '../../../../../store/data.slice';
+import { selectValuePropositionChatContext } from '../../../../../store/ai.slice';
 import ChatRoom from '../../../../ChatRoom/ChatRoom';
 import ChatStartForm from './components/Chat/StartForm/ChatStartForm';
 import ModuleValuePropositionTopBar from './components/TopBar/ModuleValuePropositionTopBar';
