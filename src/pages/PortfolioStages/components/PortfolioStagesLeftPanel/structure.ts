@@ -1,6 +1,6 @@
 import { Icon } from '@epam/uui-core';
 import { ReactComponent as FillInfoIcon } from '@epam/assets/icons/notification-info-fill.svg';
-import { ReactComponent as SuccessIcon } from  '../../../../assets/icons/success.svg'
+// import { ReactComponent as SuccessIcon } from  '../../../../assets/icons/success.svg'
 import { ReactComponent as LockIcon } from  '@epam/assets/icons/action-lock-fill.svg'
 
 

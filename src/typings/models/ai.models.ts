@@ -3,6 +3,7 @@ export interface IAiMessage {
   context: IAiContext[];
   text: string;
   portfolioId: string;
+  isLastAnswer: boolean;
 }
 
 export interface IMessageToAi {

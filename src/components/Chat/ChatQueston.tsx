@@ -16,7 +16,6 @@ export default function ChatQueston({ message }: IChatQuestonProps) {
           </RichTextView>
           <h3 style={ {margin: '0px'}} >{message.topic }</h3>
           <Text cx={css.questionText} size='48'>{message.question }</Text>          
-          <Text cx={css.questionText}  >{message.example }</Text>          
           {/* <b>Example:</b>{message.example } */}
         </Panel>
       </FlexRow>

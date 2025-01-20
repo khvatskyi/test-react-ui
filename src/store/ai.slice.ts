@@ -10,6 +10,7 @@ import { startValuePropositionChat } from '../services/valueProposition.service'
 
 export interface IAiState {
   ValuePropositionChatContext: IInteractiveChatMessage[] | null;
+  ValuePropositionLastExample: string | null;
   aiContext: IAiContext[];
   isLoading: boolean;
 }
@@ -18,6 +19,7 @@ type StateModel = IAiState;
 
 const initialState: StateModel = {
   ValuePropositionChatContext: null,
+  ValuePropositionLastExample: null,
   aiContext: [],
   isLoading: false
 };
@@ -30,6 +32,7 @@ export const sendMessageToAi = createAsyncThunk(
 
     const requestMessage: IAiMessage = {
       portfolioId: state.data.selectedPortfolio.id,
+      isLastAnswer: false,
       text: message,
       context: state.ai.aiContext
     };
@@ -46,9 +49,14 @@ export const sendMessageValuePropositionChatToAi = createAsyncThunk(
   async (message: string, thunkAPI) => {
 
     const state = thunkAPI.getState() as RootState;
+    const messages = state.ai.ValuePropositionChatContext;
+    const isLastAnswer = (messages && messages.length > 0) 
+      ? messages[messages.length - 1].questionNumber === messages[messages.length - 1].totalOfQuestions
+      : false;
 
     const requestMessage: IAiMessage = {
       portfolioId: state.data.selectedPortfolio.id,
+      isLastAnswer: isLastAnswer,
       text: message,
       context: state.ai.aiContext
     };
@@ -86,9 +94,10 @@ const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState
   .addCase(sendStartValuePropositionChat.fulfilled, (state, action) => {
     if (!state.ValuePropositionChatContext) {
       state.ValuePropositionChatContext = [action.payload];
+      state.ValuePropositionLastExample = action.payload.example;      
     } else {
       state.ValuePropositionChatContext.push(action.payload);
-      // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
+      state.ValuePropositionLastExample = action.payload.example;      
     }
     state.isLoading = false;
   })
@@ -98,8 +107,10 @@ const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState
   .addCase(sendMessageValuePropositionChatToAi.fulfilled, (state, action) => {
     if (!state.ValuePropositionChatContext) {
       state.ValuePropositionChatContext = [action.payload];
+      state.ValuePropositionLastExample = action.payload.example;      
     } else {
       state.ValuePropositionChatContext.push(action.payload);
+      state.ValuePropositionLastExample = action.payload.example;      
       // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
     }
     state.isLoading = false;
@@ -119,6 +130,7 @@ export const aiSlice = createSlice({
     },
     clearValuePropositionChatContext: (state) => {
       state.ValuePropositionChatContext = null;
+      state.ValuePropositionLastExample = null;
     }, 
   },
   extraReducers: builder => {
@@ -134,6 +146,7 @@ const { isLoading } = aiSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectValuePropositionChatContext = (state: RootState) => state.ai.ValuePropositionChatContext;
+export const selectValuePropositionChatExample = (state: RootState) => state.ai.ValuePropositionLastExample;
 export const lastAiResponse = (state: RootState) => state.ai.aiContext.at(-1)?.content ?? null;
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading;
 export const { clearValuePropositionChatContext } = aiSlice.actions;

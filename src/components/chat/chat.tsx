@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput, Spinner } from '@epam/uui';
+import { FlexRow, Button, TextInput } from '@epam/uui';
 import css from './Chat.module.scss';
-// import { IChatMessage } from '../../typings/models/chat.models';
-import Message from './Message';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 import { IInteractiveChatMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQueston from './ChatQueston';
-// import { useAppSelector } from '../../hooks';
-// import { selectValuePropositionChatContext } from '../../store/data.slice';
+import ChatAiAnswerButton from './ChatAiAnswerButton';
 
 export interface IChatProps {
   messages: IInteractiveChatMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
+  getAiAnswerExample: () => string;
 }
 
-export default function Chat({ messages, isResponding, onSendMessage }: IChatProps) {
+export default function Chat({ messages, isResponding, onSendMessage, getAiAnswerExample }: IChatProps) {
   const [currentInput, setCurrentInput] = useState('');
+
+  const handleAiAnswerClick = () => {
+    setCurrentInput(getAiAnswerExample);
+  }
 
   const handleSendMessage = () => {
     if (currentInput.trim()) {
@@ -35,12 +37,8 @@ export default function Chat({ messages, isResponding, onSendMessage }: IChatPro
   return (
     <div className={css.chatWrapper}>
         <div className={css.messagesWrapper}>
-          {messages.map((message, index) => (
-            <>
-              <ChatQueston message={message} />
-              {/* <Message key={index} message={message} /> */}
-            </>
-          ))}
+          {messages.map((message, index) => ( <ChatQueston message={message} /> ))}
+          <ChatAiAnswerButton handleOnClick={handleAiAnswerClick} />
           {isResponding && <ChatSpinner/>}
         </div>
         <FlexRow vPadding='12' columnGap={12}>
