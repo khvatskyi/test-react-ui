@@ -44,7 +44,7 @@ export const portfolioStates: PortfolioStateItem[] = [
     { id: STATE_CODES.AboutPortfolio, name: 'About Portfolio', icon: FillInfoIcon },
     { id: STATE_CODES.Discover, name: 'Discover'},
     { id: STATE_CODES.ValueProposition, name: 'Value Proposition', parentId: 'discover' },
-    { id: STATE_CODES.ConsumersAndNeeds, name: 'Consumers & Needs', parentId: 'discover', icon: SuccessIcon},
+    { id: STATE_CODES.ConsumersAndNeeds, name: 'Consumers & Needs', parentId: 'discover'}, //, icon: SuccessIcon
     { id: STATE_CODES.APIProductJourneys, name: 'API Product Journeys', parentId: 'discover'},
     { id: STATE_CODES.BusinessModels, name: 'Business Models', parentId: 'discover'},
     { id: STATE_CODES.Capabilities, name: 'Capabilities', parentId: 'discover'},

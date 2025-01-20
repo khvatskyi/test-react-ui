@@ -17,6 +17,7 @@ export default function Message({ message }: IMessageProps) {
         <div className={css.textWrapper}>
           <span className={css.messageText}>
             {message.questionNumber + '/'+ message.totalOfQuestions}<br/>
+            <b>Topic:</b>{message.topic }<br/>
             <b>Question:</b>{message.question }<br/>
             <b>Example:</b>{message.example }
           </span>

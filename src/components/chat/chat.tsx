@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-
+import { useState } from 'react';
 import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput, Spinner } from '@epam/uui';
-
 import css from './Chat.module.scss';
 // import { IChatMessage } from '../../typings/models/chat.models';
 import Message from './Message';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 import { IInteractiveChatMessage } from '../../typings/models/module.models';
+import ChatSpinner from './ChatSpinner';
+import ChatQueston from './ChatQueston';
 // import { useAppSelector } from '../../hooks';
 // import { selectValuePropositionChatContext } from '../../store/data.slice';
 
@@ -36,13 +36,17 @@ export default function Chat({ messages, isResponding, onSendMessage }: IChatPro
     <div className={css.chatWrapper}>
         <div className={css.messagesWrapper}>
           {messages.map((message, index) => (
-            <Message key={index} message={message} />
+            <>
+              <ChatQueston message={message} />
+              {/* <Message key={index} message={message} /> */}
+            </>
           ))}
-          {isResponding && <Spinner />}
+          {isResponding && <ChatSpinner/>}
         </div>
         <FlexRow vPadding='12' columnGap={12}>
           <TextInput
             type='text'
+            placeholder='Type your answer...'
             value={currentInput}
             onValueChange={(v) => setCurrentInput(v)}
             onKeyDown={handleKeyPress}

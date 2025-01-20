@@ -5,6 +5,7 @@ export interface IStartChatInfo {
 }
 
 export interface IInteractiveChatMessage {
+  topic?: string;
   question?: string;
   example?: string;
   totalOfQuestions?: number;
