@@ -21,7 +21,8 @@ import {
   MainPage,
   PortfolioStages,
   PortfolioDetails,
-  Portfolios
+  Portfolios,
+  Framework
 } from './pages';
 import { store } from './store';
 import { useAppSelector } from './hooks';
@@ -53,6 +54,7 @@ function UuiEnhancedApp() {
             <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={hasProfile} />
             <GuardedRoute exact path='/portfolio/details/:id' component={PortfolioDetails} canActivate={hasProfile} />
             <GuardedRoute exact path='/portfolio/stages/:id' component={PortfolioStages} canActivate={hasProfile} />
+            <GuardedRoute exact path='/framework' component={Framework} canActivate={hasProfile} />
           </Switch>
         </Router>
         <Snackbar />

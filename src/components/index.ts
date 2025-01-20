@@ -5,3 +5,5 @@ export { default as MainMenu } from './MainMenu/MainMenu';
 export { default as DataLoading } from './DataLoading/DataLoading';
 export { default as GuardedRoute } from './GuardedRoute/GuardedRoute';
 export { default as PortfolioDetailsForm } from './PortfolioDetailsForm/PortfolioDetailsForm';
+export { default as PortfolioPicker } from './PortfolioPicker/PortfolioPicker';
+export { default as FrameworkCard } from './FrameworkCard/FrameworkCard';

@@ -7,9 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../store/data.slice';
 
 import css from './ModuleTopBar.module.scss';
-import PortfolioPicker from '../../../../components/PortfolioPicker/PortfolioPicker';
 import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
 import { clearChatContext, resetChatContext } from '../../../../store/ai.slice';
+import { PortfolioPicker } from '../../../../components';
 
 export interface IModuleTopBarProps {
   stateCode: STATE_CODES;
