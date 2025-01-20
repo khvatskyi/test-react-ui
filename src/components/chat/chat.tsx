@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput } from '@epam/uui';
+import { FlexCell, FlexRow, LabeledInput, Panel, Button, TextArea, TextInput, Spinner } from '@epam/uui';
 
 import css from './Chat.module.scss';
 // import { IChatMessage } from '../../typings/models/chat.models';
@@ -15,11 +15,6 @@ export interface IChatProps {
   isResponding: boolean;
   onSendMessage: (message: string) => void;
 }
-
-const AI_ANSWERING_MESSAGE: IInteractiveChatMessage = {
-  question: '...',
-  // sentByUser: false
-} as const;
 
 export default function Chat({ messages, isResponding, onSendMessage }: IChatProps) {
   const [currentInput, setCurrentInput] = useState('');
@@ -43,25 +38,17 @@ export default function Chat({ messages, isResponding, onSendMessage }: IChatPro
           {messages.map((message, index) => (
             <Message key={index} message={message} />
           ))}
-          {isResponding && <Message message={AI_ANSWERING_MESSAGE} />}
+          {isResponding && <Spinner />}
         </div>
         <FlexRow vPadding='12' columnGap={12}>
-        {/* <div className={css.inputMessageWrapper}> */}
-          {/* <div className={css.matFormField}> */}
-            <TextInput //<input
-              type='text'
-              value={currentInput}
-              onValueChange={(v) => setCurrentInput(v)}
-              onKeyDown={handleKeyPress}
-              cx={css.matInputElement}
-            />
-            {/* <Button
-              onClick={handleSendMessage}
-              caption='Send'
-            /> */}
-            <Button icon={sendIcon} color="primary" /* icon={iconStart} iconPosition='right'*/ onClick={handleSendMessage}/>
-          {/* </div> */}
-        {/* </div> */}
+          <TextInput
+            type='text'
+            value={currentInput}
+            onValueChange={(v) => setCurrentInput(v)}
+            onKeyDown={handleKeyPress}
+            cx={css.matInputElement}
+          />
+          <Button icon={sendIcon} color="primary" onClick={handleSendMessage}/>
         </FlexRow>
     </div>
   );

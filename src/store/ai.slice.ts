@@ -29,6 +29,7 @@ export const sendMessageToAi = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
 
     const requestMessage: IAiMessage = {
+      portfolioId: state.data.selectedPortfolio.id,
       text: message,
       context: state.ai.aiContext
     };
@@ -47,6 +48,7 @@ export const sendMessageValuePropositionChatToAi = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
 
     const requestMessage: IAiMessage = {
+      portfolioId: state.data.selectedPortfolio.id,
       text: message,
       context: state.ai.aiContext
     };
@@ -93,6 +95,17 @@ const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState
   .addCase(sendStartValuePropositionChat.rejected, (state) => {
     state.isLoading = false;
   })
+  .addCase(sendMessageValuePropositionChatToAi.fulfilled, (state, action) => {
+    if (!state.ValuePropositionChatContext) {
+      state.ValuePropositionChatContext = [action.payload];
+    } else {
+      state.ValuePropositionChatContext.push(action.payload);
+      // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
+    }
+    state.isLoading = false;
+  })
+
+  
 };
 
 

@@ -1,5 +1,6 @@
 import { IAiMessage, IAiResponse, IAiClientDefinitionFillRequest, IAiClientDefinitionFillResponse } from '../typings/models/ai.models';
 import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/client-info.models';
+import { IInteractiveChatMessage } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
 export async function sendMessage(message: IAiMessage): Promise<IAiResponse> {
@@ -19,10 +20,11 @@ export async function sendMessage(message: IAiMessage): Promise<IAiResponse> {
   return result;
 }
 
-export async function sendValuePropositionChatMessage(message: IAiMessage): Promise<IAiResponse> {
+export async function sendValuePropositionChatMessage(message: IAiMessage): Promise<IInteractiveChatMessage> {
   const path = process.env.REACT_APP_API_ROOT + '/assistant/value-proposition/chat';
   const body = {
-    context: message.context,
+    portfolioId: message.portfolioId,
+    // context: message.context,
     message: message.text
   };
 
@@ -31,7 +33,7 @@ export async function sendValuePropositionChatMessage(message: IAiMessage): Prom
     body: JSON.stringify(body),
   });
 
-  const result: IAiResponse = await response.json();
+  const result: IInteractiveChatMessage = await response.json();
   return result;
 } 
 

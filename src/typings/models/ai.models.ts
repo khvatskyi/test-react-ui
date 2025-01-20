@@ -2,6 +2,7 @@
 export interface IAiMessage {
   context: IAiContext[];
   text: string;
+  portfolioId: string;
 }
 
 export interface IMessageToAi {
