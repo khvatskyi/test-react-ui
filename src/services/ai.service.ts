@@ -24,6 +24,7 @@ export async function sendValuePropositionChatMessage(message: IAiMessage): Prom
   const path = process.env.REACT_APP_API_ROOT + '/assistant/value-proposition/chat';
   const body = {
     portfolioId: message.portfolioId,
+    isLastAnswer: message.isLastAnswer,
     // context: message.context,
     message: message.text
   };

@@ -96,23 +96,36 @@ const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState
       state.ValuePropositionChatContext = [action.payload];
       state.ValuePropositionLastExample = action.payload.example;      
     } else {
-      state.ValuePropositionChatContext.push(action.payload);
-      state.ValuePropositionLastExample = action.payload.example;      
+      if (action.payload) {
+        state.ValuePropositionChatContext.push(action.payload);
+        state.ValuePropositionLastExample = action.payload.example;
+      } else {
+        state.ValuePropositionLastExample = null;
+      }
     }
     state.isLoading = false;
   })
   .addCase(sendStartValuePropositionChat.rejected, (state) => {
     state.isLoading = false;
   })
+  .addCase(sendMessageValuePropositionChatToAi.pending, (state) => {
+    state.isLoading = true;
+  })
   .addCase(sendMessageValuePropositionChatToAi.fulfilled, (state, action) => {
     if (!state.ValuePropositionChatContext) {
       state.ValuePropositionChatContext = [action.payload];
-      state.ValuePropositionLastExample = action.payload.example;      
+      state.ValuePropositionLastExample = action.payload.example;
     } else {
-      state.ValuePropositionChatContext.push(action.payload);
-      state.ValuePropositionLastExample = action.payload.example;      
-      // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
+      if (action.payload) {
+        state.ValuePropositionChatContext.push(action.payload);
+        state.ValuePropositionLastExample = action.payload.example;
+      } else {
+        state.ValuePropositionLastExample = null;
+      }
     }
+    state.isLoading = false;
+  })
+  .addCase(sendMessageValuePropositionChatToAi.rejected, (state) => {
     state.isLoading = false;
   })
 
