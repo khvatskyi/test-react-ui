@@ -1,5 +1,5 @@
+import { STATE_CODES } from '../../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 import { FrameworkTab } from '../../typings/enums/framework-tab.enum';
-import { StageStatus } from '../../typings/enums/stage-status.enum';
 import { IFrameworkCard } from '../../typings/models/framework.models';
 
 export const CARDS: IFrameworkCard[] = [
@@ -12,25 +12,24 @@ export const CARDS: IFrameworkCard[] = [
         path: '/portfolios',
         stages: [
           {
-            name: 'Consumer needs',
-            path: '/',
-            status: StageStatus.Complete
+            name: 'Consumers',
+            path: STATE_CODES.ConsumersAndNeeds
           },
           {
             name: 'Capabilities',
-            path: '/'
+            path: STATE_CODES.Capabilities
           },
           {
             name: 'Business Model',
-            path: '/'
+            path: STATE_CODES.BusinessModels
           },
           {
             name: 'Goals & KPIs',
-            path: '/'
+            path: STATE_CODES.GoalsKPIs
           },
           {
             name: 'Roadmap',
-            path: '/'
+            path: STATE_CODES.Roadmap
           }
         ]
       },
@@ -40,20 +39,19 @@ export const CARDS: IFrameworkCard[] = [
         stages: [
           {
             name: 'Value Proposition',
-            path: '/'
+            path: STATE_CODES.ValueProposition
           },
           {
             name: 'Consumer Needs',
-            path: '/'
+            path: STATE_CODES.ConsumersAndNeeds
           },
           {
             name: 'API Product Journeys',
-            path: '/',
-            status: StageStatus.Complete
+            path: STATE_CODES.APIProductJourneys
           },
           {
             name: 'Portfolio Alignment',
-            path: '/'
+            path: STATE_CODES.PortfolioAlignment
           }
         ]
       }

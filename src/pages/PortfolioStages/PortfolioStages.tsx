@@ -9,6 +9,7 @@ import { useParamId, useQuery } from '../../utilities/route.utility';
 import { STATE_CODES } from './components/PortfolioStagesLeftPanel/structure';
 import ModuleValueProposition from './components/Modules/ValueProposition/ModuleValueProposition';
 import ApiProductJorneys from './components/Modules/ApiProductJorneys/ApiProductJorneys';
+import DiscoverOverview from './components/DiscoverOverview/DiscoverOverview';
 
 type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
@@ -31,7 +32,12 @@ export default function PortfolioStages() {
     history.push(`/portfolio/details/${portfolio.id}`);
   }
 
-  const implementedStates = [STATE_CODES.AboutPortfolio, STATE_CODES.ValueProposition, STATE_CODES.APIProductJourneys]
+  const implementedStates = [
+    STATE_CODES.Discover,
+    STATE_CODES.AboutPortfolio,
+    STATE_CODES.ValueProposition,
+    STATE_CODES.APIProductJourneys
+  ];
 
   return (
     <div className={css.root}>
@@ -42,6 +48,7 @@ export default function PortfolioStages() {
         {(selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent showOnlyTopBar={false} portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}
         {(selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition portfolioId={portfolio?.id} />}
         {(selectedStage === STATE_CODES.APIProductJourneys) && <ApiProductJorneys portfolioId={portfolio?.id} />}
+        {(selectedStage === STATE_CODES.Discover) && <DiscoverOverview portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}
 
         {/* temporary */}
         {!implementedStates.includes(selectedStage) && <PortfolioStagesContent showOnlyTopBar={true} portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}

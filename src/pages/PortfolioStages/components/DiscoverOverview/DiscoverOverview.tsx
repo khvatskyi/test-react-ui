@@ -1,0 +1,32 @@
+import { useHistory } from 'react-router-dom';
+import { FrameworkCard } from '../../../../components';
+import { CARDS } from '../../../../data/framework-data/cards';
+import { FrameworkTab } from '../../../../typings/enums/framework-tab.enum';
+import { IStage } from '../../../../typings/models/framework.models';
+import { IPortfolioDetails } from '../../../../typings/models/portfolio.models';
+import PortfolioStagesTopBar from '../PortfolioStagesTopBar/PortfolioStagesTopBar';
+import css from './DiscoverOverview.module.scss';
+
+export interface IDiscoverOverviewProps {
+  portfolio: IPortfolioDetails;
+  onUpdateClick: (e?: any) => void;
+}
+
+const DISCOVER_CARD = CARDS.find(x => x.title === FrameworkTab.Discover);
+
+export default function DiscoverOverview({ portfolio, onUpdateClick }: IDiscoverOverviewProps) {
+  const history = useHistory();
+
+  const handleStageClick = (stage: IStage) => {
+    history.push(`/portfolio/stages/${portfolio.id}?stage=${stage.path}`);
+  }
+
+  return (
+    <div className={css.root}>
+      <PortfolioStagesTopBar onUpdateClick={onUpdateClick} />
+      <div className={css.cardWrapper}>
+        <FrameworkCard {...DISCOVER_CARD} onStageClick={handleStageClick} />
+      </div>
+    </div>
+  )
+}

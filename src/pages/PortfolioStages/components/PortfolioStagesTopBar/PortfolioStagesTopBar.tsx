@@ -15,7 +15,7 @@ export interface IPortfolioStagesTopBarProps {
   onUpdateClick: () => void
 }
 
-export default function PortfolioStagesTopBar({ onUpdateClick}: IPortfolioStagesTopBarProps) {
+export default function PortfolioStagesTopBar({ onUpdateClick }: IPortfolioStagesTopBarProps) {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const history = useHistory();
@@ -35,11 +35,11 @@ export default function PortfolioStagesTopBar({ onUpdateClick}: IPortfolioStages
       <FlexRow columnGap='24' cx={css.buttonPanel}>
         <h2>{getStateTitle(selectedStage)}</h2>
         <FlexCell width='auto'>
-          <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange}/>
+          <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange} />
         </FlexCell>
         <FlexSpacer />
         <Button caption='Update portfolio' color='primary' fill='outline' onClick={onUpdateClick} />
-      </FlexRow>        
+      </FlexRow>
     </Panel>
   );
 }

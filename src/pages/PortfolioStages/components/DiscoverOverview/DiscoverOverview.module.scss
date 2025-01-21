@@ -1,0 +1,15 @@
+@use '../../../../variables' as globalVars;
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: globalVars.$min-content-height !important;
+
+  .cardWrapper {
+    width: 100%;
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+  }
+}
