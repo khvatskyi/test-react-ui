@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../store'
-import { IStartChatInfo, IInteractiveChatContext, ChatRole, IInteractiveChatMessage, IMessageToAi, IMessage } from '../typings/models/module.models';
+import { IStartChatInfo, IInteractiveChatContext, ChatRole, IMessageToAi, IContentMessage } from '../typings/models/module.models';
 import { setPending } from './data.slice';
 import { createChat, deleteChat, getChatContext, sendChatMessage } from '../services/chat.service';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
@@ -35,28 +35,20 @@ export const sendChatMessageToAi = createAsyncThunk(
 
     const state = thunkAPI.getState() as RootState;
     const messages = state.ai.aiChatContext.history;
-    const lastQuestion = findLastElement(messages, x => x.createdBy === ChatRole.AI) as IInteractiveChatMessage;
-    const isFinalAnswer = lastQuestion.questionNumber === lastQuestion.totalOfQuestions
+    const lastQuestion = findLastElement(messages, x => x.role === ChatRole.AI) as IContentMessage;
+    const isFinalAnswer = lastQuestion.content.questionNumber === lastQuestion.content.totalOfQuestions
 
     const requestMessage: IMessageToAi = {
       portfolioId: state.data.selectedPortfolio.id,
       isLastAnswer: isFinalAnswer,
       text: args.message,
-      context: state.ai.aiChatContext
+      context: state.ai.aiChatContext,
+      stateCode: args.stateCode,
     };
 
-    const response = await sendChatMessage(requestMessage, args.stateCode);
+    const response = await sendChatMessage(requestMessage);
 
-    let result: IMessage = null;
-
-    if (response) {
-      result = {
-        createdBy: ChatRole.AI,
-        content: response
-      }
-    }
-
-    return result;
+    return response;
   }
 );
 
@@ -116,7 +108,7 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     .addCase(loadChatContext.fulfilled, (state, action) => {
       state.aiChatContext = action.payload;
       state.lastExample = action.payload
-        ? findLastElement(action.payload.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example
+        ? findLastElement(action.payload.history ?? [], (x) => x.role === ChatRole.AI).content.example
         : null;
 
       state.isLoading = false;
@@ -129,7 +121,7 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     })
     .addCase(startNewChat.fulfilled, (state, action) => {
       state.aiChatContext = action.payload;
-      state.lastExample = findLastElement(action.payload.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example;
+      state.lastExample = findLastElement(action.payload.history ?? [], (x) => x.role === ChatRole.AI).content.example;
       state.isLoading = false;
     })
     .addCase(startNewChat.rejected, (state) => {
@@ -165,7 +157,7 @@ export const aiSlice = createSlice({
     },
     addUserMessage: (state, action) => {
       state.aiChatContext.history.push({
-        createdBy: ChatRole.User,
+        role: ChatRole.User,
         content: {
           text: action.payload
         }

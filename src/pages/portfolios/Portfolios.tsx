@@ -29,7 +29,7 @@ export default function Portfolios() {
       history.push('/portfolios/create');
     } else {
           uuiModals
-              .show<string>((props) => <StartWizard { ...props } />)
+              .show<string>((props) => <StartWizard { ...props } activeStep={2} />)
               .then((result) => {
                 history.push('/portfolios/create');
               })

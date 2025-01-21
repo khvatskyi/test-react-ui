@@ -19,8 +19,10 @@ const VALUE_PROPOSITION_LABELS = {
 // const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = { name: '', description: '' } as const;
 // for test 
 const VALUE_PROPOSITION_DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {
+  portfolioId: null,
   name: 'Business insurance quote enablement',
   description: "The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
+  stateCode: STATE_CODES.ValueProposition,
 } as const;
 
 const API_PRODUCT_JOURNEYS_MODULE_TAGS = [
@@ -36,9 +38,11 @@ const API_PRODUCT_JOURNEYS_LABELS = {
   tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
 };
 
-const API_PRODUCT_JOURNEYS_DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {
+const API_PRODUCT_JOURNEYS_DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {  
+  portfolioId: null,
   name: '',
   description: '',
+  stateCode: STATE_CODES.APIProductJourneys,
 } as const;
 
 export const FORM_DEFAULT_DATA = [

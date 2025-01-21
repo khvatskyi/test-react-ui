@@ -1,7 +1,8 @@
 export interface IStartChatInfo {
-  portfolioId?: string;
+  portfolioId: string;
   name?: string;
   description?: string;
+  stateCode: string;
 }
 
 export interface IInteractiveChatMessage {
@@ -14,12 +15,12 @@ export interface IInteractiveChatMessage {
 
 export interface IInteractiveChatContext extends IStartChatInfo {
   id: string;
-  history: IMessage[];
+  history: IContentMessage[];
 }
 
-export interface IMessage {
+export interface IContentMessage {
   id?: string;
-  createdBy: ChatRole;
+  role: ChatRole;
   content: IInteractiveChatMessage;
 }
 
@@ -28,6 +29,7 @@ export interface IMessageToAi {
   text: string;
   portfolioId: string;
   isLastAnswer: boolean;
+  stateCode: string;
 }
 
 export enum ChatRole {
