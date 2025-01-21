@@ -27,7 +27,7 @@ export default function PortfolioStages() {
   const history = useHistory();
   const handlePortfolioUpdate = (e: ClickEvent) => {
     e.stopPropagation();
-    history.push(`/portfolio/details/${portfolio.id}`); 
+    history.push(`/portfolio/details/${portfolio.id}`);
   }
 
   const implementedStates = [STATE_CODES.AboutPortfolio, STATE_CODES.ValueProposition]
@@ -38,12 +38,12 @@ export default function PortfolioStages() {
         <PortfolioStagesLeftPanel />
       </div>
       <div className={css.content}>
-        { (selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent showOnlyTopBar={false} portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
-        { (selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition /> }
-        
+        {(selectedStage === STATE_CODES.AboutPortfolio) && <PortfolioStagesContent showOnlyTopBar={false} portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}
+        {(selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition portfolioId={portfolio?.id} />}
+
         {/* temporary */}
-        { !implementedStates.includes(selectedStage)  && <PortfolioStagesContent showOnlyTopBar={true} portfolio={ portfolio } onUpdateClick={handlePortfolioUpdate} /> }
-      </div>    
-    </div>    
+        {!implementedStates.includes(selectedStage) && <PortfolioStagesContent showOnlyTopBar={true} portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}
+      </div>
+    </div>
   );
 }
