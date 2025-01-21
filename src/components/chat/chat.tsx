@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import { FlexRow, Button, TextInput } from '@epam/uui';
-import css from './Chat.module.scss';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
+
+import css from './Chat.module.scss';
 import { IInteractiveChatMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQueston from './ChatQueston';
