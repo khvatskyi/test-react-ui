@@ -1,50 +1,35 @@
 import { FormSaveResponse, useForm } from '@epam/uui-core';
 import { FlexCell, FlexRow, LabeledInput, Panel, Button, Text, TextArea, TextInput, Badge, IconContainer } from '@epam/uui';
 
-import { IStartChatInfo } from '../../../../../../../../typings/models/module.models';
 import { apiContextValidationSchema } from './validation.schema';
 import { ReactComponent as iconStart } from '@epam/assets/icons/navigation-chevron_right-outline.svg';
 import { ReactComponent as iconInfo } from '@epam/assets/icons/content-interest-fill.svg';
 
 
 import css from './ChatStartForm.module.scss';
-import { useAppDispatch, useAppSelector } from '../../../../../../../../hooks';
-import { selectPortfolioDetails } from '../../../../../../../../store/data.slice';
-import { useShowErrorNotification } from '../../../../../../../../utilities/notifications.utility';
-import { sendStartValuePropositionChat } from '../../../../../../../../store/ai.slice';
 
+import { startNewChat } from '../../../../store/ai.slice';
+import { STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
+import { IStartChatInfo } from '../../../../typings/models/module.models';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { useShowErrorNotification } from '../../../../utilities/notifications.utility';
+import { selectPortfolioDetails } from '../../../../store/data.slice';
+import { FORM_DEFAULT_DATA } from '../../constants';
 
-const MODULE_TAGS = [
-  'Target consumers',
-  'Unique solution',
-  'Primary benefits',
-  'Competitive edge',
-  'Success metrics',
-]
-
-const LABELS = {
-  moduleTitle: 'Module objective',
-  moduleDescription: 'The purpose of the of the Value Proposition module is to clearly articulate the unique benefits and advantages that the API offers to developers and businesses, demonstrating how it can solve specific problems, streamline processes, or enhance existing systems, ultimately driving adoption and usage.',
-  apiTitle: 'API context',
-  tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
+export interface IChatStartFormProps {
+  stateCode: STATE_CODES
 }
 
-// const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = { name: '', description: '' } as const;
-// for test 
-const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {
-  name: 'Business insurance quote enablement',
-  description: "The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
-} as const;
-
-export default function ChatStartForm() {
+export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
+  const { MODULE_TAGS, LABELS, DEFAULT_API_CONTEXT_DATA } = FORM_DEFAULT_DATA.find(x => x.id === stateCode);
 
   const showErrorNotification = useShowErrorNotification();
 
   const onSave = (state: IStartChatInfo) => {
     state.portfolioId = selectedPortfolio.id
-    const result = dispatch(sendStartValuePropositionChat(state))
+    const result = dispatch(startNewChat({ context: state, stateCode }))
       .then(x => ({ form: x.payload } as FormSaveResponse<IStartChatInfo>))
       .catch(
         r => {

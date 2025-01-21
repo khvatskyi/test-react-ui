@@ -1,6 +1,8 @@
-import { delay } from "@epam/uui-test-utils";
-import { IStartChatInfo, IInteractiveChatMessage, IInteractiveChatContext, ChatRole, IMessageToAi } from "../typings/models/module.models";
-import { fetchWithAuth } from "../utilities/fetch-with-auth.utility";
+import { delay } from '@epam/uui-test-utils';
+import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
+
+import { IStartChatInfo, IInteractiveChatMessage, IInteractiveChatContext, ChatRole, IMessageToAi } from '../typings/models/module.models';
+import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
 const MOCK_DATA = {
   interactiveChatMessage: {
@@ -48,13 +50,13 @@ const MOCK_DATA = {
   } as IInteractiveChatContext
 }
 
-export async function createValuePropositionChat(context: IStartChatInfo): Promise<IInteractiveChatContext> {
+export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
   return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
   //END of MOCK
 
-  const path = process.env.REACT_APP_API_ROOT + '/assistant/value-proposition/start-chat';
+  const path = process.env.REACT_APP_API_ROOT + `/assistant/${stateCode}/start-chat`;
   const response = await fetchWithAuth(path, {
     method: 'POST',
     body: JSON.stringify(context),
@@ -63,21 +65,21 @@ export async function createValuePropositionChat(context: IStartChatInfo): Promi
   return await response.json();
 }
 
-export async function getValuePropositionChat(portfolioId: string): Promise<IInteractiveChatContext> {
+export async function getChatContext(portfolioId: string, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
   return Promise.resolve<IInteractiveChatContext>(portfolioId === '2' ? MOCK_DATA.context : null);
   //END of MOCK
 
   const params = new URLSearchParams({ portfolioId }).toString();
-  const path = process.env.REACT_APP_API_ROOT + '/chat/value-proposition?' + params;
+  const path = process.env.REACT_APP_API_ROOT + `/chat/${stateCode}?` + params;
   const response = await fetchWithAuth(path, { method: 'GET' });
   const result: IInteractiveChatContext = await response.json();
 
   return result;
 }
 
-export async function sendValuePropositionChatMessage(message: IMessageToAi): Promise<IInteractiveChatMessage> {
+export async function sendChatMessage(message: IMessageToAi, stateCode: STATE_CODES): Promise<IInteractiveChatMessage> {
 
   // MOCK
   return await delay(1000).then(() => Promise.resolve<IInteractiveChatMessage>({
@@ -86,7 +88,7 @@ export async function sendValuePropositionChatMessage(message: IMessageToAi): Pr
   }));
   //END of MOCK
 
-  const path = process.env.REACT_APP_API_ROOT + '/assistant/value-proposition/chat';
+  const path = process.env.REACT_APP_API_ROOT + `/assistant/${stateCode}/chat`;
   const body = {
     portfolioId: message.portfolioId,
     // context: message.context,
@@ -102,4 +104,15 @@ export async function sendValuePropositionChatMessage(message: IMessageToAi): Pr
   return result;
 }
 
-// loadChat, createChat, sendMessageToAI, export, resetProgress
+export async function deleteChat(portfolioId: string, stateCode: STATE_CODES): Promise<void> {
+
+  // MOCK
+  return await delay(1000).then(() => Promise.resolve());
+  //END of MOCK
+
+  // const params = new URLSearchParams({ portfolioId }).toString();
+  // const path = process.env.REACT_APP_API_ROOT + `/chat/${stateCode}?` + params;
+  // const response = await fetchWithAuth(path, { method: 'DELETE' });
+
+  // return await response.json();
+}

@@ -3,15 +3,19 @@ import { useHistory } from 'react-router-dom';
 
 import { Button, FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
-import { useAppDispatch, useAppSelector } from '../../../../../../../hooks';
-import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../../../../store/data.slice';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../store/data.slice';
 
-import css from './ModuleValuePropositionTopBar.module.scss';
-import PortfolioPicker from '../../../../../../../components/PortfolioPicker/PortfolioPicker';
-import { getStateTitle, STATE_CODES } from '../../../../PortfolioStagesLeftPanel/structure';
-import { clearValuePropositionChatContext, resetValuePropositionContext } from '../../../../../../../store/ai.slice';
+import css from './ModuleTopBar.module.scss';
+import PortfolioPicker from '../../../../components/PortfolioPicker/PortfolioPicker';
+import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
+import { clearChatContext, resetChatContext } from '../../../../store/ai.slice';
 
-export default function ModuleValuePropositionTopBar() {
+export interface IModuleTopBarProps {
+  stateCode: STATE_CODES;
+}
+
+export default function ModuleTopBar({ stateCode }: IModuleTopBarProps) {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const history = useHistory();
@@ -21,19 +25,19 @@ export default function ModuleValuePropositionTopBar() {
   }, [dispatch]);
 
   const handleResetClick = () => {
-    dispatch(resetValuePropositionContext(selectedPortfolio.id));
+    dispatch(resetChatContext({ portfolioId: selectedPortfolio.id, stateCode }));
   }
 
   const handlePortfolioChange = (id: string) => {
-    dispatch(clearValuePropositionChatContext());
+    dispatch(clearChatContext());
     dispatch(loadPortfolio(id));
-    history.push(`${id}?stage=${STATE_CODES.ValueProposition}`);
+    history.push(`${id}?stage=${stateCode}`);
   };
 
   return  (
     <Panel cx={css.buttonPanel}>
       <FlexRow columnGap='24' cx={css.buttonPanel}>
-        <h2>{getStateTitle(STATE_CODES.ValueProposition)}</h2>
+        <h2>{getStateTitle(stateCode)}</h2>
         <FlexCell width='auto'>
           <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange}/>
         </FlexCell>

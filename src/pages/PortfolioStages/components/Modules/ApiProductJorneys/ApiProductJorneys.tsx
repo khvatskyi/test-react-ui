@@ -3,19 +3,19 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks';
 import { addUserMessage, loadChatContext, selectChatContext, selectValuePropositionChatExample, sendChatMessageToAi } from '../../../../../store/ai.slice';
 import ChatRoom from '../../../../../components/ChatRoom/ChatRoom';
-import ModuleTopBar from '../../TopBar/ModuleTopBar';
-
-import css from './ModuleValueProposition.module.scss';
-import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
 import ChatStartForm from '../../StartForm/ChatStartForm';
 
-export interface IModuleValuePropositionProps {
+import css from './ApiProductJorneys.module.scss';
+import ModuleTopBar from '../../TopBar/ModuleTopBar';
+import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
+
+export interface IApiProductJorneysProps {
   portfolioId: string;
 }
 
-const CURRENT_STATE_CODE = STATE_CODES.ValueProposition;
+export const CURRENT_STATE_CODE = STATE_CODES.APIProductJourneys;
 
-export default function ModuleValueProposition({ portfolioId }: IModuleValuePropositionProps) {
+export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysProps) {
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
   const example = useAppSelector(selectValuePropositionChatExample);

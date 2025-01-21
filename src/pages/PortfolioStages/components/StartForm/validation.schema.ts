@@ -1,6 +1,5 @@
 import { Metadata } from '@epam/uui-core';
-import { IStartChatInfo } from '../../../../../../../../typings/models/module.models';
-
+import { IStartChatInfo } from '../../../../typings/models/module.models';
 
 export const apiContextValidationSchema = (_: IStartChatInfo): Metadata<IStartChatInfo> => ({
   props: {
