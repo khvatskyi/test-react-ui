@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { FlexRow, Button, TextInput } from '@epam/uui';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
@@ -42,6 +42,18 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
     }
   };
 
+  const chatBoxRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const displayMessages = (<>
     {
       messages.map((message, index) => message.createdBy === ChatRole.AI
@@ -53,7 +65,7 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
 
   return (
     <div className={css.chatWrapper}>
-      <div className={css.messagesWrapper}>
+      <div ref={chatBoxRef} className={css.messagesWrapper}>
         {displayMessages}
         {lastMessageBelongsToAi && <ChatAiAnswerButton onClick={handleAiAnswerClick} />}
         {isResponding && <ChatSpinner />}
