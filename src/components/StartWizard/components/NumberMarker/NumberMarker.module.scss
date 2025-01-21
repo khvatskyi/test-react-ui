@@ -1,0 +1,32 @@
+.circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.activeBorder{
+  border: 3px solid #0A68F1;
+}
+
+.disableBorder{
+  border: 3px solid #CED0DB;
+}
+
+.number{
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+
+
+}
+
+.activeNumber {
+  color: #0A68F1;
+}
+
+.disableNumber {
+  color:  #CED0DB;
+}

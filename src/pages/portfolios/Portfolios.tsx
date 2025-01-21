@@ -7,6 +7,8 @@ import css from './Portfolios.module.scss';
 import { ProfileLeftPanel, PortfolioList, PortfolioPlacehoder } from './components';
 import { loadPortfolios, loadProfileInfo, selectIsDataLoading, selectPortfolios, selectProfile } from '../../store/data.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useUuiContext } from '@epam/uui-core';
+import StartWizard from '../../components/StartWizard/StartWizard';
 
 export default function Portfolios() {
 
@@ -20,9 +22,19 @@ export default function Portfolios() {
     dispatch(loadProfileInfo());
   }, [dispatch]);
 
+  const { uuiModals } = useUuiContext();
   const history = useHistory();
   const handlePortfolioCreate = () => {
-    history.push('/portfolios/create');
+    if (portfolios?.length) {
+      history.push('/portfolios/create');
+    } else {
+          uuiModals
+              .show<string>((props) => <StartWizard { ...props } />)
+              .then((result) => {
+                history.push('/portfolios/create');
+              })
+              .catch(() => {}) 
+     }
   }
 
   return !isLoading && (

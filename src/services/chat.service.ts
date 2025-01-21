@@ -91,6 +91,7 @@ export async function sendChatMessage(message: IMessageToAi, stateCode: STATE_CO
   const path = process.env.REACT_APP_API_ROOT + `/assistant/${stateCode}/chat`;
   const body = {
     portfolioId: message.portfolioId,
+    isLastAnswer: message.isLastAnswer,
     // context: message.context,
     message: message.text
   };
