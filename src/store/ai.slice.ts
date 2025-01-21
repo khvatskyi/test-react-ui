@@ -1,124 +1,159 @@
-import { ActionReducerMapBuilder, createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../store'
-import { IAiContext, IAiMessage } from '../typings/models/ai.models';
-import { sendMessage, sendValuePropositionChatMessage } from '../services/ai.service';
-import { AiRole } from '../typings/enums/ai-role.enum';
-import { IChatMessage } from '../typings/models/chat.models';
-import { IStartChatInfo, IInteractiveChatMessage } from '../typings/models/module.models';
-import { startValuePropositionChat } from '../services/valueProposition.service';
+import { IStartChatInfo, IInteractiveChatContext, ChatRole, IInteractiveChatMessage, IMessageToAi, IMessage } from '../typings/models/module.models';
+import { createValuePropositionChat, deleteValuePropositionChat, getValuePropositionChat, sendValuePropositionChatMessage } from '../services/value-proposition-chat.service';
+import { setPending } from './data.slice';
 
 export interface IAiState {
-  ValuePropositionChatContext: IInteractiveChatMessage[] | null;
-  ValuePropositionLastExample: string | null;
-  aiContext: IAiContext[];
+  aiChatContext: IInteractiveChatContext;
+  lastExample: string | null;
   isLoading: boolean;
 }
 
 type StateModel = IAiState;
 
 const initialState: StateModel = {
-  ValuePropositionChatContext: null,
-  ValuePropositionLastExample: null,
-  aiContext: [],
+  aiChatContext: null,
+  lastExample: null,
   isLoading: false
 };
 
-export const sendMessageToAi = createAsyncThunk(
-  'ai/sendMessageToAi',
-  async (message: string, thunkAPI) => {
-
-    const state = thunkAPI.getState() as RootState;
-
-    const requestMessage: IAiMessage = {
-      portfolioId: state.data.selectedPortfolio.id,
-      isLastAnswer: false,
-      text: message,
-      context: state.ai.aiContext
-    };
-
-    thunkAPI.dispatch(isLoading(true));
-    const response = await sendMessage(requestMessage);
-    thunkAPI.dispatch(isLoading(false));
-    return response;
-  },
-);
+const findLastElement = <T>(array: T[], predicate: (item: T) => boolean): T | undefined => {
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (predicate(array[i])) {
+      return array[i];
+    }
+  }
+  return undefined;
+};
 
 export const sendMessageValuePropositionChatToAi = createAsyncThunk(
   'ai/sendMessageValuePropositionChatToAi',
   async (message: string, thunkAPI) => {
 
     const state = thunkAPI.getState() as RootState;
-    const messages = state.ai.ValuePropositionChatContext;
-    const isLastAnswer = (messages && messages.length > 0) 
-      ? messages[messages.length - 1].questionNumber === messages[messages.length - 1].totalOfQuestions
-      : false;
+    const messages = state.ai.aiChatContext.history;
+    const lastQuestion = findLastElement(messages, x => x.createdBy === ChatRole.AI) as IInteractiveChatMessage;
+    const isFinalAnswer = lastQuestion.questionNumber === lastQuestion.totalOfQuestions
 
-    const requestMessage: IAiMessage = {
+    const requestMessage: IMessageToAi = {
       portfolioId: state.data.selectedPortfolio.id,
-      isLastAnswer: isLastAnswer,
+      isLastAnswer: isFinalAnswer,
       text: message,
-      context: state.ai.aiContext
+      context: state.ai.aiChatContext
     };
 
-    thunkAPI.dispatch(isLoading(true));
     const response = await sendValuePropositionChatMessage(requestMessage);
-    thunkAPI.dispatch(isLoading(false));
-    return response;
-  },
-);
 
+    let result: IMessage = null;
+
+    if (response) {
+      result = {
+        createdBy: ChatRole.AI,
+        content: response
+      }
+    }
+
+    return result;
+  }
+);
 
 export const sendStartValuePropositionChat = createAsyncThunk(
   'data/startValuePropositionChat',
   async (context: IStartChatInfo, { rejectWithValue }) => {
-    
-    const response = startValuePropositionChat(context)
-    .catch(
-      r => { 
-        const errorText = r.cause?.body?.detail ?? r.message;
-        console.log(errorText);
-        return rejectWithValue(r);
-      }
-    );
-    return response;
+
+    try {
+      const response = await createValuePropositionChat(context);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
   }
 );
 
+export const loadValuePropositionChat = createAsyncThunk(
+  'data/loadValuePropositionChat',
+  async (portfolioId: string, { rejectWithValue }) => {
+    try {
+      const response = await getValuePropositionChat(portfolioId);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+      return rejectWithValue(r);
+    }
+  }
+);
+
+export const resetValuePropositionContext = createAsyncThunk(
+  'data/clearValuePropositionContext',
+  async (portfolioId: string, { rejectWithValue, dispatch }) => {
+
+    dispatch(setPending(true));
+
+    try {
+      return await deleteValuePropositionChat(portfolioId);
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+      return rejectWithValue(r);
+    } finally {
+      dispatch(setPending(false));
+    }
+  }
+);
 
 const valuePropositionExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
   builder
-  .addCase(sendStartValuePropositionChat.pending, (state) => {
-    state.isLoading = true;
-  })
-  .addCase(sendStartValuePropositionChat.fulfilled, (state, action) => {
-    if (!state.ValuePropositionChatContext) {
-      state.ValuePropositionChatContext = [action.payload];
-      state.ValuePropositionLastExample = action.payload.example;      
-    } else {
-      state.ValuePropositionChatContext.push(action.payload);
-      state.ValuePropositionLastExample = action.payload.example;      
-    }
-    state.isLoading = false;
-  })
-  .addCase(sendStartValuePropositionChat.rejected, (state) => {
-    state.isLoading = false;
-  })
-  .addCase(sendMessageValuePropositionChatToAi.fulfilled, (state, action) => {
-    if (!state.ValuePropositionChatContext) {
-      state.ValuePropositionChatContext = [action.payload];
-      state.ValuePropositionLastExample = action.payload.example;      
-    } else {
-      state.ValuePropositionChatContext.push(action.payload);
-      state.ValuePropositionLastExample = action.payload.example;      
-      // state.ValuePropositionChatContext.push({ role: AiRole.Assistant, content: action.payload.message });
-    }
-    state.isLoading = false;
-  })
+    .addCase(loadValuePropositionChat.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(loadValuePropositionChat.fulfilled, (state, action) => {
 
-  
+      if (action.payload) {
+        state.aiChatContext = action.payload;
+        state.lastExample = findLastElement(action.payload?.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example;
+      }
+
+      state.isLoading = false;
+    })
+    .addCase(loadValuePropositionChat.rejected, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(sendStartValuePropositionChat.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(sendStartValuePropositionChat.fulfilled, (state, action) => {
+      state.aiChatContext = action.payload;
+      state.lastExample = findLastElement(action.payload.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example;
+      state.isLoading = false;
+    })
+    .addCase(sendStartValuePropositionChat.rejected, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(sendMessageValuePropositionChatToAi.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(sendMessageValuePropositionChatToAi.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.aiChatContext.history.push(action.payload);
+      }
+
+      state.lastExample = action.payload ? action.payload.content.example : null;
+      state.isLoading = false;
+    })
+    .addCase(sendMessageValuePropositionChatToAi.rejected, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(resetValuePropositionContext.fulfilled, (state) => {
+      state.aiChatContext = null;
+      state.lastExample = null;
+    })
 };
-
 
 export const aiSlice = createSlice({
   name: 'ai',
@@ -128,39 +163,28 @@ export const aiSlice = createSlice({
     isLoading: (state, action) => {
       state.isLoading = action.payload
     },
+    addUserMessage: (state, action) => {
+      state.aiChatContext.history.push({
+        createdBy: ChatRole.User,
+        content: {
+          text: action.payload
+        }
+      });
+    },
     clearValuePropositionChatContext: (state) => {
-      state.ValuePropositionChatContext = null;
-      state.ValuePropositionLastExample = null;
-    }, 
+      state.aiChatContext = null;
+      state.lastExample = null;
+    }
   },
   extraReducers: builder => {
-    builder.addCase(sendMessageToAi.fulfilled, (state, action) => {
-      state.aiContext.push({ role: AiRole.User, content: action.meta.arg });
-      state.aiContext.push({ role: AiRole.Assistant, content: action.payload.message });
-    });
     valuePropositionExtraReducers(builder);
   }
 })
 
-const { isLoading } = aiSlice.actions;
-
 // Other code such as selectors can use the imported `RootState` type
-export const selectValuePropositionChatContext = (state: RootState) => state.ai.ValuePropositionChatContext;
-export const selectValuePropositionChatExample = (state: RootState) => state.ai.ValuePropositionLastExample;
-export const lastAiResponse = (state: RootState) => state.ai.aiContext.at(-1)?.content ?? null;
+export const selectChatContext = (state: RootState) => state.ai.aiChatContext;
+export const selectValuePropositionChatExample = (state: RootState) => state.ai.lastExample;
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading;
-export const { clearValuePropositionChatContext } = aiSlice.actions;
-
-const selectAiContext = (state: RootState) => state.ai.aiContext;
-
-// Memoized selector: Transform aiContext into IChatMessage[]
-export const getMessages = createSelector(
-  [selectAiContext], // Input selectors
-  (aiContext) =>
-    aiContext.map((x) => ({
-      text: x.content,
-      sentByUser: x.role === AiRole.User,
-    })) as IChatMessage[]
-);
+export const { addUserMessage, clearValuePropositionChatContext } = aiSlice.actions;
 
 export default aiSlice.reducer;

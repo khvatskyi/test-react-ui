@@ -4,23 +4,29 @@ import { FlexRow, Button, TextInput } from '@epam/uui';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 
 import css from './Chat.module.scss';
-import { IInteractiveChatMessage } from '../../typings/models/module.models';
+import { ChatRole, IMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQueston from './ChatQueston';
 import ChatAiAnswerButton from './ChatAiAnswerButton';
+import UserAnswer from './UserAnswer';
+import { useAppSelector } from '../../hooks';
+import { selectChatContext } from '../../store/ai.slice';
 
 export interface IChatProps {
-  messages: IInteractiveChatMessage[];
+  messages: IMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
   getAiAnswerExample: () => string;
 }
 
 export default function Chat({ messages, isResponding, onSendMessage, getAiAnswerExample }: IChatProps) {
+  const history = useAppSelector(selectChatContext).history;
+  const lastMessageBelongsToAi = history.at(history.length - 1).createdBy === ChatRole.AI;
+
   const [currentInput, setCurrentInput] = useState('');
 
   const handleAiAnswerClick = () => {
-    setCurrentInput(getAiAnswerExample);
+    setCurrentInput(getAiAnswerExample());
   }
 
   const handleSendMessage = () => {
@@ -36,24 +42,33 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
     }
   };
 
+  const displayMessages = (<>
+    {
+      messages.map((message, index) => message.createdBy === ChatRole.AI
+        ? <ChatQueston key={index} message={message.content} />
+        : <UserAnswer key={index} message={message.content} />
+      )
+    }
+  </>);
+
   return (
     <div className={css.chatWrapper}>
-        <div className={css.messagesWrapper}>
-          {messages.map((message, index) => ( <ChatQueston message={message} /> ))}
-          <ChatAiAnswerButton handleOnClick={handleAiAnswerClick} />
-          {isResponding && <ChatSpinner/>}
-        </div>
-        <FlexRow vPadding='12' columnGap={12}>
-          <TextInput
-            type='text'
-            placeholder='Type your answer...'
-            value={currentInput}
-            onValueChange={(v) => setCurrentInput(v)}
-            onKeyDown={handleKeyPress}
-            cx={css.matInputElement}
-          />
-          <Button icon={sendIcon} color="primary" onClick={handleSendMessage}/>
-        </FlexRow>
+      <div className={css.messagesWrapper}>
+        {displayMessages}
+        {lastMessageBelongsToAi && <ChatAiAnswerButton onClick={handleAiAnswerClick} />}
+        {isResponding && <ChatSpinner />}
+      </div>
+      <FlexRow cx={css.inputMessageWrapper} columnGap={12}>
+        <TextInput
+          type='text'
+          placeholder='Type your answer...'
+          value={currentInput}
+          onValueChange={(v) => setCurrentInput(v)}
+          onKeyDown={handleKeyPress}
+          cx={css.matInputElement}
+        />
+        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} />
+      </FlexRow>
     </div>
   );
 };

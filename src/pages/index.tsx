@@ -1,4 +1,4 @@
-export { default as ChatRoom } from './ChatRoom/ChatRoom';
+export { default as ChatRoom } from '../components/ChatRoom/ChatRoom';
 export { default as ClientProfile } from './ClientProfile/ClientProfile';
 export { default as MainPage } from './MainPage/MainPage';
 export { default as PortfolioStages } from './PortfolioStages/PortfolioStages';

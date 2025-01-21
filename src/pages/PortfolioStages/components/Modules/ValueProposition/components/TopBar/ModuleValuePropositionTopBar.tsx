@@ -9,8 +9,7 @@ import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../
 import css from './ModuleValuePropositionTopBar.module.scss';
 import PortfolioPicker from '../../../../../../../components/PortfolioPicker/PortfolioPicker';
 import { getStateTitle, STATE_CODES } from '../../../../PortfolioStagesLeftPanel/structure';
-import { clearValuePropositionChatContext } from '../../../../../../../store/ai.slice';
-
+import { clearValuePropositionChatContext, resetValuePropositionContext } from '../../../../../../../store/ai.slice';
 
 export default function ModuleValuePropositionTopBar() {
   const dispatch = useAppDispatch();
@@ -21,12 +20,12 @@ export default function ModuleValuePropositionTopBar() {
     dispatch(loadPortfolios());
   }, [dispatch]);
 
-
   const handleResetClick = () => {
-    dispatch(clearValuePropositionChatContext());
+    dispatch(resetValuePropositionContext(selectedPortfolio.id));
   }
 
   const handlePortfolioChange = (id: string) => {
+    dispatch(clearValuePropositionChatContext());
     dispatch(loadPortfolio(id));
     history.push(`${id}?stage=${STATE_CODES.ValueProposition}`);
   };

@@ -24,7 +24,7 @@ export const signInWithSSOCode = createAsyncThunk(
   async (code: string, { dispatch, rejectWithValue }) => {
     const path = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
-    const showErrorNotification = useShowErrorNotification();
+    // const showErrorNotification = useShowErrorNotification();
 
     return Promise.resolve<IUserContext>(({
       accessToken: 'some_token',
@@ -37,34 +37,34 @@ export const signInWithSSOCode = createAsyncThunk(
       hasProfile: true
     }));
 
-    return await fetch(`${path}?${params.toString()}`, {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          showErrorNotification(`Error: ${response.statusText} (${response.status})`)
-        } else {
-          return response.json();
-        }
-      })
-      .then((result: IUserResponse) => {
-        const newUserContext: IUserContext = {
-          accessToken: result.access_token,
-          userName: result.username,
-          email: result.email,
-          name: result.name,
-          givenName: result.given_name,
-          familyName: result.family_name,
-          picture: result.picture,
-          hasProfile: result.has_profile,
-        };
-        return newUserContext;
-      })
-      .catch(e => {
-        const error_message = `Error during sign in with SSO: ${e.message} `
-        showErrorNotification(error_message)
-        return rejectWithValue(error_message);
-      });
+    // return await fetch(`${path}?${params.toString()}`, {
+    //   method: 'GET'
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       showErrorNotification(`Error: ${response.statusText} (${response.status})`)
+    //     } else {
+    //       return response.json();
+    //     }
+    //   })
+    //   .then((result: IUserResponse) => {
+    //     const newUserContext: IUserContext = {
+    //       accessToken: result.access_token,
+    //       userName: result.username,
+    //       email: result.email,
+    //       name: result.name,
+    //       givenName: result.given_name,
+    //       familyName: result.family_name,
+    //       picture: result.picture,
+    //       hasProfile: result.has_profile,
+    //     };
+    //     return newUserContext;
+    //   })
+    //   .catch(e => {
+    //     const error_message = `Error during sign in with SSO: ${e.message} `
+    //     showErrorNotification(error_message)
+    //     return rejectWithValue(error_message);
+    //   });
   }
 );
 
@@ -95,9 +95,9 @@ export const sessionSlice = createSlice({
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
         if (state.userContext.accessToken) {
-          window.location.href =  state.userContext.hasProfile ?  '/portfolios' : '/profile';
+          window.location.href = state.userContext.hasProfile ? '/portfolios' : '/profile';
         } else {
-          window.location.href = '/'          
+          window.location.href = '/'
         }
       })
       .addCase(signInWithSSOCode.rejected, (state) => {

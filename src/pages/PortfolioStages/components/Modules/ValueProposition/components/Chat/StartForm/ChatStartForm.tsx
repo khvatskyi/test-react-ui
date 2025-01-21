@@ -31,29 +31,29 @@ const LABELS = {
 
 // const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = { name: '', description: '' } as const;
 // for test 
-const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {  
+const DEFAULT_API_CONTEXT_DATA: IStartChatInfo = {
   name: 'Business insurance quote enablement',
   description: "The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
 } as const;
-
 
 export default function ChatStartForm() {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
 
-  const showErrorNotification = useShowErrorNotification();    
-  
+  const showErrorNotification = useShowErrorNotification();
+
   const onSave = (state: IStartChatInfo) => {
     state.portfolioId = selectedPortfolio.id
     const result = dispatch(sendStartValuePropositionChat(state))
-    .then(x => ({ form: x.payload } as FormSaveResponse<IStartChatInfo>))
-    .catch(
-      r => {
-        const errorText = r.cause?.body?.detail ?? r.message;//TODO: need check if it works
-        showErrorNotification(errorText)
-      }
-    );
-    return result 
+      .then(x => ({ form: x.payload } as FormSaveResponse<IStartChatInfo>))
+      .catch(
+        r => {
+          const errorText = r.cause?.body?.detail ?? r.message;//TODO: need check if it works
+          showErrorNotification(errorText)
+        }
+      );
+
+    return result;
   };
 
 
@@ -67,23 +67,25 @@ export default function ChatStartForm() {
   });
   form.canRedo = false;
   const { lens } = form;
- 
+
   return (
     <div className={css.rootForm}>
       <Panel cx={css.formPanel} background='surface-main' shadow>
         <FlexCell width='100%'>
-          <h3 style={{ margin: '0px' }}>{ LABELS.moduleTitle }</h3>
+          <h3 style={{ margin: '0px' }}>{LABELS.moduleTitle}</h3>
         </FlexCell>
         <FlexCell width='100%'>
-          <Text cx={css.description}>{  LABELS.moduleDescription  } </Text>
+          <Text cx={css.description}>{LABELS.moduleDescription} </Text>
         </FlexCell>
-        <div style={ { display: 'flex', flexWrap: 'wrap', gap: '12px' } }>
-          { MODULE_TAGS.map( (tag) => ( 
-            <Badge color="neutral" fill="outline" caption={tag} /> 
-            )) }
-        </div>        
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+          {
+            MODULE_TAGS.map((tag, index) => (
+              <Badge key={index} color="neutral" fill="outline" caption={tag} />
+            ))
+          }
+        </div>
         <FlexCell width='100%'>
-          <h3 style={{ margin: '0px' }}>{ LABELS.apiTitle }API context</h3>
+          <h3 style={{ margin: '0px' }}>{LABELS.apiTitle}</h3>
         </FlexCell>
         <FlexCell width='100%'>
           <FlexRow vPadding='12'>
@@ -96,18 +98,18 @@ export default function ChatStartForm() {
           <FlexRow vPadding='12'>
             <FlexCell minWidth={550} width='100%'>
               <LabeledInput htmlFor='chatStartDescription' label='Description' {...lens.prop('description').toProps()}>
-                <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={ 4 } placeholder='Please type text' />
+                <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={4} placeholder='Please type text' />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
         </FlexCell>
         <FlexRow vPadding="12">
-          <Button caption="Start chat" color="primary" icon={iconStart} iconPosition='right' onClick={ form.save }  />
+          <Button caption="Start chat" color="primary" icon={iconStart} iconPosition='right' onClick={form.save} />
         </FlexRow>
         <Panel cx={css.panelTip}>
           <FlexRow columnGap={8} alignItems='top'>
-              <IconContainer icon={iconInfo} />
-              <Text size="36"> {LABELS.tipMessage} </Text>
+            <IconContainer icon={iconInfo} />
+            <Text size="36"> {LABELS.tipMessage} </Text>
           </FlexRow>
         </Panel>
       </Panel>
