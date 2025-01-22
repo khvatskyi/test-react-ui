@@ -18,14 +18,16 @@ export default function DiscoverOverview({ portfolio, onUpdateClick }: IDiscover
   const history = useHistory();
 
   const handleStageClick = (stage: IStage) => {
-    history.push(`/portfolio/stages/${portfolio.id}?stage=${stage.path}`);
+    if (stage.path) {
+      history.push(`/portfolio/stages/${portfolio.id}?stage=${stage.path}`);
+    }
   }
 
   return (
     <div className={css.root}>
       <PortfolioStagesTopBar onUpdateClick={onUpdateClick} />
       <div className={css.cardWrapper}>
-        <FrameworkCard {...DISCOVER_CARD} onStageClick={handleStageClick} />
+        <FrameworkCard {...DISCOVER_CARD} onStageClick={handleStageClick} cx={css.card} isSingleCard={true} />
       </div>
     </div>
   )

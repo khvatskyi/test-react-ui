@@ -4,7 +4,7 @@ import { StageStatus } from "../enums/stage-status.enum";
 export interface IStage {
   name: string;
   status?: StageStatus;
-  path: string;
+  path?: string;
   stages?: IStage[];
 }
 

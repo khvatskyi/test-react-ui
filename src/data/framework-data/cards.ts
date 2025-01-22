@@ -9,7 +9,7 @@ export const CARDS: IFrameworkCard[] = [
     categories: [
       {
         name: 'Portfolio',
-        path: '/portfolios',
+        path: STATE_CODES.AboutPortfolio,
         stages: [
           {
             name: 'Consumers',
@@ -35,7 +35,6 @@ export const CARDS: IFrameworkCard[] = [
       },
       {
         name: 'Product',
-        path: '/portfolios',
         stages: [
           {
             name: 'Value Proposition',

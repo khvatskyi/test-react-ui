@@ -7,6 +7,8 @@ import { StageStatus } from '../../typings/enums/stage-status.enum';
 
 export interface IFrameworkCardProps extends IFrameworkCard {
   onStageClick: (stage: IStage) => void;
+  cx?: string;
+  isSingleCard?: boolean;
 };
 
 export default function FrameworkCard(props: IFrameworkCardProps) {
@@ -29,14 +31,15 @@ export default function FrameworkCard(props: IFrameworkCardProps) {
   );
 
   return (
-    <FlexCell cx={css.root}>
+    <FlexCell cx={css.root + (props.cx ? ` ${props.cx}` : '')}>
       <h2>{props.title}</h2>
       <span>{props.description}</span>
       <FlexRow alignItems='top' columnGap="12">
         {
           props.categories.map((category, index) => {
             const categoryStageWrapperClasses = css.categoryStageWrapper
-              + ` ${index > 0 ? css.rightChevron : css.rightPoint}`
+              + (category.path ? ` ${css.categoryStageWrapperClickable}` : '')
+              + ` ${index > 0 ? (props.isSingleCard ? css.rightEndChevron : css.rightChevron) : css.rightPoint}`
 
             return (
               <div key={index} className={css.categoryWrapper} onClick={(e) => handleStageClick(e, category)}>

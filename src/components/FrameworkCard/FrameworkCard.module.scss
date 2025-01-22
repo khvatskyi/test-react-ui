@@ -3,6 +3,7 @@
   flex-direction: column;
   background-color: #ffffff;
   width: fit-content;
+  height: fit-content;
   min-width: fit-content !important;
   flex-basis: unset !important;
   padding: 15px;
@@ -25,7 +26,6 @@
     padding: 6px 12px;
     min-height: 50px;
     min-width: 100px;
-    max-width: 140px;
     border-radius: 6px;
     border: 1px solid #ebedf5;
     display: flex;
@@ -58,6 +58,7 @@
     flex-direction: column;
     justify-content: flex-start;
     gap: 12px;
+    flex: 1;
   }
 
   .rightPoint {
@@ -68,9 +69,13 @@
     clip-path: polygon(90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%, 0 0);
   }
 
+  .rightEndChevron {
+    clip-path: polygon(90% 0, 100% 0, 100% 100%, 0 100%, 10% 50%, 0 0);
+  }
+
   .categoryStageWrapper {
+    cursor: default;
     position: relative;
-    cursor: pointer;
     color: white;
     background-color: #6c6f80;
     min-width: 150px;
@@ -78,6 +83,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .categoryStageWrapperClickable {
+    cursor: pointer;
 
     &:hover {
       filter: brightness(1.2);
