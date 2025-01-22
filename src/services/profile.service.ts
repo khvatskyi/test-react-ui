@@ -32,7 +32,7 @@ let PROFILE_DATA: IClientProfileInfo = {
 export async function getProfile(): Promise<IClientProfileInfo> {
 
   // MOCK data
-  // return Promise.resolve(PROFILE_DATA);
+  return Promise.resolve(PROFILE_DATA);
 
   const path = process.env.REACT_APP_API_ROOT + '/user/profile';
   const response = await fetchWithAuth(path, {
@@ -47,8 +47,8 @@ export async function getProfile(): Promise<IClientProfileInfo> {
 export async function saveProfile(profile: IClientDefinitionInfo): Promise<IClientProfileInfo> {
 
   // MOCK data
-  // PROFILE_DATA = structuredClone(profile);
-  // return Promise.resolve(PROFILE_DATA);
+  PROFILE_DATA = structuredClone(profile);
+  return Promise.resolve(PROFILE_DATA);
 
   const path = process.env.REACT_APP_API_ROOT + '/user/profile';
   const response = await fetchWithAuth(path, {

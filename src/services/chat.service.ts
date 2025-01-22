@@ -1,63 +1,59 @@
-// import { delay } from '@epam/uui-test-utils';
+import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
-import { IStartChatInfo, /*IInteractiveChatMessage, ChatRole, */ IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage } from '../typings/models/module.models';
+import { IStartChatInfo, IInteractiveChatMessage, ChatRole, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
-// const MOCK_DATA = {
-//   interactiveChatMessage: {
-//     id: '1',
-//     topic: 'test',
-//     text: 'test',
-//     example: 'test',
-//     totalOfQuestions: 5,
-//     questionNumber: 1,
-//   } as IInteractiveChatMessage,
-//   context: {
-//     id: 'teslatdsh',
-//     name: 'Business insurance quote enablement',
-//     description: 'The API Product will enable insurance brokers and agents',
-//     history: [
-//       {
-//         id: '3432y43',
-//         role: ChatRole.AI,
-//         content: {
-//           id: '2',
-//           topic: 'Some Topic',
-//           text: 'Some Question',
-//           example: 'Some example',
-//           totalOfQuestions: 5,
-//           questionNumber: 1,
-//         } as IInteractiveChatMessage
-//       },
-//       {
-//         id: '323266',
-//         role: ChatRole.User,
-//         content: {
-//           id: '3',
-//           text: 'Insurance brokers and agents require a streamlined process to request quotes from Travelers Insurance quickly and efficiently, reducing the time spent on manual quote requests and improving customer service.'
-//         }
-//       },
-//       {
-//         id: '57655fd',
-//         role: ChatRole.AI,
-//         content: {
-//           id: '4',
-//           topic: 'Some Topic 2 ',
-//           text: 'Some Question 2',
-//           example: 'Some example 2',
-//           totalOfQuestions: 5,
-//           questionNumber: 2,
-//         } as IInteractiveChatMessage
-//       }
-//     ]
-//   } as IInteractiveChatContext
-// }
+const MOCK_DATA = {
+  interactiveChatMessage: {
+    topic: 'test',
+    text: 'test',
+    example: 'test',
+    totalOfQuestions: 5,
+    questionNumber: 1,
+  } as IInteractiveChatMessage,
+  context: {
+    id: 'teslatdsh',
+    name: 'Business insurance quote enablement',
+    description: 'The API Product will enable insurance brokers and agents',
+    history: [
+      {
+        id: '3432y43',
+        role: ChatRole.AI,
+        content: {
+          topic: 'Some Topic',
+          text: 'Some Question',
+          example: 'Some example',
+          totalOfQuestions: 5,
+          questionNumber: 1,
+        } as IInteractiveChatMessage
+      },
+      {
+        id: '323266',
+        role: ChatRole.User,
+        content: {
+          text: 'Insurance brokers and agents require a streamlined process to request quotes from Travelers Insurance quickly and efficiently, reducing the time spent on manual quote requests and improving customer service.'
+        }
+      },
+      {
+        id: '57655fd',
+        role: ChatRole.AI,
+        content: {
+          topic: 'Some Topic 2 ',
+          text: 'Some Question 2',
+          example: 'Some example 2',
+          totalOfQuestions: 5,
+          questionNumber: 2,
+        } as IInteractiveChatMessage
+      }
+    ]
+  } as IInteractiveChatContext
+}
 
 export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
-  // return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
+  return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/start`;
@@ -72,7 +68,7 @@ export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES
 export async function getChatContext(portfolio_id: string, state_code: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
-  // return Promise.resolve<IInteractiveChatContext>(portfolioId === '2' ? MOCK_DATA.context : null);
+  return Promise.resolve<IInteractiveChatContext>(portfolio_id === '2' ? MOCK_DATA.context : null);
   //END of MOCK
 
   const params = new URLSearchParams({ portfolio_id, state_code }).toString();
@@ -86,10 +82,11 @@ export async function getChatContext(portfolio_id: string, state_code: STATE_COD
 export async function sendChatMessage(message: IMessageToAi): Promise<IContentMessage> {
 
   // MOCK
-  // return await delay(1000).then(() => Promise.resolve<IInteractiveChatMessage>({
-  //   ...MOCK_DATA.interactiveChatMessage,
-  //   questionNumber: message.isLastAnswer ? MOCK_DATA.interactiveChatMessage.totalOfQuestions : MOCK_DATA.interactiveChatMessage.questionNumber
-  // }));
+  return await delay(1000).then(() => Promise.resolve<IContentMessage>(message.isLastAnswer ? null : {
+    id: '3erew',
+    role: ChatRole.AI,
+    content: {...MOCK_DATA.interactiveChatMessage, questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions}
+  }));
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat`;
@@ -112,17 +109,19 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
 export async function deleteChat(portfolio_id: string, state_code: STATE_CODES): Promise<void> {
 
   // MOCK
-  // return await delay(1000).then(() => Promise.resolve());
+  return await delay(1000).then(() => Promise.resolve());
   //END of MOCK
 
-  const params = new URLSearchParams({ portfolio_id, state_code }).toString();
-  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat?` + params;
-  const response = await fetchWithAuth(path, { method: 'DELETE' });
+  // const params = new URLSearchParams({ portfolio_id, state_code }).toString();
+  // const path = process.env.REACT_APP_API_ROOT + `/interactive-chat?` + params;
+  // const response = await fetchWithAuth(path, { method: 'DELETE' });
 
-  return await response.json();
+  // return await response.json();
 }
 
 export async function editChatMessage(message: IEditChatMessage): Promise<void> {
+
+  return await Promise.resolve();
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/edit`;
   const response = await fetchWithAuth(path, {

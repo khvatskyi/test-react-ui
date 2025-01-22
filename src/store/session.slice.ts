@@ -24,49 +24,47 @@ export const signInWithSSOCode = createAsyncThunk(
   async (code: string, { dispatch, rejectWithValue }) => {
     const path = process.env.REACT_APP_API_ROOT + '/auth/get-sso-token';
     const params = new URLSearchParams({ code });
-    const showErrorNotification = useShowErrorNotification();
+    // const showErrorNotification = useShowErrorNotification();
 
-    // MOCK
-    // return Promise.resolve<IUserContext>(({
-    //   accessToken: 'some_token',
-    //   userName: 'Vasyl',
-    //   email: 'test@test.test',
-    //   name: 'Vasyl Prodanchuk',
-    //   givenName: 'Given Vasyl',
-    //   familyName: 'Family Vasyl',
-    //   picture: null,
-    //   hasProfile: true
-    // }));
-    // END of MOCK
+    return Promise.resolve<IUserContext>(({
+      accessToken: 'some_token',
+      userName: 'Vasyl',
+      email: 'test@test.test',
+      name: 'Vasyl Prodanchuk',
+      givenName: 'Given Vasyl',
+      familyName: 'Family Vasyl',
+      picture: null,
+      hasProfile: true
+    }));
 
-    return await fetch(`${path}?${params.toString()}`, {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          showErrorNotification(`Error: ${response.statusText} (${response.status})`)
-        } else {
-          return response.json();
-        }
-      })
-      .then((result: IUserResponse) => {
-        const newUserContext: IUserContext = {
-          accessToken: result.access_token,
-          userName: result.username,
-          email: result.email,
-          name: result.name,
-          givenName: result.given_name,
-          familyName: result.family_name,
-          picture: result.picture,
-          hasProfile: result.has_profile,
-        };
-        return newUserContext;
-      })
-      .catch(e => {
-        const error_message = `Error during sign in with SSO: ${e.message} `
-        showErrorNotification(error_message)
-        return rejectWithValue(error_message);
-      });
+    // return await fetch(`${path}?${params.toString()}`, {
+    //   method: 'GET'
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       showErrorNotification(`Error: ${response.statusText} (${response.status})`)
+    //     } else {
+    //       return response.json();
+    //     }
+    //   })
+    //   .then((result: IUserResponse) => {
+    //     const newUserContext: IUserContext = {
+    //       accessToken: result.access_token,
+    //       userName: result.username,
+    //       email: result.email,
+    //       name: result.name,
+    //       givenName: result.given_name,
+    //       familyName: result.family_name,
+    //       picture: result.picture,
+    //       hasProfile: result.has_profile,
+    //     };
+    //     return newUserContext;
+    //   })
+    //   .catch(e => {
+    //     const error_message = `Error during sign in with SSO: ${e.message} `
+    //     showErrorNotification(error_message)
+    //     return rejectWithValue(error_message);
+    //   });
   }
 );
 
