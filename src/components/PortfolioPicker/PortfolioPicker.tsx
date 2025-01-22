@@ -7,7 +7,7 @@ import { loadPortfolios, selectPortfolios } from '../../store/data.slice';
 import { IPortfolio, IPortfolioDetails } from '../../typings/models/portfolio.models';
 
 export interface IPortfolioPickerProps {
-  portfolio?: IPortfolioDetails;
+  portfolio: IPortfolioDetails;
   onPortfolioChange: (id: string) => void;
   disableClear?: boolean;
 }
