@@ -112,10 +112,6 @@ export default function MainMenu() {
           render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/dashboard' } } caption='Dashboard' />
         },
         {
-          id: 'interactive-chat', priority: 3,
-          render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/interactive-chat' } } caption='Interactive Chat' />
-        },
-        {
           id: 'portfolios', priority: 3,
           render: (p: IRenderProps) => <MainMenuButton key={p.id} link={ { pathname: '/portfolios' } } caption='Portfolios' />
         },

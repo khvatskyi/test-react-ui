@@ -47,7 +47,6 @@ function UuiEnhancedApp() {
           <MainMenu />
           <Switch>
             <Route exact path='/' component={MainPage} />
-            <GuardedRoute path='/interactive-chat' component={ChatRoom} canActivate={hasProfile} />
             <Route path='/login/sso-verification' component={LoginVerification} />
             <GuardedRoute path='/profile' component={ClientProfile} canActivate={!!userContext} />
             <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={hasProfile} />
