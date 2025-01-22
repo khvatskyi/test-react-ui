@@ -1,9 +1,9 @@
 import { FlexRow, Spinner } from '@epam/uui';
 
 export default function ChatSpinner() {
-    return (
-      <FlexRow>
-        <Spinner />
-      </FlexRow>
-    );
+  return (
+    <FlexRow>
+      <Spinner />
+    </FlexRow>
+  );
 }

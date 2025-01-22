@@ -13,7 +13,7 @@ export interface IApiProductJorneysProps {
   portfolioId: string;
 }
 
-export const CURRENT_STATE_CODE = STATE_CODES.APIProductJourneys;
+const CURRENT_STATE_CODE = STATE_CODES.APIProductJourneys;
 
 export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysProps) {
   const dispatch = useAppDispatch();

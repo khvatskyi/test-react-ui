@@ -7,6 +7,7 @@ import { createChat, deleteChat, getChatContext, sendChatMessage } from '../serv
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
 export interface IAiState {
+  conversationCompleted: boolean;
   aiChatContext: IInteractiveChatContext;
   lastExample: string | null;
   isLoading: boolean;
@@ -15,6 +16,7 @@ export interface IAiState {
 type StateModel = IAiState;
 
 const initialState: StateModel = {
+  conversationCompleted: false,
   aiChatContext: null,
   lastExample: null,
   isLoading: false
@@ -62,7 +64,7 @@ export const sendChatMessageToAi = createAsyncThunk(
 
 export const startNewChat = createAsyncThunk(
   'data/startNewChat',
-  async (args: { context: IStartChatInfo, stateCode: STATE_CODES } , { rejectWithValue }) => {
+  async (args: { context: IStartChatInfo, stateCode: STATE_CODES }, { rejectWithValue }) => {
 
     try {
       const response = await createChat(args.context, args.stateCode);
@@ -114,9 +116,19 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
       state.isLoading = true;
     })
     .addCase(loadChatContext.fulfilled, (state, action) => {
+      const chatHistory = action.payload?.history ?? [];
+
+      if (action.payload) {
+        const lastAiMessage = findLastElement(chatHistory, (x) => x.createdBy === ChatRole.AI);
+        const lastMessage = chatHistory.at(-1);
+        const isFinalAIMessageSent = Boolean(lastAiMessage && lastAiMessage.content.questionNumber === lastAiMessage.content.totalOfQuestions);
+
+        state.conversationCompleted = Boolean(isFinalAIMessageSent && lastMessage?.createdBy === ChatRole.User)
+      }
+
       state.aiChatContext = action.payload;
       state.lastExample = action.payload
-        ? findLastElement(action.payload.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example
+        ? findLastElement(chatHistory, (x) => x.createdBy === ChatRole.AI).content.example
         : null;
 
       state.isLoading = false;
@@ -128,8 +140,12 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
       state.isLoading = true;
     })
     .addCase(startNewChat.fulfilled, (state, action) => {
+      const history = action.payload.history ?? [];
+      const lastAiMessage = findLastElement(history, (x) => x.createdBy === ChatRole.AI);
+
       state.aiChatContext = action.payload;
-      state.lastExample = findLastElement(action.payload.history ?? [], (x) => x.createdBy === ChatRole.AI).content.example;
+      state.lastExample = lastAiMessage.content.example;
+      state.conversationCompleted = false;
       state.isLoading = false;
     })
     .addCase(startNewChat.rejected, (state) => {
@@ -141,9 +157,12 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     .addCase(sendChatMessageToAi.fulfilled, (state, action) => {
       if (action.payload) {
         state.aiChatContext.history.push(action.payload);
+        state.lastExample = action.payload.content.example;
+      } else {
+        state.lastExample = null;
+        state.conversationCompleted = true;
       }
 
-      state.lastExample = action.payload ? action.payload.content.example : null;
       state.isLoading = false;
     })
     .addCase(sendChatMessageToAi.rejected, (state) => {
@@ -158,7 +177,7 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
 export const aiSlice = createSlice({
   name: 'ai',
   // `createSlice` will infer the state type from the `initialState` argument
-  initialState,
+  initialState: () => structuredClone(initialState),
   reducers: {
     isLoading: (state, action) => {
       state.isLoading = action.payload
@@ -172,8 +191,10 @@ export const aiSlice = createSlice({
       });
     },
     clearChatContext: (state) => {
-      state.aiChatContext = null;
-      state.lastExample = null;
+      state = {
+        ...structuredClone(initialState),
+        isLoading: state.isLoading
+      }
     }
   },
   extraReducers: builder => {
@@ -183,6 +204,7 @@ export const aiSlice = createSlice({
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectChatContext = (state: RootState) => state.ai.aiChatContext;
+export const isConversationCompleted = (state: RootState) => state.ai.conversationCompleted;
 export const selectValuePropositionChatExample = (state: RootState) => state.ai.lastExample;
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading;
 export const { addUserMessage, clearChatContext } = aiSlice.actions;

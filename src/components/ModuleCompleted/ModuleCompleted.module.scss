@@ -1,0 +1,28 @@
+$successColor: #07A956;
+
+.modulePanel {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  min-width: 300px;
+  flex: 1;
+  max-width: 400px;
+  padding: 20px;
+
+  .textContainer {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 10px;
+  }
+
+  .successText {
+    font-weight: 600;
+    color: $successColor;
+  }
+
+  .successIcon {
+    fill: $successColor
+  }
+}

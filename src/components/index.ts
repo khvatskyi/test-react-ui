@@ -7,3 +7,4 @@ export { default as GuardedRoute } from './GuardedRoute/GuardedRoute';
 export { default as PortfolioDetailsForm } from './PortfolioDetailsForm/PortfolioDetailsForm';
 export { default as PortfolioPicker } from './PortfolioPicker/PortfolioPicker';
 export { default as FrameworkCard } from './FrameworkCard/FrameworkCard';
+export { default as ModuleCompleted } from './ModuleCompleted/ModuleCompleted';

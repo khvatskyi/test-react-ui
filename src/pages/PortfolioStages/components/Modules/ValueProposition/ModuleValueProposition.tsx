@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks';
 import { addUserMessage, loadChatContext, selectChatContext, selectValuePropositionChatExample, sendChatMessageToAi } from '../../../../../store/ai.slice';
 import ChatRoom from '../../../../../components/ChatRoom/ChatRoom';
-import ModuleTopBar from '../../TopBar/ModuleTopBar';
+import ChatStartForm from '../../StartForm/ChatStartForm';
 
 import css from './ModuleValueProposition.module.scss';
+import ModuleTopBar from '../../TopBar/ModuleTopBar';
 import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
-import ChatStartForm from '../../StartForm/ChatStartForm';
 
 export interface IModuleValuePropositionProps {
   portfolioId: string;

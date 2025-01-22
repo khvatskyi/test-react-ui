@@ -6,11 +6,12 @@ import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.
 import css from './Chat.module.scss';
 import { ChatRole, IMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
-import ChatQueston from './ChatQueston';
+import ChatQuestion from './ChatQuestion';
 import ChatAiAnswerButton from './ChatAiAnswerButton';
 import UserAnswer from './UserAnswer';
 import { useAppSelector } from '../../hooks';
-import { selectChatContext } from '../../store/ai.slice';
+import { isConversationCompleted, selectChatContext } from '../../store/ai.slice';
+import { ModuleCompleted } from '..';
 
 export interface IChatProps {
   messages: IMessage[];
@@ -20,8 +21,9 @@ export interface IChatProps {
 }
 
 export default function Chat({ messages, isResponding, onSendMessage, getAiAnswerExample }: IChatProps) {
-  const history = useAppSelector(selectChatContext).history;
-  const lastMessageBelongsToAi = history.at(history.length - 1).createdBy === ChatRole.AI;
+  const chatHistory = useAppSelector(selectChatContext).history;
+  const conversationCompleted = useAppSelector(isConversationCompleted);
+  const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).createdBy === ChatRole.AI;
 
   const [currentInput, setCurrentInput] = useState('');
 
@@ -52,12 +54,12 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, conversationCompleted]);
 
   const displayMessages = (<>
     {
       messages.map((message, index) => message.createdBy === ChatRole.AI
-        ? <ChatQueston key={index} message={message.content} />
+        ? <ChatQuestion key={index} message={message.content} />
         : <UserAnswer key={index} message={message.content} />
       )
     }
@@ -68,6 +70,7 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
       <div ref={chatBoxRef} className={css.messagesWrapper}>
         {displayMessages}
         {lastMessageBelongsToAi && <ChatAiAnswerButton onClick={handleAiAnswerClick} />}
+        {conversationCompleted && <ModuleCompleted objectToExport={messages} />}
         {isResponding && <ChatSpinner />}
       </div>
       <FlexRow cx={css.inputMessageWrapper} columnGap={12}>
@@ -78,8 +81,9 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
           onValueChange={(v) => setCurrentInput(v)}
           onKeyDown={handleKeyPress}
           cx={css.matInputElement}
+          isDisabled={conversationCompleted}
         />
-        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} />
+        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={conversationCompleted || isResponding} />
       </FlexRow>
     </div>
   );
