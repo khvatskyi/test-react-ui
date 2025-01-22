@@ -4,7 +4,7 @@ import { FlexRow, Button, TextInput } from '@epam/uui';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 
 import css from './Chat.module.scss';
-import { ChatRole, IMessage } from '../../typings/models/module.models';
+import { ChatRole, IContentMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQuestion from './ChatQuestion';
 import ChatAiAnswerButton from './ChatAiAnswerButton';
@@ -14,7 +14,7 @@ import { isConversationCompleted, selectChatContext } from '../../store/ai.slice
 import { ModuleCompleted } from '..';
 
 export interface IChatProps {
-  messages: IMessage[];
+  messages: IContentMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
   getAiAnswerExample: () => string;
@@ -23,7 +23,7 @@ export interface IChatProps {
 export default function Chat({ messages, isResponding, onSendMessage, getAiAnswerExample }: IChatProps) {
   const chatHistory = useAppSelector(selectChatContext).history;
   const conversationCompleted = useAppSelector(isConversationCompleted);
-  const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).createdBy === ChatRole.AI;
+  const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).role === ChatRole.AI;
 
   const [currentInput, setCurrentInput] = useState('');
 
@@ -58,7 +58,7 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
 
   const displayMessages = (<>
     {
-      messages.map((message, index) => message.createdBy === ChatRole.AI
+      messages.map((message, index) => message.role === ChatRole.AI
         ? <ChatQuestion key={index} message={message.content} />
         : <UserAnswer key={index} message={message.content} />
       )

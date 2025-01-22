@@ -4,11 +4,9 @@ import {
     ProgressBar,
     FlexSpacer,
     FlexCell,
-    IconContainer,
 } from '@epam/uui';
 import { useEffect, useState } from 'react';
 import css from './StartWizard.module.scss';
-import { ReactComponent as checkIcon } from '@epam/assets/icons/notification-check-fill.svg';
 import { ReactComponent as PlusIcon } from '@epam/assets/icons/action-add-fill.svg';
 import NumberMarker from './components/NumberMarker/NumberMarker';
 
@@ -27,21 +25,20 @@ const LABELS = {
   resultDesc: 'Choose your preferred format of the output and export it.',
 };
 
-// export interface IWizardData {
-//   activeStep: number;
-// }
+export interface IWizardData extends IModal<string> {  
+  activeStep: number;
+}
 
-export default function StartWizard(modalProps: IModal<string>) {
+export default function StartWizard(modalProps: IWizardData) {
 
   const [progress, setProgress] = useState(0);
 
-  const activeStep: number = 2;
-  const allowCreatePortfolio: boolean = activeStep === 2;
+  const allowCreatePortfolio: boolean = modalProps.activeStep === 2;
 
   useEffect(() => {
-    const progressValue = 100 / 4 * (activeStep - 1);
+    const progressValue = 100 / 4 * (modalProps.activeStep - 1);
     setProgress(progressValue);
-  }, [activeStep]); 
+  }, [modalProps.activeStep]); 
 
   return (
     <ModalBlocker { ...modalProps }>
@@ -58,7 +55,7 @@ export default function StartWizard(modalProps: IModal<string>) {
           <FlexRow cx={css.itemRow} alignItems='top'>
             <FlexCell cx={css.itemRowIcon} width={50}>
               {/* <IconContainer icon={checkIcon} size='42'/> */}
-              <NumberMarker step={1} activeStep={activeStep} />
+              <NumberMarker step={1} activeStep={modalProps.activeStep} />
             </FlexCell> 
             <FlexCell cx={css.itemRowText} width={488}>
               <Text  cx={css.itemCaption}>{LABELS.addProfileTitle} </Text>
@@ -68,7 +65,7 @@ export default function StartWizard(modalProps: IModal<string>) {
 
           <FlexRow cx={css.itemRow} alignItems='top'>
             <FlexCell cx={css.itemRowIcon} width={50}>
-              <NumberMarker step={2} activeStep={activeStep} />
+              <NumberMarker step={2} activeStep={modalProps.activeStep} />
             </FlexCell> 
             <FlexCell cx={css.itemRowText} width={488}>
               <Text  cx={css.itemCaption}>{LABELS.createPortfolioTitle} </Text>
@@ -91,7 +88,7 @@ export default function StartWizard(modalProps: IModal<string>) {
 
           <FlexRow cx={css.itemRow} alignItems='top'>
             <FlexCell cx={css.itemRowIcon} width={50}>
-              <NumberMarker step={3} activeStep={activeStep} />
+              <NumberMarker step={3} activeStep={modalProps.activeStep} />
             </FlexCell> 
             <FlexCell cx={css.itemRowText} width={488}>
               <Text  cx={css.itemCaption}>{LABELS.discovePhaseTitle} </Text>
@@ -101,7 +98,7 @@ export default function StartWizard(modalProps: IModal<string>) {
 
           <FlexRow cx={css.itemRow} alignItems='top'>
             <FlexCell cx={css.itemRowIcon} width={50}>
-              <NumberMarker step={4} activeStep={activeStep} />
+              <NumberMarker step={4} activeStep={modalProps.activeStep} />
             </FlexCell> 
             <FlexCell cx={css.itemRowText} width={488}>
               <Text  cx={css.itemCaption}>{LABELS.resultTitle} </Text>
