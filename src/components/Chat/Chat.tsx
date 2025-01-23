@@ -7,7 +7,7 @@ import css from './Chat.module.scss';
 import { ChatRole, IContentMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQuestion from './ChatQuestion';
-import ChatAiAnswerButton from './ChatAiAnswerButton';
+import ChatAiButton from './ChatAiButton';
 import UserAnswer from './UserAnswer';
 import { useAppSelector } from '../../hooks';
 import { isConversationCompleted, selectChatContext } from '../../store/ai.slice';
@@ -39,13 +39,6 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
     }
   };
 
-  const handleEditMessage = () => {
-    if (currentInput.trim()) {
-      onEditMessage('9795a472-2945-4e41-ae8f-24406d9912a5', currentInput); //TODO: need send read ID
-      setCurrentInput('');
-    }
-  };
-
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSendMessage();
@@ -62,13 +55,13 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, conversationCompleted]);
+  }, [messages.length, conversationCompleted]);
 
   const displayMessages = (<>
     {
       messages.map((message, index) => message.role === ChatRole.AI
         ? <ChatQuestion key={index} message={message.content} />
-        : <UserAnswer key={index} message={message.content} />
+        : <UserAnswer key={index} message={message} aiExample={messages[index-1].content.example} onEditMessage={onEditMessage} />
       )
     }
   </>);
@@ -77,7 +70,7 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
     <div className={css.chatWrapper}>
       <div ref={chatBoxRef} className={css.messagesWrapper}>
         {displayMessages}
-        {lastMessageBelongsToAi && <ChatAiAnswerButton onClick={handleAiAnswerClick} />}
+        {lastMessageBelongsToAi && <ChatAiButton caption='Answer with AI' onClick={handleAiAnswerClick} />}
         {conversationCompleted && <ModuleCompleted objectToExport={messages} />}
         {isResponding && <ChatSpinner />}
       </div>
@@ -91,9 +84,7 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
           cx={css.matInputElement}
           isDisabled={conversationCompleted}
         />
-        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={conversationCompleted || isResponding} />
-         {/* temporarty for test */}
-        <Button icon={sendIcon} color="critical" caption='Edit' onClick={handleEditMessage} isDisabled={conversationCompleted || isResponding} />        
+        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={conversationCompleted || isResponding} />      
       </FlexRow>
     </div>
   );

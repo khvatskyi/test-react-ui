@@ -1,6 +1,7 @@
 .root {
 
   max-width: 670px;
+  width: fit-content;
   margin-left: auto;
 
   .messageWrapper {
@@ -10,5 +11,35 @@
     border: 1px solid #E1E3EB;
     border-radius: 3px;
   }
-}
 
+  .editWrapper {
+    margin-left: 20px;
+    width: 500px;
+
+    &>*:nth-child(2) {
+      margin-top: 15px;
+    }
+  }
+
+  .editPencil {
+    align-self: flex-start !important;
+    margin-top: 5px;
+    margin-left: 15px;
+  }
+
+  .editButtonsWrapper {
+    display: flex;
+    gap: 10px;
+  }
+
+  .cancelButton {
+
+    &, &:hover {
+      border: 1px solid #6C6F80;
+    }
+  }
+
+  .disabledPencil {
+    fill: #ACAFBF;
+  }
+}

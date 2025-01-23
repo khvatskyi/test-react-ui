@@ -75,8 +75,8 @@ export const sendEditChatMessage = createAsyncThunk(
   async (context: IEditChatMessage, { rejectWithValue }) => {
 
     try {
-      const response = await editChatMessage(context);
-      return response;
+      await editChatMessage(context);
+      return context;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
       console.log(errorText);
@@ -163,9 +163,11 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
       state.isLoading = true;
     })
     .addCase(sendChatMessageToAi.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.aiChatContext.history.push(action.payload);
-        state.lastExample = action.payload.content.example;
+      state.aiChatContext.history.pop();
+      state.aiChatContext.history.push(...action.payload);
+
+      if (action.payload.length > 1) {
+        state.lastExample = action.payload.find(x => x.role === ChatRole.AI).content.example;
       } else {
         state.lastExample = null;
         state.conversationCompleted = true;
@@ -180,6 +182,10 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
       state.aiChatContext = null;
       state.lastExample = null;
     })
+    .addCase(sendEditChatMessage.fulfilled, (state, action) => {
+      const editedMessage = state.aiChatContext.history.find(x => x.id === action.payload.messageId);
+      editedMessage.content.text = action.payload.message;
+    })
 };
 
 export const aiSlice = createSlice({
@@ -192,6 +198,7 @@ export const aiSlice = createSlice({
     },
     addUserMessage: (state, action) => {
       state.aiChatContext.history.push({
+        id: 'temp',
         role: ChatRole.User,
         content: {
           text: action.payload
