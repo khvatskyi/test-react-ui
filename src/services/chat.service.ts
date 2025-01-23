@@ -54,7 +54,7 @@ const MOCK_DATA = {
 export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
-  return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
+  // return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/start`;
@@ -69,7 +69,7 @@ export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES
 export async function getChatContext(portfolio_id: string, state_code: STATE_CODES): Promise<IInteractiveChatContext> {
 
   // MOCK
-  return Promise.resolve<IInteractiveChatContext>(portfolio_id === '2' ? MOCK_DATA.context : null);
+  // return Promise.resolve<IInteractiveChatContext>(portfolio_id === '2' ? MOCK_DATA.context : null);
   //END of MOCK
 
   const params = new URLSearchParams({ portfolio_id, state_code }).toString();
@@ -83,32 +83,32 @@ export async function getChatContext(portfolio_id: string, state_code: STATE_COD
 export async function sendChatMessage(message: IMessageToAi): Promise<IContentMessage[]> {
 
   // MOCK
-  return await delay(1000).then(() => Promise.resolve<IContentMessage[]>(message.isLastAnswer ? [
-    {
-      id: '3erew3',
-      role: ChatRole.User,
-      content: {
-        text: message.text,
-        questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
-        totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
-      }
-    }
-  ] : [
-    {
-      id: '3erew',
-      role: ChatRole.User,
-      content: {
-        text: message.text,
-        questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions - 1,
-        totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
-      }
-    },
-    {
-      id: '3erew',
-      role: ChatRole.AI,
-      content: { ...MOCK_DATA.interactiveChatMessage, questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions }
-    }
-  ]));
+  // return await delay(1000).then(() => Promise.resolve<IContentMessage[]>(message.isLastAnswer ? [
+  //   {
+  //     id: '3erew3',
+  //     role: ChatRole.User,
+  //     content: {
+  //       text: message.text,
+  //       questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+  //       totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+  //     }
+  //   }
+  // ] : [
+  //   {
+  //     id: '3erew',
+  //     role: ChatRole.User,
+  //     content: {
+  //       text: message.text,
+  //       questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions - 1,
+  //       totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+  //     }
+  //   },
+  //   {
+  //     id: '3erew',
+  //     role: ChatRole.AI,
+  //     content: { ...MOCK_DATA.interactiveChatMessage, questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions }
+  //   }
+  // ]));
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat`;
@@ -131,19 +131,19 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
 export async function deleteChat(portfolio_id: string, state_code: STATE_CODES): Promise<void> {
 
   // MOCK
-  return await delay(1000).then(() => Promise.resolve());
+  // return await delay(1000).then(() => Promise.resolve());
   //END of MOCK
 
-  // const params = new URLSearchParams({ portfolio_id, state_code }).toString();
-  // const path = process.env.REACT_APP_API_ROOT + `/interactive-chat?` + params;
-  // const response = await fetchWithAuth(path, { method: 'DELETE' });
+  const params = new URLSearchParams({ portfolio_id, state_code }).toString();
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat?` + params;
+  const response = await fetchWithAuth(path, { method: 'DELETE' });
 
-  // return await response.json();
+  return await response.json();
 }
 
 export async function editChatMessage(message: IEditChatMessage): Promise<void> {
 
-  return await Promise.resolve();
+  // return await Promise.resolve();
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/edit`;
   const response = await fetchWithAuth(path, {

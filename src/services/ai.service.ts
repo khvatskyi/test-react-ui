@@ -69,8 +69,8 @@ let PROFILE_DATA: IClientProfileInfo = {
 export async function saveClientDefinition(clientDefinition: IClientDefinitionInfo): Promise<IClientProfileInfo> {
 
   // MOCK data
-  PROFILE_DATA = {...PROFILE_DATA, ...structuredClone(clientDefinition)};
-  return delay(2000).then(() => Promise.resolve(PROFILE_DATA));
+  // PROFILE_DATA = {...PROFILE_DATA, ...structuredClone(clientDefinition)};
+  // return delay(2000).then(() => Promise.resolve(PROFILE_DATA));
 
   const path = process.env.REACT_APP_API_ROOT + '/assistant/client-profile/fill';
   const response = await fetchWithAuth(path, {
