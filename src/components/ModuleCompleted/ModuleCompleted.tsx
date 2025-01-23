@@ -3,6 +3,7 @@ import { ReactComponent as NotificationDoneOutlineIcon } from '@epam/assets/icon
 
 import css from './ModuleCompleted.module.scss';
 import { DropdownBodyProps, IDropdownToggler } from '@epam/uui-core';
+import { downloadJSON, exportToPDF, exportToPPT } from '../../utilities/export.utility';
 
 export interface IModuleCompletedProps {
   objectToExport: any;
@@ -10,19 +11,12 @@ export interface IModuleCompletedProps {
 
 export default function ModuleCompleted({ objectToExport }: IModuleCompletedProps) {
 
-  const handleDownload = () => {
-    const jsonStr = JSON.stringify(objectToExport, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'data.json';
-    link.click();
-  };
-
   const exportOptions = (_: DropdownBodyProps) => {
     return (
       <DropdownMenuBody>
-        <DropdownMenuButton caption='JSON' onClick={handleDownload} />
+        <DropdownMenuButton caption='JSON' onClick={() => downloadJSON(objectToExport)} />
+        <DropdownMenuButton caption='PDF' onClick={() => exportToPDF(objectToExport)} />
+        <DropdownMenuButton caption='PowerPoint' onClick={() => exportToPPT(objectToExport)} />
       </DropdownMenuBody>
     );
   };

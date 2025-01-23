@@ -1,8 +1,9 @@
 import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
-import { IStartChatInfo, IInteractiveChatMessage, ChatRole, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage } from '../typings/models/module.models';
+import { IStartChatInfo, IInteractiveChatMessage, ChatRole, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
+import { SUMMARY } from '../constants';
 
 const MOCK_DATA = {
   interactiveChatMessage: {
@@ -79,14 +80,35 @@ export async function getChatContext(portfolio_id: string, state_code: STATE_COD
   return result;
 }
 
-export async function sendChatMessage(message: IMessageToAi): Promise<IContentMessage> {
+export async function sendChatMessage(message: IMessageToAi): Promise<IContentMessage[]> {
 
   // MOCK
-  return await delay(1000).then(() => Promise.resolve<IContentMessage>(message.isLastAnswer ? null : {
-    id: '3erew',
-    role: ChatRole.AI,
-    content: {...MOCK_DATA.interactiveChatMessage, questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions}
-  }));
+  return await delay(1000).then(() => Promise.resolve<IContentMessage[]>(message.isLastAnswer ? [
+    {
+      id: '3erew3',
+      role: ChatRole.User,
+      content: {
+        text: message.text,
+        questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+        totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+      }
+    }
+  ] : [
+    {
+      id: '3erew',
+      role: ChatRole.User,
+      content: {
+        text: message.text,
+        questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions - 1,
+        totalOfQuestions: MOCK_DATA.interactiveChatMessage.totalOfQuestions,
+      }
+    },
+    {
+      id: '3erew',
+      role: ChatRole.AI,
+      content: { ...MOCK_DATA.interactiveChatMessage, questionNumber: MOCK_DATA.interactiveChatMessage.totalOfQuestions }
+    }
+  ]));
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat`;
@@ -102,7 +124,7 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
     body: JSON.stringify(body),
   });
 
-  const result: IContentMessage = await response.json();
+  const result: IContentMessage[] = await response.json();
   return result;
 }
 
@@ -128,6 +150,17 @@ export async function editChatMessage(message: IEditChatMessage): Promise<void> 
     method: 'POST',
     body: JSON.stringify(message),
   });
+
+  return await response.json();
+}
+
+export async function getChatSummary(request: IGetSummaryRequest): Promise<{ [key: string]: any }> {
+
+  // return await delay(1000).then(() => Promise.resolve(SUMMARY));
+
+  const params = new URLSearchParams({ ...request }).toString();
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/summary?` + params;
+  const response = await fetchWithAuth(path, { method: 'GET' });
 
   return await response.json();
 }

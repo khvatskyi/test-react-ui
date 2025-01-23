@@ -10,7 +10,7 @@ import ChatQuestion from './ChatQuestion';
 import ChatAiButton from './ChatAiButton';
 import UserAnswer from './UserAnswer';
 import { useAppSelector } from '../../hooks';
-import { isConversationCompleted, selectChatContext } from '../../store/ai.slice';
+import { selectChatContext, selectChatSummary } from '../../store/ai.slice';
 import { ModuleCompleted } from '..';
 
 export interface IChatProps {
@@ -23,7 +23,8 @@ export interface IChatProps {
 
 export default function Chat({ messages, isResponding, onSendMessage, onEditMessage, getAiAnswerExample }: IChatProps) {
   const chatHistory = useAppSelector(selectChatContext).history;
-  const conversationCompleted = useAppSelector(isConversationCompleted);
+  const chatSummary = useAppSelector(selectChatSummary);
+  const conversationCompleted = Boolean(chatSummary);
   const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).role === ChatRole.AI;
 
   const [currentInput, setCurrentInput] = useState('');
@@ -71,7 +72,7 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
       <div ref={chatBoxRef} className={css.messagesWrapper}>
         {displayMessages}
         {lastMessageBelongsToAi && <ChatAiButton caption='Answer with AI' onClick={handleAiAnswerClick} />}
-        {conversationCompleted && <ModuleCompleted objectToExport={messages} />}
+        {conversationCompleted && <ModuleCompleted objectToExport={chatSummary} />}
         {isResponding && <ChatSpinner />}
       </div>
       <FlexRow cx={css.inputMessageWrapper} columnGap={12}>

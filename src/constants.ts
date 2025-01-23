@@ -94,3 +94,16 @@ export const industries: ISimpleIndustry[] = [
     id: 'Technology',
   }
 ];
+
+export const SUMMARY = {
+  "apiProductName": "Business insurance quote enablement",
+  "targetConsumers": [
+    "Insurance brokers",
+    "Insurance agents who use Agency/Broker Management Systems"
+  ],
+  "consumerNeeds": "Insurance brokers and agents often face time-consuming manual processes, lack of real-time data, and inefficiencies in communication with Travelers Insurance.",
+  "uniqueSolution": "The API automates the quote request process, provides real-time data, and ensures seamless communication between the brokers/agents and Travelers Insurance.",
+  "primaryBenefits": "The API reduces the time to get a quote by 50%, decreases manual errors, and improves overall efficiency for brokers and agents.",
+  "competitiveEdge": "The API offers exclusive integration with Travelers Insurance, real-time data updates, and a user-friendly interface tailored for brokers and agents.",
+  "successMetrics": "Success can be measured through metrics such as the number of API calls made, user adoption rates, reduction in quote processing time, and user satisfaction scores."
+};
