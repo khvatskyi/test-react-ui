@@ -1,9 +1,9 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import type { RootState } from '../store'
-import { IStartChatInfo, IInteractiveChatContext, ChatRole, IMessageToAi, IContentMessage } from '../typings/models/module.models';
+import { IStartChatInfo, IEditChatMessage, IInteractiveChatContext, ChatRole, IMessageToAi, IContentMessage } from '../typings/models/module.models';
 import { setPending } from './data.slice';
-import { createChat, deleteChat, getChatContext, sendChatMessage } from '../services/chat.service';
+import { createChat, deleteChat, getChatContext, sendChatMessage, editChatMessage } from '../services/chat.service';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
 export interface IAiState {
@@ -60,6 +60,22 @@ export const startNewChat = createAsyncThunk(
 
     try {
       const response = await createChat(args.context, args.stateCode);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
+export const sendEditChatMessage = createAsyncThunk(
+  'data/sendEditChatMessage',
+  async (context: IEditChatMessage, { rejectWithValue }) => {
+
+    try {
+      const response = await editChatMessage(context);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;

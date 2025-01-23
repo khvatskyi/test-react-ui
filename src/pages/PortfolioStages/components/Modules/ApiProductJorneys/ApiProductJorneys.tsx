@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../../../../hooks';
-import { addUserMessage, loadChatContext, selectChatContext, selectValuePropositionChatExample, sendChatMessageToAi } from '../../../../../store/ai.slice';
+import { addUserMessage, loadChatContext, selectChatContext, selectValuePropositionChatExample, sendChatMessageToAi, sendEditChatMessage } from '../../../../../store/ai.slice';
 import ChatRoom from '../../../../../components/ChatRoom/ChatRoom';
 import ChatStartForm from '../../StartForm/ChatStartForm';
 
 import css from './ApiProductJorneys.module.scss';
 import ModuleTopBar from '../../TopBar/ModuleTopBar';
 import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
+import { IEditChatMessage } from '../../../../../typings/models/module.models';
 
 export interface IApiProductJorneysProps {
   portfolioId: string;
@@ -29,6 +30,23 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
     return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE }));
   };
 
+  const onEditMessage = (id: string, message: string) => {
+    if (!message) {
+      return;
+    }
+
+    const editMessage: IEditChatMessage = {
+      portfolioId: portfolioId,
+      stateCode: CURRENT_STATE_CODE,
+      messageId: id,
+      message: message,
+    }
+
+    //dispatch(addUserMessage(message)); //TODO: need to check
+    return dispatch(sendEditChatMessage(editMessage));
+  };
+
+
   useEffect(() => {
     if (portfolioId) {
       dispatch(loadChatContext({ portfolioId, stateCode: CURRENT_STATE_CODE }));
@@ -39,7 +57,7 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
     <div className={css.root}>
       <ModuleTopBar stateCode={CURRENT_STATE_CODE} />
       {!chatContext && <ChatStartForm stateCode={CURRENT_STATE_CODE} />}
-      {chatContext && <ChatRoom getAiAnswerExample={() => example} onSendMessage={onSendMessage} context={chatContext} />}
+      {chatContext && <ChatRoom getAiAnswerExample={() => example} onSendMessage={onSendMessage} onEditMessage={onEditMessage} context={chatContext} />}
     </div>
   )
 }

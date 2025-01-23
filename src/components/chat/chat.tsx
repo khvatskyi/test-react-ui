@@ -17,10 +17,11 @@ export interface IChatProps {
   messages: IContentMessage[];
   isResponding: boolean;
   onSendMessage: (message: string) => void;
+  onEditMessage: (id: string, message: string) => void;
   getAiAnswerExample: () => string;
 }
 
-export default function Chat({ messages, isResponding, onSendMessage, getAiAnswerExample }: IChatProps) {
+export default function Chat({ messages, isResponding, onSendMessage, onEditMessage, getAiAnswerExample }: IChatProps) {
   const chatHistory = useAppSelector(selectChatContext).history;
   const conversationCompleted = useAppSelector(isConversationCompleted);
   const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).role === ChatRole.AI;
@@ -34,6 +35,13 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
   const handleSendMessage = () => {
     if (currentInput.trim()) {
       onSendMessage(currentInput);
+      setCurrentInput('');
+    }
+  };
+
+  const handleEditMessage = () => {
+    if (currentInput.trim()) {
+      onEditMessage('9795a472-2945-4e41-ae8f-24406d9912a5', currentInput); //TODO: need send read ID
       setCurrentInput('');
     }
   };
@@ -84,6 +92,8 @@ export default function Chat({ messages, isResponding, onSendMessage, getAiAnswe
           isDisabled={conversationCompleted}
         />
         <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={conversationCompleted || isResponding} />
+         {/* temporarty for test */}
+        <Button icon={sendIcon} color="critical" caption='Edit' onClick={handleEditMessage} isDisabled={conversationCompleted || isResponding} />        
       </FlexRow>
     </div>
   );

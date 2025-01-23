@@ -1,11 +1,12 @@
 // import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
-import { IStartChatInfo, /*IInteractiveChatMessage, ChatRole, */ IInteractiveChatContext, IMessageToAi, IContentMessage } from '../typings/models/module.models';
+import { IStartChatInfo, /*IInteractiveChatMessage, ChatRole, */ IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
 // const MOCK_DATA = {
 //   interactiveChatMessage: {
+//     id: '1',
 //     topic: 'test',
 //     text: 'test',
 //     example: 'test',
@@ -21,6 +22,7 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //         id: '3432y43',
 //         role: ChatRole.AI,
 //         content: {
+//           id: '2',
 //           topic: 'Some Topic',
 //           text: 'Some Question',
 //           example: 'Some example',
@@ -32,6 +34,7 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //         id: '323266',
 //         role: ChatRole.User,
 //         content: {
+//           id: '3',
 //           text: 'Insurance brokers and agents require a streamlined process to request quotes from Travelers Insurance quickly and efficiently, reducing the time spent on manual quote requests and improving customer service.'
 //         }
 //       },
@@ -39,6 +42,7 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //         id: '57655fd',
 //         role: ChatRole.AI,
 //         content: {
+//           id: '4',
 //           topic: 'Some Topic 2 ',
 //           text: 'Some Question 2',
 //           example: 'Some example 2',
@@ -114,6 +118,17 @@ export async function deleteChat(portfolio_id: string, state_code: STATE_CODES):
   const params = new URLSearchParams({ portfolio_id, state_code }).toString();
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat?` + params;
   const response = await fetchWithAuth(path, { method: 'DELETE' });
+
+  return await response.json();
+}
+
+export async function editChatMessage(message: IEditChatMessage): Promise<void> {
+
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/edit`;
+  const response = await fetchWithAuth(path, {
+    method: 'POST',
+    body: JSON.stringify(message),
+  });
 
   return await response.json();
 }

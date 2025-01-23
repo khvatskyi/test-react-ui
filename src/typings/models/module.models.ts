@@ -1,8 +1,15 @@
 export interface IStartChatInfo {
   portfolioId: string;
+  stateCode: string;
   name?: string;
   description?: string;
-  stateCode: string;
+}
+
+export interface IEditChatMessage {
+    portfolioId: string;
+    stateCode: string;
+    messageId: string;
+    message: string;
 }
 
 export interface IInteractiveChatMessage {
