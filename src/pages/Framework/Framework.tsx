@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FlexCell } from '@epam/uui';
 
@@ -12,7 +12,9 @@ import { FrameworkTab } from '../../typings/enums/framework-tab.enum';
 import { TABS } from '../../data/framework-data/tabs';
 import { IStage } from '../../typings/models/framework.models';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadPortfolio, selectPortfolioDetails } from '../../store/data.slice';
+import { getSuccessfullyCompletedModules, loadPortfolio, selectCompletedModules, selectPortfolioDetails } from '../../store/data.slice';
+import { StageStatus } from '../../typings/enums/stage-status.enum';
+import { CARDS } from '../../data/framework-data/cards';
 
 const DEFAULT_TAB = FrameworkTab.Discover;
 
@@ -21,9 +23,20 @@ export default function Framework() {
   const [value, onValueChange] = useState(DEFAULT_TAB);
   const tab = TABS.find(x => x.name === value);
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
+  const completedStages = useAppSelector(selectCompletedModules);
+
+  CARDS.forEach(card => {
+    card.categories.forEach(category => {
+      category.status = !!completedStages.find(x => x === category.path) ? StageStatus.Complete : StageStatus.None;
+      category.stages?.forEach(stage => {
+        stage.status = !!completedStages.find(x => x === stage.path) ? StageStatus.Complete : StageStatus.None;
+      })
+    });
+  });
 
   const handlePortfolioChange = (id: string) => {
     dispatch(loadPortfolio(id));
+    dispatch(getSuccessfullyCompletedModules(id));
   };
 
   const onStageClick = (stage: IStage) => {

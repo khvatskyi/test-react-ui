@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { PortfolioStagesLeftPanel, PortfolioStagesContent } from './components';
-import { loadPortfolio, selectPortfolioDetails } from '../../store/data.slice';
+import { getSuccessfullyCompletedModules, loadPortfolio, selectPortfolioDetails } from '../../store/data.slice';
 import css from './PortfolioStages.module.scss';
 import { useParamId, useQuery } from '../../utilities/route.utility';
 import { STATE_CODES } from './components/PortfolioStagesLeftPanel/structure';
@@ -21,6 +21,7 @@ export default function PortfolioStages() {
   useEffect(() => {
     if (portfolioId) {
       dispatch(loadPortfolio(portfolioId));
+      dispatch(getSuccessfullyCompletedModules(portfolioId));
     }
   }, [dispatch, portfolioId])
 

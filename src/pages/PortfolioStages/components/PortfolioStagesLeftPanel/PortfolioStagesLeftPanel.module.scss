@@ -8,3 +8,9 @@
   flex-grow: 1;
   // min-height: globalVars.$min-content-height !important;
 }
+
+.completedIcon {
+  svg {
+    fill: #07A956;
+  }
+}

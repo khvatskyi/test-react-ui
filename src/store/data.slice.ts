@@ -8,12 +8,15 @@ import { RootState } from '../store';
 import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
 import { updateProfileAvailability } from './session.slice';
+import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
+import { getCompletedModules } from '../services/data..service';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
   clientProfile: IClientProfileInfo | null;
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
+  completedModules: STATE_CODES[];
   pending: boolean[];
 }
 
@@ -22,8 +25,9 @@ const initialState: IDataState = {
   clientProfile: null,
   portfolios: null,
   selectedPortfolio: null,
+  completedModules: [],
   pending: []
-}
+};
 
 export const loadProfileInfo = createAsyncThunk(
   'data/loadProfileInfo',
@@ -40,6 +44,33 @@ export const saveProfileInfo = createAsyncThunk(
     return saveProfile(profile).catch(error => rejectWithValue(error));
   }
 );
+
+export const getSuccessfullyCompletedModules = createAsyncThunk(
+  'data/getSuccessfullyCompletedModules',
+  async (portfolioId: string, { rejectWithValue }) => {
+
+    try {
+      return await getCompletedModules(portfolioId);
+    } catch (ex) {
+      console.log(ex);
+      return rejectWithValue(ex);
+    }
+  }
+);
+
+const completedModulesExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
+  builder
+  .addCase(getSuccessfullyCompletedModules.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(getSuccessfullyCompletedModules.fulfilled, (state, action) => {
+    state.completedModules = action.payload;
+    state.pending.pop();
+  })
+  .addCase(getSuccessfullyCompletedModules.rejected, (state) => {
+    state.pending.pop();
+  });
+};
 
 const profileExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   builder
@@ -177,12 +208,25 @@ export const dataSlice = createSlice({
       }
 
       state.pending.pop();
+    },
+    addCompletedModule: (state, action) => {
+      if (!state.completedModules.find(x => x === action.payload)) {
+        state.completedModules.push(action.payload);
+      }
+    },
+    removeCompletedModule: (state, action) => {
+      const index = state.completedModules.findIndex(x => x === action.payload);
+
+      if (index > -1) {
+        state.completedModules.splice(index, 1);
+      }
     }
   },
   extraReducers: (builder) => {
     profileExtraReducers(builder);
     clientDefinitionExtraReducers(builder);
     portfolioExtraReducers(builder);
+    completedModulesExtraReducers(builder);
   }
 });
 
@@ -191,7 +235,8 @@ export const selectProfile = (state: RootState) => state.data.clientProfile;
 export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
+export const selectCompletedModules = (state: RootState) => state.data.completedModules;
 
-export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails, setPending } = dataSlice.actions;
+export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails, setPending, addCompletedModule, removeCompletedModule } = dataSlice.actions;
 
 export default dataSlice.reducer;

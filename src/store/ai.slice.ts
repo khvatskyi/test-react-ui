@@ -2,7 +2,7 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 
 import type { RootState } from '../store'
 import { IStartChatInfo, IEditChatMessage, IInteractiveChatContext, ChatRole, IMessageToAi, IContentMessage, IGetSummaryRequest } from '../typings/models/module.models';
-import { setPending } from './data.slice';
+import { addCompletedModule, setPending } from './data.slice';
 import { createChat, deleteChat, getChatContext, sendChatMessage, editChatMessage, getChatSummary } from '../services/chat.service';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
@@ -54,7 +54,7 @@ export const sendChatMessageToAi = createAsyncThunk(
         state_code: args.stateCode
       };
 
-      thunkAPI.dispatch(getSummary(request));
+      thunkAPI.dispatch(getSummary(request)).then(() => thunkAPI.dispatch(addCompletedModule(args.stateCode)));
     }
 
     return response;

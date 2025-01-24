@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { FlexRow, FlexCell, FlexSpacer, Panel } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { loadPortfolio, loadPortfolios, selectPortfolioDetails } from '../../../../store/data.slice';
+import { loadPortfolio, loadPortfolios, removeCompletedModule, selectPortfolioDetails } from '../../../../store/data.slice';
 
 import css from './ModuleTopBar.module.scss';
 import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
@@ -26,7 +26,8 @@ export default function ModuleTopBar({ stateCode }: IModuleTopBarProps) {
   }, [dispatch]);
 
   const handleResetClick = () => {
-    dispatch(resetChatContext({ portfolioId: selectedPortfolio.id, stateCode }));
+    dispatch(resetChatContext({ portfolioId: selectedPortfolio.id, stateCode }))
+      .then(() => dispatch(removeCompletedModule(stateCode)));
   }
 
   const handlePortfolioChange = (id: string) => {
