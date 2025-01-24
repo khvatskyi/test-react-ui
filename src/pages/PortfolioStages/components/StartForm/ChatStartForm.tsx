@@ -13,7 +13,7 @@ import { STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
 import { IStartChatInfo } from '../../../../typings/models/module.models';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { useShowErrorNotification } from '../../../../utilities/notifications.utility';
-import { selectPortfolioDetails } from '../../../../store/data.slice';
+import { selectPortfolioDetails, setPending } from '../../../../store/data.slice';
 import { FORM_DEFAULT_DATA } from '../../constants';
 
 export interface IChatStartFormProps {
@@ -27,18 +27,20 @@ export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
 
   const showErrorNotification = useShowErrorNotification();
 
-  const onSave = (state: IStartChatInfo) => {
-    state.portfolioId = selectedPortfolio.id
-    const result = dispatch(startNewChat({ context: state, stateCode }))
-      .then(x => ({ form: x.payload } as FormSaveResponse<IStartChatInfo>))
-      .catch(
-        r => {
-          const errorText = r.cause?.body?.detail ?? r.message;//TODO: need check if it works
-          showErrorNotification(errorText)
-        }
-      );
-
-    return result;
+  const onSave = async (state: IStartChatInfo) => {
+    const modifiedState = { ...state, portfolioId: selectedPortfolio.id };
+  
+    dispatch(setPending(true));
+    try {
+      const response = await dispatch(startNewChat({ context: modifiedState, stateCode }));
+      const result = { form: response.payload } as FormSaveResponse<IStartChatInfo>;
+      return result;
+    } catch (error) {
+      const errorText = error?.cause?.body?.detail ?? error.message;
+      showErrorNotification(errorText);
+    } finally {
+      dispatch(setPending(false));
+    }
   };
 
 

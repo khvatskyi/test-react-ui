@@ -41,6 +41,7 @@ export default function PortfolioDetails() {
 
   const dataFromStore = useAppSelector(selectPortfolioDetails);
   const defaultFormData = dataFromStore ?? structuredClone(DEFAULT_DATA);
+  const fromCaption = defaultFormData?.name ? defaultFormData.name :  'Create a portfolio'
 
   const onSave = (state: IPortfolioDetails) => {
     return dispatch(upsertPortfolio(state))
@@ -72,7 +73,7 @@ export default function PortfolioDetails() {
   return (
     <div className={css.root}>
       <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} />
-      <PortfolioDetailsForm form={form} showCaption={true} />
+      <PortfolioDetailsForm form={form} showCaption={true} fromCaption={fromCaption} />
     </div>
   )
 }

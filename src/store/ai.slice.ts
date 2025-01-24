@@ -49,9 +49,9 @@ export const sendChatMessageToAi = createAsyncThunk(
 
     if (isFinalAnswer) {
       const request: IGetSummaryRequest = {
-        chatId: state.ai.aiChatContext.id,
-        portfolioId: state.ai.aiChatContext.portfolioId,
-        stateCode: args.stateCode
+        chat_id: state.ai.aiChatContext.id,
+        portfolio_id: state.ai.aiChatContext.portfolioId,
+        state_code: args.stateCode
       };
 
       thunkAPI.dispatch(getSummary(request));
@@ -194,6 +194,7 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     .addCase(resetChatContext.fulfilled, (state) => {
       state.aiChatContext = null;
       state.lastExample = null;
+      state.isLoading = [];
     })
     .addCase(sendEditChatMessage.fulfilled, (state, action) => {
       const editedMessage = state.aiChatContext.history.find(x => x.id === action.payload.messageId);

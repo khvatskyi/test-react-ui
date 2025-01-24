@@ -5,16 +5,6 @@
   padding-bottom: 12px;
 }
 
-.formCaption {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.progressCaption{
-  font-size: 14px;
-  font-weight: 400;
-  color: #6C6F80;
-}
 
 .itemRowIcon svg {
   fill: var(--core-semantic-info-50, #0A68F1);
@@ -26,6 +16,10 @@
   line-height: 26px !important;
   margin-top: 4px;
   padding: 0px;
+}
+
+.activeCaption {
+  color: #0A68F1;
 }
   
 .itemText {

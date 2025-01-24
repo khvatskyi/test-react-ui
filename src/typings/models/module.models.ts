@@ -43,9 +43,9 @@ export interface IMessageToAi {
 }
 
 export interface IGetSummaryRequest {
-  chatId: string;
-  portfolioId: string;
-  stateCode: STATE_CODES;
+  chat_id: string;
+  portfolio_id: string;
+  state_code: STATE_CODES;
 }
 
 export enum ChatRole {

@@ -16,7 +16,7 @@ import { svc } from './services';
 
 import { DataLoading, GuardedRoute, MainMenu } from './components';
 import {
-  ChatRoom,
+  GettingStarted,
   ClientProfile,
   MainPage,
   PortfolioStages,
@@ -48,6 +48,7 @@ function UuiEnhancedApp() {
           <Switch>
             <Route exact path='/' component={MainPage} />
             <Route path='/login/sso-verification' component={LoginVerification} />
+            <GuardedRoute path='/getting-started' component={GettingStarted} canActivate={!!userContext} />
             <GuardedRoute path='/profile' component={ClientProfile} canActivate={!!userContext} />
             <GuardedRoute exact path='/portfolios' component={Portfolios} canActivate={hasProfile} />
             <GuardedRoute exact path='/portfolios/create' component={PortfolioDetails} canActivate={hasProfile} />

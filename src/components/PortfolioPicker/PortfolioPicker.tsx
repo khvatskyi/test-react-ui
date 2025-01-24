@@ -36,7 +36,7 @@ export default function PortfolioPicker({ portfolio, onPortfolioChange, disableC
       editMode='dropdown'
       disableClear={disableClear}
       isRequired={true}
-      searchPosition='input'
+      searchPosition='none'
     />
   );
 }

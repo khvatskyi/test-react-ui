@@ -26,6 +26,7 @@ export const signInWithSSOCode = createAsyncThunk(
     const params = new URLSearchParams({ code });
     const showErrorNotification = useShowErrorNotification();
 
+    // MOCK
     // return Promise.resolve<IUserContext>(({
     //   accessToken: 'some_token',
     //   userName: 'Vasyl',
@@ -36,6 +37,7 @@ export const signInWithSSOCode = createAsyncThunk(
     //   picture: null,
     //   hasProfile: true
     // }));
+    // END of MOCK
 
     return await fetch(`${path}?${params.toString()}`, {
       method: 'GET'
@@ -94,11 +96,7 @@ export const sessionSlice = createSlice({
         state.userContext = action.payload;
         sessionStorage.setItem(SessionStorageItems.UserContext, JSON.stringify(action.payload));
         state.pending = false;
-        if (state.userContext.accessToken) {
-          window.location.href = state.userContext.hasProfile ? '/portfolios' : '/profile';
-        } else {
-          window.location.href = '/'
-        }
+        window.location.href = '/'
       })
       .addCase(signInWithSSOCode.rejected, (state) => {
         state.pending = false;

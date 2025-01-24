@@ -25,21 +25,22 @@ export default function Portfolios() {
   const { uuiModals } = useUuiContext();
   const history = useHistory();
   const handlePortfolioCreate = () => {
-    if (portfolios?.length) {
       history.push('/portfolios/create');
-    } else {
+  }
+  const progressStep = portfolios?.length ? 3 : 2;
+  const handleShowProgressForm = () => {
           uuiModals
-              .show<string>((props) => <StartWizard { ...props } activeStep={2} />)
-              .then((result) => {
+              .show<string>((props) => <StartWizard { ...props } activeStep={progressStep} />)
+              .then(() => {
                 history.push('/portfolios/create');
               })
-              .catch(() => {}) 
-     }
+              .catch(() => {});
   }
+
 
   return !isLoading && (
     <FlexRow cx={css.root}>
-      <ProfileLeftPanel profile={profile} />
+      <ProfileLeftPanel profile={profile} progressStep={progressStep} onProgressClick={handleShowProgressForm} />
       {
         !portfolios?.length
           ? <PortfolioPlacehoder onCreateClick={handlePortfolioCreate} />

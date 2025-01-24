@@ -1,11 +1,13 @@
 .root {
-  padding: 75px 150px 0 150px;
+  padding: 75px 0px 0 150px;
+  // background-color: red;
 
   .portfolioWrapper {
     display: flex;
     align-items: center;
     gap: 60px;
     max-width: 550px;
+    // background-color: yellow;
   }
 
   .stageWrapper {
@@ -14,12 +16,16 @@
     gap: 80px;
     margin-top: 40px;
     margin-bottom: 60px;
+    // background-color: green;
   }
 
   .cardWrapper {
     width: 100% !important;
+    // max-width: 100% !important;
+    overflow: scroll; 
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 18px;
+    // background-color: blue;
   }
 }

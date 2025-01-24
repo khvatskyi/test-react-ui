@@ -2,12 +2,12 @@ import { IPortfolio } from '../typings/models/portfolio.models';
 import { IPortfolioDetails } from '../typings/models/portfolio.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 
-const MOCK_DATA: IPortfolio[] = [
-  { id: '1', name: 'Pesho' },
-  { id: '2', name: 'Gosho' },
-  { id: '3', name: 'Stamat' },
-  { id: '4', name: 'Test' }
-];
+// const MOCK_DATA: IPortfolio[] = [
+//   { id: '1', name: 'Pesho' },
+//   { id: '2', name: 'Gosho' },
+//   { id: '3', name: 'Stamat' },
+//   { id: '4', name: 'Test' }
+// ];
 
 export async function getPortfolios(): Promise<IPortfolio[]> {
 

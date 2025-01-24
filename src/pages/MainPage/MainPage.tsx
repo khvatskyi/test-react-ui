@@ -5,12 +5,21 @@ import { Button, IconContainer } from '@epam/uui';
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectUserContext, signInWithSSOCode } from "../../store/session.slice";
+import { useEffect } from 'react';
 
 export default function MainPage() {
 
   const dispatch = useAppDispatch();
   const userContext = useAppSelector(selectUserContext);
   const isUserContextPresent = Boolean(userContext?.accessToken);
+  const userHasProfile = isUserContextPresent && Boolean(userContext?.hasProfile);
+
+  useEffect(() => {
+    if (isUserContextPresent && !userHasProfile) {
+      window.location.href = '/getting-started';
+    }
+  }, [isUserContextPresent, userHasProfile]);
+
 
   const redirectToSSO = () => {
     dispatch(signInWithSSOCode('test'));

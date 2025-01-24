@@ -34,7 +34,7 @@ export default function Framework() {
     <div className={css.root}>
       <FlexCell cx={css.portfolioWrapper} >
         <span><b>Portfolio:</b></span>
-        <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange} disableClear={false} />
+        <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange} />
       </FlexCell>
       <FlexCell cx={css.stageWrapper}>
         <span><b>Stage:</b></span>

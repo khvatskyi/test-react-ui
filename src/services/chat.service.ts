@@ -1,55 +1,59 @@
-import { delay } from '@epam/uui-test-utils';
+// import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
-import { IStartChatInfo, IInteractiveChatMessage, ChatRole, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest } from '../typings/models/module.models';
+import { IStartChatInfo, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
-import { SUMMARY } from '../constants';
+// import { SUMMARY } from '../constants';
 
-const MOCK_DATA = {
-  interactiveChatMessage: {
-    topic: 'test',
-    text: 'test',
-    example: 'test',
-    totalOfQuestions: 5,
-    questionNumber: 1,
-  } as IInteractiveChatMessage,
-  context: {
-    id: 'teslatdsh',
-    name: 'Business insurance quote enablement',
-    description: 'The API Product will enable insurance brokers and agents',
-    history: [
-      {
-        id: '3432y43',
-        role: ChatRole.AI,
-        content: {
-          topic: 'Some Topic',
-          text: 'Some Question',
-          example: 'Some example',
-          totalOfQuestions: 5,
-          questionNumber: 1,
-        } as IInteractiveChatMessage
-      },
-      {
-        id: '323266',
-        role: ChatRole.User,
-        content: {
-          text: 'Insurance brokers and agents require a streamlined process to request quotes from Travelers Insurance quickly and efficiently, reducing the time spent on manual quote requests and improving customer service.'
-        }
-      },
-      {
-        id: '57655fd',
-        role: ChatRole.AI,
-        content: {
-          topic: 'Some Topic 2 ',
-          text: 'Some Question 2',
-          example: 'Some example 2',
-          totalOfQuestions: 5,
-          questionNumber: 2,
-        } as IInteractiveChatMessage
-      }
-    ]
-  } as IInteractiveChatContext
-}
+// const MOCK_DATA = {
+//   interactiveChatMessage: {
+//     id: '1',
+//     topic: 'test',
+//     text: 'test',
+//     example: 'test',
+//     totalOfQuestions: 5,
+//     questionNumber: 1,
+//   } as IInteractiveChatMessage,
+//   context: {
+//     id: 'teslatdsh',
+//     name: 'Business insurance quote enablement',
+//     description: 'The API Product will enable insurance brokers and agents',
+//     history: [
+//       {
+//         id: '3432y43',
+//         role: ChatRole.AI,
+//         content: {
+//           id: '2',
+//           topic: 'Some Topic',
+//           text: 'Some Question',
+//           example: 'Some example',
+//           totalOfQuestions: 5,
+//           questionNumber: 1,
+//         } as IInteractiveChatMessage
+//       },
+//       {
+//         id: '323266',
+//         role: ChatRole.User,
+//         content: {
+//           id: '3',
+//           text: 'Insurance brokers and agents require a streamlined process to request quotes from Travelers Insurance quickly and efficiently, reducing the time spent on manual quote requests and improving customer service.'
+//         }
+//       },
+//       {
+//         id: '57655fd',
+//         role: ChatRole.AI,
+//         content: {
+//           id: '4',
+//           topic: 'Some Topic 2 ',
+//           text: 'Some Question 2',
+//           example: 'Some example 2',
+//           totalOfQuestions: 5,
+//           questionNumber: 2,
+//         } as IInteractiveChatMessage
+//       }
+//     ]
+//   } as IInteractiveChatContext
+// }
 
 export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
 
@@ -162,5 +166,6 @@ export async function getChatSummary(request: IGetSummaryRequest): Promise<{ [ke
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/summary?` + params;
   const response = await fetchWithAuth(path, { method: 'GET' });
 
-  return await response.json();
+  const result = await response.json();
+  return result; 
 }

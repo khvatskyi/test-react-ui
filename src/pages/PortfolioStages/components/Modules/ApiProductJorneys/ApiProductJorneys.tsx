@@ -42,7 +42,6 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
       message: message,
     }
 
-    //dispatch(addUserMessage(message)); //TODO: need to check
     return dispatch(sendEditChatMessage(editMessage));
   };
 

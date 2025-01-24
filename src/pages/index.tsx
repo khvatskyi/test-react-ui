@@ -1,3 +1,4 @@
+export { default as GettingStarted } from './GettingStarted/GettingStarted';
 export { default as ChatRoom } from '../components/ChatRoom/ChatRoom';
 export { default as ClientProfile } from './ClientProfile/ClientProfile';
 export { default as MainPage } from './MainPage/MainPage';

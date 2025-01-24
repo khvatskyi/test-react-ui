@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FormSaveResponse } from '@epam/uui-core';
 import { useForm } from '@epam/uui';
@@ -14,6 +14,7 @@ import { IAiClientDefinitionFillRequest } from '../../typings/models/ai.models';
 import { setClientDefinitionInfo } from '../../store/data.slice';
 import { industries as defaultIndustries } from '../../constants';
 import { useShowErrorNotification, useShowSuccessNotification } from '../../utilities/notifications.utility';
+import { useHistory } from 'react-router-dom';
 
 const DEFAULT_PROFILE_DATA: IClientDefinitionInfo = {
   name: '',
@@ -31,6 +32,8 @@ export default function ClientProfile() {
   useEffect(() => {
     dispatch(loadProfileInfo());
   }, [dispatch]);
+
+  const [clickedSaveButtonClientProfile, setClickedSaveButtonClientProfile] = useState(false);
 
   const defaultFormData = dataFromStore ?? clientDefinitionFromStore ?? DEFAULT_PROFILE_DATA;
   const isExtendedMode = Boolean(dataFromStore);
@@ -54,13 +57,20 @@ export default function ClientProfile() {
     );
   }
 
-  const onSave = (state: IClientProfileInfo) => {
+  const onSaveClientProfile = (state: IClientProfileInfo) => {
     return dispatch(saveProfileInfo(state))
       .then(x => ({ form: x.payload as IClientProfileInfo } as FormSaveResponse<IClientProfileInfo>));
   }
 
-  const onSuccess = () => {
+  const onSuccessDefinition = () => {
     showSuccessNotification('Data has been saved!')
+  }
+
+  const history = useHistory();
+  const onSuccessClientProfile = () => {
+    if (clickedSaveButtonClientProfile) {
+      history.push('/portfolios');
+    }
   }
 
   const handleFillClientDefinitionWithAI = () => {
@@ -94,7 +104,7 @@ export default function ClientProfile() {
       beforeLeave: () => Promise.resolve(false),
       loadUnsavedChanges: () => Promise.resolve(),
       onSave: onSaveDefinitionData,
-      onSuccess: onSuccess
+      onSuccess: onSuccessDefinition
     }
     : {
       settingsKey: 'extended-client-profile-form',
@@ -102,8 +112,8 @@ export default function ClientProfile() {
       getMetadata: getClientProfileValidationSchema,
       beforeLeave: () => Promise.resolve(false),
       loadUnsavedChanges: () => Promise.resolve(),
-      onSave: onSave,
-      onSuccess: onSuccess
+      onSave: onSaveClientProfile,
+      onSuccess: onSuccessClientProfile
     };
 
   const form = useForm(formConfiguration);
@@ -122,11 +132,23 @@ export default function ClientProfile() {
     dispatch(clearClientProfile());
   };
 
+  const onClickSaveButtonClientDefinition = () => {
+    form.save();
+  }
+
+  const onClickSaveButtonClientProfile = () => {
+    form.save();
+    setClickedSaveButtonClientProfile(true);
+  }
+
+  const onClickSaveButton = isExtendedMode ? onClickSaveButtonClientProfile : onClickSaveButtonClientDefinition
+
+
   return (
     <div className={css.root}>
       <ClientProfileTopBar isExtendedMode={isExtendedMode}
         onFillFormWithAI={handleFillClientDefinitionWithAI}
-        onSave={form.save}
+        onSave={onClickSaveButton}
         disableButtons={isLoading} />
       <ClientProfileForm form={form}
         isExtendedForm={isExtendedMode}

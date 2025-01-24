@@ -9,6 +9,7 @@ import { ReactComponent as ChevronRightIcon } from '@epam/assets/icons/navigatio
 
 import css from './ProfileLeftPanel.module.scss';
 import type { IClientProfileInfo } from '../../../../typings/models/client-info.models';
+import StartWizardProgress from '../../../../components/StartWizard/components/StartWizardProgress/StartWizardProgress';
 
 const LABELS = {
   Title: 'Client Summary',
@@ -21,9 +22,11 @@ const LABELS = {
 
 export interface IProfileLeftPanelProps {
   profile: IClientProfileInfo;
+  progressStep: number;
+  onProgressClick: () => void;
 }
 
-export default function ProfileLeftPanel({ profile: profileData }: IProfileLeftPanelProps ) {
+export default function ProfileLeftPanel({ profile: profileData, progressStep, onProgressClick }: IProfileLeftPanelProps ) {
 
   const history = useHistory();
 
@@ -43,33 +46,38 @@ export default function ProfileLeftPanel({ profile: profileData }: IProfileLeftP
   );
 
   return (<>
-    {profileData &&
-      <FlexCell cx={css.leftSideProfile} minWidth={360}>
-        <Panel background='surface-main' cx={css.panelProfile} shadow>
-          <aside className={css.root}>
-            <Panel cx={css.formPanel} >
-              <FlexRow cx={css.buttonPanel}>
-                <RichTextView>
-                  <h3 className={css.profileTitle}> {LABELS.Title}</h3>
-                </RichTextView>
-                <FlexSpacer />
-                <Button caption='All details' icon={ChevronRightIcon} iconPosition='right'  fill='outline' color='primary' onClick={editProfile} />
-              </FlexRow>
+    <FlexCell cx={css.leftSideProfile} minWidth={360}>
+      <Panel background='surface-main' cx={css.panelProfile} shadow>
+        <aside className={css.root}>
+          <Panel cx={css.formPanel} >
+            {profileData && 
+              <>
+                <FlexRow cx={css.topPanel}>
+                  <RichTextView>
+                    <h3 className={css.profileTitle}> {LABELS.Title}</h3>
+                  </RichTextView>
+                  <FlexSpacer />
+                  <Button caption='All details' icon={ChevronRightIcon} iconPosition='right'  fill='outline' color='primary' onClick={editProfile} />
+                </FlexRow>
 
-              {getLabel(LABELS.Name)}
-              {getText(profileData.name!)}
-              {getLabel(LABELS.Desc)}
-              {getText(profileData.description!)}
-              {getLabel(LABELS.Industry)}
-              {getText(profileData.industry!)}
-              {getLabel(LABELS.Size)}
-              {getText(profileData.size!)}
-              {getLabel(LABELS.CoreProducts)}
-              {getText(profileData.coreProducts!)}
-            </Panel>
-          </aside>
-        </Panel>
-      </FlexCell>
-    }
+                {getLabel(LABELS.Name)}
+                {getText(profileData.name!)}
+                {getLabel(LABELS.Desc)}
+                {getText(profileData.description!)}
+                {getLabel(LABELS.Industry)}
+                {getText(profileData.industry!)}
+                {getLabel(LABELS.Size)}
+                {getText(profileData.size!)}
+                {getLabel(LABELS.CoreProducts)}
+                {getText(profileData.coreProducts!)}
+              </>
+            }
+          </Panel>          
+          <Panel cx={css.bottomPanel} onClick={onProgressClick}>
+            <StartWizardProgress activeStep={progressStep} />
+          </Panel>
+        </aside>
+      </Panel>
+    </FlexCell>
   </>);
 }

@@ -12,10 +12,6 @@ export const CARDS: IFrameworkCard[] = [
         path: STATE_CODES.AboutPortfolio,
         stages: [
           {
-            name: 'Consumers',
-            path: STATE_CODES.ConsumersAndNeeds
-          },
-          {
             name: 'Capabilities',
             path: STATE_CODES.Capabilities
           },
@@ -41,7 +37,7 @@ export const CARDS: IFrameworkCard[] = [
             path: STATE_CODES.ValueProposition
           },
           {
-            name: 'Consumer Needs',
+            name: 'Consumers & Needs',
             path: STATE_CODES.ConsumersAndNeeds
           },
           {

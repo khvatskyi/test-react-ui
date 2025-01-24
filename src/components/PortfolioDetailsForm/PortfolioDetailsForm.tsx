@@ -9,9 +9,10 @@ import css from './PortfolioDetailsForm.module.scss';
 export interface IPortfolioDetailsFormProps {
   form: IFormApi<IPortfolioDetails>,
   showCaption: Boolean,
+  fromCaption?: string,
 }
 
-export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormDisabled }, showCaption }: IPortfolioDetailsFormProps) {
+export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormDisabled }, showCaption, fromCaption = '' }: IPortfolioDetailsFormProps) {
 
   const industryDataSource = useArrayDataSource({ items: structuredClone(industries) }, []);
 
@@ -20,7 +21,7 @@ export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormD
       { showCaption &&
         <FlexCell width='100%'>
           <RichTextView >
-            <h2 style={{ textAlign: 'center' }}>{lens.prop('name').toProps().value || '_'}</h2>
+            <h2 style={{ textAlign: 'center' }}>{fromCaption}</h2>
           </RichTextView>
           <FlexSpacer />
         </FlexCell>
