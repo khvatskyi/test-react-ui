@@ -46,7 +46,7 @@ export const exportToPDF = (jsonObject: any) => {
   // Title
   doc.setFont('Helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('User Details', marginLeft, 10);
+  doc.text('Summary', marginLeft, 10);
 
   // Add each key-value pair
   doc.setFont('Helvetica', 'normal');
@@ -83,7 +83,7 @@ export const exportToPPT = (jsonObject) => {
   const slide = pptx.addSlide();
   
   // Add a title to the slide
-  slide.addText('User Details', { x: 1, y: 0.5, fontSize: 24, bold: true });
+  slide.addText('Summary', { x: 1, y: 0.5, fontSize: 24, bold: true });
 
   let yPosition = 1.5; // Start y position for the first text box
 
