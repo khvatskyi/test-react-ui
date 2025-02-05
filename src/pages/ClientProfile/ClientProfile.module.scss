@@ -1,3 +1,12 @@
+@use '../../../src/variables.scss' as globalVars;
+
 .root {
   width: 100%;
 }
+
+.content {
+  display: flex;
+  min-width: 0;
+  height: globalVars.$top-bar-content-height;
+  overflow: hidden;  
+}  

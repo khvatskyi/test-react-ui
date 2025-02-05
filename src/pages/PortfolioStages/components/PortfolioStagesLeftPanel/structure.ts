@@ -58,3 +58,17 @@ export const portfolioStates: PortfolioStateItem[] = [
   { id: STATE_CODES.Deliver, name: 'Deliver', icon: LockIcon, isLocked: true },
   { id: STATE_CODES.DeliverItem, name: 'Item', parentId: STATE_CODES.Deliver },
 ];
+
+
+export function normalizeSummaryKeys(data: any) {
+
+    const newData: any = {};
+
+    Object.keys(data).forEach(key => {
+        const readableKey = key.replace(/([A-Z])/g, ' $1').trim();
+        const capitalizedKey = readableKey.charAt(0).toUpperCase() + readableKey.slice(1);
+        newData[capitalizedKey] = data[key];
+    });
+
+    return newData;
+}

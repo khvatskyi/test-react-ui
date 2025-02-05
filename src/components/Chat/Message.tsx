@@ -1,9 +1,8 @@
 import css from './Chat.module.scss';
-// import { IChatMessage } from '../../typings/models/chat.models';
-import { IInteractiveChatMessage } from '../../typings/models/module.models';
+import { IChatMessageInterviewQuestion } from '../../typings/models/module.models';
 
 export interface IMessageProps {
-  message: IInteractiveChatMessage
+  message: IChatMessageInterviewQuestion
 }
 
 export default function Message({ message }: IMessageProps) {
@@ -18,7 +17,7 @@ export default function Message({ message }: IMessageProps) {
           <span className={css.messageText}>
             {message.questionNumber + '/'+ message.totalOfQuestions}<br/>
             <b>Topic:</b>{message.topic }<br/>
-            <b>Question:</b>{message.text }<br/>
+            <b>Question:</b>{message.question }<br/>
             <b>Example:</b>{message.example }
           </span>
         </div>

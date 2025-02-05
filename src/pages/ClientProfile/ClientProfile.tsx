@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { FormSaveResponse } from '@epam/uui-core';
-import { useForm } from '@epam/uui';
+import { ScrollBars, useForm } from '@epam/uui';
 
 import css from './ClientProfile.module.scss';
 import { ClientProfileTopBar, ClientProfileForm } from './components';
 import { IClientDefinitionInfo, IClientProfileInfo } from '../../typings/models/client-info.models';
 import { getClientProfileValidationSchema } from './validation.schema';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile } from '../../store/data.slice';
+import { clearClientProfile, loadProfileInfo, saveClientDefinitionInfo, saveProfileInfo, selectClientDefinition, selectIsDataLoading, selectProfile, setPending } from '../../store/data.slice';
 import { sendClientDefinitionFillMessage } from '../../services/ai.service';
 import { IAiClientDefinitionFillRequest } from '../../typings/models/ai.models';
 import { setClientDefinitionInfo } from '../../store/data.slice';
@@ -79,6 +79,7 @@ export default function ClientProfile() {
       name: name
     };
 
+    dispatch(setPending(true));
     sendClientDefinitionFillMessage(requestMessage).then(data => {
       const set: React.SetStateAction<IClientDefinitionInfo> = {
         name: data.name ?? form.lens.prop('name').toProps().value,
@@ -88,8 +89,10 @@ export default function ClientProfile() {
         coreProducts: data.core_products ?? form.lens.prop('coreProducts').toProps().value,
       }
       form.replaceValue(set)
+      dispatch(setPending(false));
     }).catch(
       r => {
+        dispatch(setPending(false));
         const errorText = r.cause?.body?.detail ?? r.message;
         showErrorNotification(errorText)
       }
@@ -141,19 +144,39 @@ export default function ClientProfile() {
     setClickedSaveButtonClientProfile(true);
   }
 
+  const formIsChanged = () => {
+    return form.isChanged;
+  }  
+
+  const onCancel = () => {
+    return new Promise<void>(() => {
+      form.revert();
+      history.push('/portfolios');
+    });
+  }
+
+
   const onClickSaveButton = isExtendedMode ? onClickSaveButtonClientProfile : onClickSaveButtonClientDefinition
 
 
   return (
     <div className={css.root}>
-      <ClientProfileTopBar isExtendedMode={isExtendedMode}
+      <ClientProfileTopBar 
+        isExtendedMode={isExtendedMode}
         onFillFormWithAI={handleFillClientDefinitionWithAI}
         onSave={onClickSaveButton}
-        disableButtons={isLoading} />
-      <ClientProfileForm form={form}
-        isExtendedForm={isExtendedMode}
-        industries={industries}
-        onEditClientDefinition={handleEditClientDefinition} />
+        disableButtons={isLoading}
+        onCancel={onCancel} 
+        formIsChanged={formIsChanged}         
+        />
+      <div className={ css.content }>
+        <ScrollBars>
+          <ClientProfileForm form={form}
+            isExtendedForm={isExtendedMode}
+            industries={industries}
+            onEditClientDefinition={handleEditClientDefinition} />
+        </ScrollBars>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,12 @@
   padding: 75px 0px 0 150px;
   // background-color: red;
 
+  .content {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;  
+  }  
+  
   .portfolioWrapper {
     display: flex;
     align-items: center;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { FlexRow, Avatar, IconContainer, Text, TextArea, Button } from '@epam/uui';
+import { FlexRow, Avatar, IconContainer, Text, TextArea, Button, FlexSpacer } from '@epam/uui';
 import { ReactComponent as ContentEditFillIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import { ReactComponent as NotificationDoneOutlineIcon } from '@epam/assets/icons/notification-done-outline.svg';
 import { ReactComponent as NavigationCloseOutlineIcon } from '@epam/assets/icons/navigation-close-outline.svg';
 
 import css from './UserAnswer.module.scss';
-import { IContentMessage } from '../../typings/models/module.models';
+import { IChatMessageUserAnswer, IContentMessage } from '../../typings/models/module.models';
 import { useAppSelector } from '../../hooks';
 import { selectUserContext } from '../../store/session.slice';
 import ChatAiButton from './ChatAiButton';
@@ -14,29 +14,33 @@ import ChatAiButton from './ChatAiButton';
 export interface IUserAnswerProps {
   message: IContentMessage,
   aiExample: string,
+  aiOptions?: [string];
   onEditMessage: (id: string, newText: string) => void
 }
 
-export default function UserAnswer({ message, aiExample, onEditMessage }: IUserAnswerProps) {
+export default function UserAnswer({ message, aiExample, aiOptions, onEditMessage }: IUserAnswerProps) {
   const avatarSrc = useAppSelector(selectUserContext).picture;
-  const [value, onValueChange] = useState(message.content.text);
+  const [value, onValueChange] = useState((message.content as IChatMessageUserAnswer).answer);
   const [isEditMode, onEditModeChange] = useState(false);
+  
   const handleMessageSave = (e: Event) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!value || value === message.content.text) {
+    if (!value || value === (message.content as IChatMessageUserAnswer).answer) {
+      onEditModeChange(false);
       return;
     }
 
     onEditMessage(message.id, value);
+    onEditModeChange(false);
   };
 
   const handleCancel = (e: Event) => {
     e.stopPropagation();
     e.preventDefault();
 
-    onValueChange(message.content.text);
+    onValueChange((message.content as IChatMessageUserAnswer).answer);
     onEditModeChange(false);
   };
 
@@ -44,16 +48,38 @@ export default function UserAnswer({ message, aiExample, onEditMessage }: IUserA
     onValueChange(aiExample);
   };
 
+  const handleAiOptionClick = (event) => {
+    const selectedOption = event.currentTarget.dataset.option;
+    onValueChange(selectedOption);
+  };  
+
   useEffect(() => {
     onEditModeChange(false);
-  }, [message.content.text]);
+  }, []);
 
   const messageForView = <Text cx={css.messageWrapper} size='48'>{value}</Text>;
   const messageForEdit = (
     <div className={css.editWrapper}>
-      <TextArea rows={4} value={value} onValueChange={(x) => onValueChange(x)} id='goalsOrObjectives' placeholder='What business is trying to achieve with this portfolio?' />
+      <TextArea rows={4} value={value} onValueChange={(x) => onValueChange(x)} />
+      {aiOptions && aiOptions.length > 0 &&
+        <FlexRow columnGap={12} rawProps={ { style: { paddingBottom: '12px' } } }>
+            <FlexSpacer/>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', maxWidth:'600px', justifyContent: 'flex-end'}}>
+              {aiOptions
+                    .filter(value => value.toLowerCase() !== "other")  
+                    .map( (value, index) => { 
+                      return (
+                        <Button key={index} rawProps={ { 'data-option': value } } fill="none" color="secondary" caption={value} onClick={handleAiOptionClick}/> 
+                      )
+                    }
+                  )
+              }
+          </div>
+          </FlexRow>
+      }
       <FlexRow justifyContent='space-between' columnGap={10}>
-        <ChatAiButton caption='Rewrite with AI' onClick={rewriteWithAI} />
+        {aiOptions && aiOptions.length > 0 && <FlexSpacer/>}
+        {!(aiOptions && aiOptions.length > 0) && <ChatAiButton caption='Rewrite with AI' onClick={rewriteWithAI} />}
         <div className={css.editButtonsWrapper}>
           <Button onClick={handleMessageSave} caption='Save' icon={NotificationDoneOutlineIcon} iconPosition='left' />
           <Button onClick={handleCancel} cx={css.cancelButton} color='white' caption='Cancel' icon={NavigationCloseOutlineIcon} iconPosition='left' />

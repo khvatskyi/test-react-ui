@@ -5,42 +5,30 @@ import { addUserMessage, loadChatContext, selectChatContext, sendChatMessageToAi
 import ChatRoom from '../../../../../components/ChatRoom/ChatRoom';
 import ChatStartForm from '../../StartForm/ChatStartForm';
 
-import css from './ApiProductJorneys.module.scss';
+import css from './ConsumersAndNeeds.module.scss';
 import ModuleTopBar from '../../TopBar/ModuleTopBar';
 import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
 import { IEditChatMessage, IStartChat } from '../../../../../typings/models/module.models';
 
-export interface IApiProductJorneysProps {
+export interface IConsumersAndNeedsProps {
   portfolioId: string;
 }
 
-const CURRENT_STATE_CODE = STATE_CODES.APIProductJourneys;
+const CURRENT_STATE_CODE = STATE_CODES.ConsumersAndNeeds;
 
-export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysProps) {
+export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsProps) {
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
-
+  
   const onSendMessage = (message: string) => {
     if (!message) {
       return;
     }
 
     dispatch(addUserMessage(message));
+
     return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE }));
   };
-
-  const onStartNewChat = (topic: string) => {
-    const context: IStartChat = {
-      portfolioId: portfolioId,
-      stateCode: CURRENT_STATE_CODE,
-      topic: topic,
-    }
-
-    const result = dispatch(startNewChat(context));
-    dispatch(setChatTopic(context.topic));
-    return result;
-  };
-
 
   const onEditMessage = (id: string, message: string) => {
     if (!message) {
@@ -55,6 +43,18 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
     }
 
     return dispatch(sendEditChatMessage(editMessage));
+  };
+
+  const onStartNewChat = (topic: string) => {
+    const context: IStartChat = {
+      portfolioId: portfolioId,
+      stateCode: CURRENT_STATE_CODE,
+      topic: topic,
+    }
+
+    const result = dispatch(startNewChat(context));
+    dispatch(setChatTopic(context.topic));
+    return result;
   };
 
   useEffect(() => {

@@ -16,7 +16,7 @@ export default function PortfolioList({ portfolios, onCreateClick }: IPortfolioL
   return (
     <FlexCell cx={css.panelPortfolio} width='100%'>
       <FlexRow cx={css.portfolioHeader}>
-        <span>Portfolios</span>
+        <h2>Portfolios</h2>
         <Button icon={PlusIcon} caption='Create a portfolio' color='primary' onClick={onCreateClick} />
       </FlexRow>
       <div className={css.portfolioListWrapper}>

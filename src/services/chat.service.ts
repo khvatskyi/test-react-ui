@@ -1,7 +1,7 @@
 // import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 
-import { IStartChatInfo, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest } from '../typings/models/module.models';
+import { IApiContext, IStartChat, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest, IGetApiContextRequest } from '../typings/models/module.models';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 // import { SUMMARY } from '../constants';
 
@@ -13,7 +13,7 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //     example: 'test',
 //     totalOfQuestions: 5,
 //     questionNumber: 1,
-//   } as IInteractiveChatMessage,
+//   } as IChatMessageInterviewQuestion,
 //   context: {
 //     id: 'teslatdsh',
 //     name: 'Business insurance quote enablement',
@@ -29,7 +29,7 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //           example: 'Some example',
 //           totalOfQuestions: 5,
 //           questionNumber: 1,
-//         } as IInteractiveChatMessage
+//         } as IChatMessageInterviewQuestion
 //       },
 //       {
 //         id: '323266',
@@ -49,19 +49,34 @@ import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 //           example: 'Some example 2',
 //           totalOfQuestions: 5,
 //           questionNumber: 2,
-//         } as IInteractiveChatMessage
+//         } as IChatMessageInterviewQuestion
 //       }
 //     ]
 //   } as IInteractiveChatContext
 // }
 
-export async function createChat(context: IStartChatInfo, stateCode: STATE_CODES): Promise<IInteractiveChatContext> {
+export async function startChat(context: IStartChat): Promise<IInteractiveChatContext> {
 
   // MOCK
   // return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
   //END of MOCK
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/start`;
+  const response = await fetchWithAuth(path, {
+    method: 'POST',
+    body: JSON.stringify(context),
+  });
+
+  return await response.json();
+}
+
+export async function initChatTopic(context: IApiContext): Promise<IInteractiveChatContext> {
+
+  // MOCK
+  // return Promise.resolve<IInteractiveChatContext>(MOCK_DATA.context);
+  //END of MOCK
+
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/init`;
   const response = await fetchWithAuth(path, {
     method: 'POST',
     body: JSON.stringify(context),
@@ -119,7 +134,7 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
   const body = {
     portfolioId: message.portfolioId,
     isLastAnswer: message.isLastAnswer,
-    message: message.text,
+    message: message.message,
     stateCode: message.stateCode,
   };
 
@@ -164,6 +179,16 @@ export async function getChatSummary(request: IGetSummaryRequest): Promise<{ [ke
 
   const params = new URLSearchParams({ ...request }).toString();
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/summary?` + params;
+  const response = await fetchWithAuth(path, { method: 'GET' });
+
+  const result = await response.json();
+  return result; 
+}
+
+export async function getChatApiContext(request: IGetApiContextRequest): Promise<IApiContext> {
+
+  const params = new URLSearchParams({ ...request }).toString();
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-context?` + params;
   const response = await fetchWithAuth(path, { method: 'GET' });
 
   const result = await response.json();

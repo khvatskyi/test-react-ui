@@ -1,12 +1,12 @@
 import { FlexRow, Button, FlexSpacer } from '@epam/uui';
 import { ReactComponent as iaIcon } from '@epam/assets/icons/ai-copilot_magic_small-fill.svg';
 
-export interface IChatSpinnerProps {
+export interface IChatAiButtonProps {
   onClick: () => void;
   caption: string;
 }
 
-export default function ChatAiButton({ caption, onClick: handleClick }: IChatSpinnerProps) {
+export default function ChatAiButton({ caption, onClick: handleClick }: IChatAiButtonProps) {
   return (
     <FlexRow>
       <FlexSpacer />

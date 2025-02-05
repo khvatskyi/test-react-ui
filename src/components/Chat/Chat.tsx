@@ -4,33 +4,56 @@ import { FlexRow, Button, TextInput } from '@epam/uui';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 
 import css from './Chat.module.scss';
-import { ChatRole, IContentMessage } from '../../typings/models/module.models';
+import { ChatMessageType, ChatRole, IChatMessageInterviewQuestion, IContentMessage, TopicStatus } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQuestion from './ChatQuestion';
-import ChatAiButton from './ChatAiButton';
+import ChatAiResponse from './ChatAiResponse';
 import UserAnswer from './UserAnswer';
 import { useAppSelector } from '../../hooks';
-import { selectChatContext, selectChatSummary } from '../../store/ai.slice';
+import { selectChatContext } from '../../store/ai.slice';
 import { ModuleCompleted } from '..';
+import ChatTopicSelector from './ChatTopicSelector';
+import { normalizeSummaryKeys } from '../../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
+import { findLastElement } from '../../utilities/data.utility';
+
 
 export interface IChatProps {
-  messages: IContentMessage[];
   isResponding: boolean;
+  onStartNewChat:(topic: string) => void; 
   onSendMessage: (message: string) => void;
   onEditMessage: (id: string, message: string) => void;
-  getAiAnswerExample: () => string;
 }
 
-export default function Chat({ messages, isResponding, onSendMessage, onEditMessage, getAiAnswerExample }: IChatProps) {
-  const chatHistory = useAppSelector(selectChatContext).history;
-  const chatSummary = useAppSelector(selectChatSummary);
-  const conversationCompleted = Boolean(chatSummary);
-  const lastMessageBelongsToAi = chatHistory.at(chatHistory.length - 1).role === ChatRole.AI;
+export default function Chat({ isResponding, onSendMessage, onEditMessage, onStartNewChat }: IChatProps) {
+  
+  const chatTopics = useAppSelector(selectChatContext).topics;
+    
+  const topicsNew = chatTopics.filter(topic => topic.status === TopicStatus.New); 
+  const topicsActive = chatTopics.filter(topic => topic.status === TopicStatus.ActiveDiscussion);
+  const topicsCompleted = chatTopics.filter(topic => topic.status === TopicStatus.Completed);
+  const topicsNewNames = topicsNew.map(topic => topic.name);
+
+  const sendControlsDisabled = (chatTopics.length === 0) || (topicsActive.length === 0)
+  const isSingleTopicChat = chatTopics.length === 1;
+  const showTopicSelector = topicsActive.length === 0 && topicsNewNames.length > 0 && !isSingleTopicChat;
+  
+  let spinnerHint = 'Loading...';
+  if (topicsActive.length === 0) {
+    spinnerHint = 'Preparing interview...';
+  } else if (topicsActive[0].history) {
+    const lastInterviewMessage = findLastElement(topicsActive[0].history, x => x.type === ChatMessageType.InterviewQuestion) as IContentMessage;
+    const interviewQuestion = lastInterviewMessage.content as IChatMessageInterviewQuestion
+    if (interviewQuestion.totalOfQuestions === interviewQuestion.questionNumber) {
+      spinnerHint = 'Generating summary...';
+    } else {
+      spinnerHint = 'Preparing next question...';
+    }
+  }
 
   const [currentInput, setCurrentInput] = useState('');
 
-  const handleAiAnswerClick = () => {
-    setCurrentInput(getAiAnswerExample());
+  const handleSendResponce = (value: string, isAiExample: boolean) => {
+    onSendMessage(value);
   }
 
   const handleSendMessage = () => {
@@ -56,24 +79,41 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages.length, conversationCompleted]);
+  }, [topicsNew, topicsActive, topicsCompleted]);
 
-  const displayMessages = (<>
+
+  const displayTopicMessages = (topics) => (<>
     {
-      messages.map((message, index) => message.role === ChatRole.AI
-        ? <ChatQuestion key={index} message={message.content} />
-        : <UserAnswer key={index} message={message} aiExample={messages[index-1].content.example} onEditMessage={onEditMessage} />
-      )
+      topics.map((topic, topic_index) => {
+        
+        const lastMessage = topic?.history?.at(topic.history.length - 1);
+        const lastMessageBelongsToAi = lastMessage?.role === ChatRole.AI;
+        
+        return (
+          <>
+            {topic.history && topic.history.map((message, message_index) => message.type === ChatMessageType.InterviewQuestion
+              ? <ChatQuestion key={message_index} message={message.content as IChatMessageInterviewQuestion} />
+              : <UserAnswer key={message_index} message={message} 
+                            aiExample={(topic.history[message_index-1].content as IChatMessageInterviewQuestion).example}
+                            aiOptions={(topic.history[message_index-1].content as IChatMessageInterviewQuestion).options}
+                            onEditMessage={onEditMessage} />
+            )}
+            {lastMessageBelongsToAi && <ChatAiResponse onSendResponce={handleSendResponce} message={lastMessage.content as IChatMessageInterviewQuestion} /> }
+            {topic.summary && <ModuleCompleted objectToExport={normalizeSummaryKeys(topic.summary)} topicName={topic.name}/>}
+          </>
+        )
+      })
     }
   </>);
 
   return (
     <div className={css.chatWrapper}>
       <div ref={chatBoxRef} className={css.messagesWrapper}>
-        {displayMessages}
-        {lastMessageBelongsToAi && <ChatAiButton caption='Answer with AI' onClick={handleAiAnswerClick} />}
-        {conversationCompleted && <ModuleCompleted objectToExport={chatSummary} />}
-        {isResponding && <ChatSpinner />}
+        {displayTopicMessages(topicsCompleted)}
+        {displayTopicMessages(topicsActive)}
+        {displayTopicMessages(topicsNew)}
+        {showTopicSelector && <ChatTopicSelector topics={topicsNewNames} onSelect={onStartNewChat} />}
+        {isResponding && <ChatSpinner hint={spinnerHint}/>}
       </div>
       <FlexRow cx={css.inputMessageWrapper} columnGap={12}>
         <TextInput
@@ -83,9 +123,9 @@ export default function Chat({ messages, isResponding, onSendMessage, onEditMess
           onValueChange={(v) => setCurrentInput(v)}
           onKeyDown={handleKeyPress}
           cx={css.matInputElement}
-          isDisabled={conversationCompleted}
+          isDisabled={sendControlsDisabled}
         />
-        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={conversationCompleted || isResponding} />      
+        <Button icon={sendIcon} color="primary" onClick={handleSendMessage} isDisabled={sendControlsDisabled || isResponding} />      
       </FlexRow>
     </div>
   );

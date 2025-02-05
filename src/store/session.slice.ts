@@ -84,7 +84,9 @@ export const sessionSlice = createSlice({
       deleteAllCookies();
     },
     updateProfileAvailability: (state, action: PayloadAction<boolean>) => {
-      state.userContext.hasProfile = action.payload;
+      if (state.userContext) {
+        state.userContext.hasProfile = action.payload;
+      }
     }
   },
   extraReducers: (builder) => {

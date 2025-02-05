@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { FlexCell } from '@epam/uui';
 
@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSuccessfullyCompletedModules, loadPortfolio, selectCompletedModules, selectPortfolioDetails } from '../../store/data.slice';
 import { StageStatus } from '../../typings/enums/stage-status.enum';
 import { CARDS } from '../../data/framework-data/cards';
+import { useHistory } from 'react-router-dom';
 
 const DEFAULT_TAB = FrameworkTab.Discover;
 
@@ -24,6 +25,7 @@ export default function Framework() {
   const tab = TABS.find(x => x.name === value);
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
   const completedStages = useAppSelector(selectCompletedModules);
+  const history = useHistory();
 
   CARDS.forEach(card => {
     card.categories.forEach(category => {
@@ -40,7 +42,9 @@ export default function Framework() {
   };
 
   const onStageClick = (stage: IStage) => {
-    console.log(stage);
+    if (stage.path) {
+      history.push(`/portfolio/stages/${selectedPortfolio.id}?stage=${stage.path}`);
+    }
   }
 
   return (

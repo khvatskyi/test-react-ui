@@ -5,10 +5,11 @@ $successColor: #07A956;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  min-width: 300px;
+  min-width: 630px;
   flex: 1;
-  max-width: 400px;
+  max-width: 800px;
   padding: 20px;
+  justify-content: space-between;
 
   .textContainer {
     display: flex;
@@ -19,10 +20,18 @@ $successColor: #07A956;
 
   .successText {
     font-weight: 600;
-    color: $successColor;
   }
 
   .successIcon {
     fill: $successColor
   }
+}
+
+.buttonPanel {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.moduleBadge{
+  max-width: 250px;
 }

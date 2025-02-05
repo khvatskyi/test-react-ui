@@ -1,4 +1,4 @@
-import { FormSaveResponse, useForm } from '@epam/uui-core';
+import { cx, FormSaveResponse, useForm } from '@epam/uui-core';
 import { FlexCell, FlexRow, LabeledInput, Panel, Button, Text, TextArea, TextInput, Badge, IconContainer } from '@epam/uui';
 
 import { apiContextValidationSchema } from './validation.schema';
@@ -8,13 +8,14 @@ import { ReactComponent as iconInfo } from '@epam/assets/icons/content-interest-
 
 import css from './ChatStartForm.module.scss';
 
-import { startNewChat } from '../../../../store/ai.slice';
-import { STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
-import { IStartChatInfo } from '../../../../typings/models/module.models';
+import { loadApiContext, selectApiContext, initNewChatTopics, startNewChat, setChatTopic } from '../../../../store/ai.slice';
+import { getStateTitle, STATE_CODES } from '../PortfolioStagesLeftPanel/structure';
+import { IGetApiContextRequest, IApiContext, IStartChat, IInteractiveChatContext } from '../../../../typings/models/module.models';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { useShowErrorNotification } from '../../../../utilities/notifications.utility';
 import { selectPortfolioDetails, setPending } from '../../../../store/data.slice';
 import { FORM_DEFAULT_DATA } from '../../constants';
+import { useEffect } from 'react';
 
 export interface IChatStartFormProps {
   stateCode: STATE_CODES
@@ -23,17 +24,41 @@ export interface IChatStartFormProps {
 export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
   const dispatch = useAppDispatch();
   const selectedPortfolio = useAppSelector(selectPortfolioDetails);
+  const apiContext = useAppSelector(selectApiContext);
+
+  useEffect(() => {
+    const request: IGetApiContextRequest = {
+      portfolio_id: selectedPortfolio.id,
+      state_code: stateCode
+    };
+    dispatch(loadApiContext(request));
+  }, [dispatch, selectedPortfolio.id, stateCode]);
+
+
   const { MODULE_TAGS, LABELS, DEFAULT_API_CONTEXT_DATA } = FORM_DEFAULT_DATA.find(x => x.id === stateCode);
-
+  const fromData = apiContext ? apiContext : DEFAULT_API_CONTEXT_DATA;
   const showErrorNotification = useShowErrorNotification();
-
-  const onSave = async (state: IStartChatInfo) => {
-    const modifiedState = { ...state, portfolioId: selectedPortfolio.id };
+  const disableEditors = apiContext ? (stateCode === STATE_CODES.ValueProposition ? false : true) : false;
+  
+  const onSave = async (state: IApiContext) => {
+    const modifiedState = { ...state, portfolioId: selectedPortfolio.id, stateCode: stateCode };
   
     dispatch(setPending(true));
     try {
-      const response = await dispatch(startNewChat({ context: modifiedState, stateCode }));
-      const result = { form: response.payload } as FormSaveResponse<IStartChatInfo>;
+      const response = await dispatch(initNewChatTopics({ context: modifiedState}));
+      const result = { form: response.payload } as FormSaveResponse<IApiContext>;
+      const topics = (response.payload as IInteractiveChatContext).topics
+      
+      if (topics?.length === 1) { //If a chat has one topic, then start a conversation
+        const context: IStartChat = {
+          portfolioId: selectedPortfolio.id,
+          stateCode: stateCode,
+          topic: getStateTitle(stateCode)
+        }
+        dispatch(startNewChat(context));
+        dispatch(setChatTopic(context.topic));
+      }
+
       return result;
     } catch (error) {
       const errorText = error?.cause?.body?.detail ?? error.message;
@@ -44,9 +69,9 @@ export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
   };
 
 
-  const form = useForm<IStartChatInfo>({
+  const form = useForm<IApiContext>({
     settingsKey: 'chat-start-form',
-    value: DEFAULT_API_CONTEXT_DATA,
+    value: fromData,
     beforeLeave: () => Promise.resolve(false),
     loadUnsavedChanges: () => Promise.resolve(),
     getMetadata: apiContextValidationSchema,
@@ -71,21 +96,19 @@ export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
             ))
           }
         </div>
-        <FlexCell width='100%'>
+        <FlexCell width='100%' cx={ cx(css.formContent) }  >
           <h3 style={{ margin: '0px' }}>{LABELS.apiTitle}</h3>
-        </FlexCell>
-        <FlexCell width='100%'>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={550} width='100%'>
               <LabeledInput htmlFor='chatStartName' label='API name'  {...lens.prop('name').toProps()}>
-                <TextInput {...lens.prop('name').toProps()} id='chatStartName' placeholder='Please type text' maxLength={72} />
+                <TextInput {...lens.prop('name').toProps()} id='chatStartName' placeholder='Please type text' maxLength={72} isDisabled={disableEditors}/>
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={550} width='100%'>
               <LabeledInput htmlFor='chatStartDescription' label='Description' {...lens.prop('description').toProps()}>
-                <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={4} placeholder='Please type text' />
+                <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={4} placeholder='Please type text' isDisabled={disableEditors} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>

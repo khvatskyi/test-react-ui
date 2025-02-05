@@ -2,30 +2,39 @@
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  width: fit-content;
+  width: 295px;
+  min-width: 295px;
+  max-width: 295px;
   height: fit-content;
-  min-width: fit-content !important;
   flex-basis: unset !important;
   padding: 15px;
   border: 1px solid #E1E3EB;
   border-radius: 5px;
+  flex-shrink: 0;
 
   &>h2 {
     margin-top: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     color: #0a68f1;
   }
 
-  &>span {
+  .description {
+    padding: 0px;
+    margin-top: 10px;
     margin-bottom: 20px;
   }
 
   .stageWrapper {
     cursor: pointer;
     background-color: #ebedf5;
-    padding: 6px 12px;
     min-height: 50px;
-    min-width: 100px;
+    width: 118px;
+    min-width: 118px;
+    max-width: 118px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
     border-radius: 6px;
     border: 1px solid #ebedf5;
     display: flex;
@@ -46,6 +55,13 @@
     &:hover {
       filter: brightness(0.9);
     }
+  }
+
+  .secondColumn{
+    margin-left: 6px;
+  }
+  .stageTitle {
+    padding: 0px;
   }
 
   .completedStage {
@@ -78,11 +94,17 @@
     position: relative;
     color: white;
     background-color: #6c6f80;
-    min-width: 150px;
-    min-height: 40px;
+    width: 147px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    h4 {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
   }
 
   .categoryStageWrapperClickable {

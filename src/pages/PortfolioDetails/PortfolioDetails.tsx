@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { FormSaveResponse } from '@epam/uui-core';
-import { useForm } from '@epam/uui';
+import { ScrollBars, useForm } from '@epam/uui';
 
 import css from './PortfolioDetails.module.scss';
 import { PortfolioDetailsTopBar } from './components';
@@ -63,6 +63,10 @@ export default function PortfolioDetails() {
   });
   form.canRedo = false;
 
+  const formIsChanged = () => {
+    return form.isChanged;
+  }  
+
   const onCancel = () => {
     return new Promise<void>(() => {
       form.revert();
@@ -72,8 +76,12 @@ export default function PortfolioDetails() {
 
   return (
     <div className={css.root}>
-      <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} />
-      <PortfolioDetailsForm form={form} showCaption={true} fromCaption={fromCaption} />
+      <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} formIsChanged={formIsChanged}/>
+      <div className={ css.content }>
+        <ScrollBars>
+          <PortfolioDetailsForm form={form} showCaption={true} fromCaption={fromCaption} />
+        </ScrollBars>
+      </div>
     </div>
   )
 }

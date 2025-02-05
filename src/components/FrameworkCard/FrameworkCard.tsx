@@ -1,4 +1,4 @@
-import { FlexCell, FlexRow, IconContainer } from '@epam/uui';
+import { FlexCell, FlexRow, IconContainer, Text } from '@epam/uui';
 import { ReactComponent as NotificationCheckFillIcon } from '@epam/assets/icons/notification-check-fill.svg';
 
 import css from './FrameworkCard.module.scss';
@@ -19,13 +19,16 @@ export default function FrameworkCard(props: IFrameworkCardProps) {
     props.onStageClick(stage);
   };
 
-  const childStage = (stage: IStage) => (
-    <div key={stage.name} className={css.stageWrapper + (stage.status === StageStatus.Complete ? ` ${css.completedStage}` : '')}
+  const childStage = (index: number, stage: IStage) => (
+    <div key={stage.name} className={css.stageWrapper 
+      + (stage.status === StageStatus.Complete ? ` ${css.completedStage}` : '')
+      + (index > 0 ? ` ${css.secondColumn}` : '')
+      }
       onClick={(e) => handleStageClick(e, stage)}
     >
       <div>
         {stage.status === StageStatus.Complete && <IconContainer size={20} cx={css.completedIcon} icon={NotificationCheckFillIcon} />}
-        <span>{stage.name}</span>
+        <Text cx={css.stageTitle} fontSize='16' fontWeight='400' >{stage.name}</Text>
       </div>
     </div>
   );
@@ -33,8 +36,8 @@ export default function FrameworkCard(props: IFrameworkCardProps) {
   return (
     <FlexCell cx={css.root + (props.cx ? ` ${props.cx}` : '')}>
       <h2>{props.title}</h2>
-      <span>{props.description}</span>
-      <FlexRow alignItems='top' columnGap="12">
+      <Text cx={css.description} fontSize='16'>{props.description}</Text>
+      <FlexRow alignItems='top'>
         {
           props.categories.map((category, index) => {
             const categoryStageWrapperClasses = css.categoryStageWrapper
@@ -44,9 +47,9 @@ export default function FrameworkCard(props: IFrameworkCardProps) {
             return (
               <div key={index} className={css.categoryWrapper} onClick={(e) => handleStageClick(e, category)}>
                 <div className={categoryStageWrapperClasses}>
-                  <span>{category.name}</span>
+                  <h4>{category.name}</h4>
                 </div>
-                {category.stages?.map(stage => childStage(stage))}
+                {category.stages?.map(stage => childStage(index, stage))}
               </div>
             )
           })
