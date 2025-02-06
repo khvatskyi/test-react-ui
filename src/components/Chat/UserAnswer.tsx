@@ -4,6 +4,7 @@ import { FlexRow, Avatar, IconContainer, Text, TextArea, Button, FlexSpacer } fr
 import { ReactComponent as ContentEditFillIcon } from '@epam/assets/icons/content-edit-fill.svg';
 import { ReactComponent as NotificationDoneOutlineIcon } from '@epam/assets/icons/notification-done-outline.svg';
 import { ReactComponent as NavigationCloseOutlineIcon } from '@epam/assets/icons/navigation-close-outline.svg';
+import { ReactComponent as AssistantIcon } from '../../assets/icons/assistant-icon.svg';
 
 import css from './UserAnswer.module.scss';
 import { IChatMessageUserAnswer, IContentMessage } from '../../typings/models/module.models';
@@ -15,13 +16,15 @@ export interface IUserAnswerProps {
   message: IContentMessage,
   aiExample: string,
   aiOptions?: [string];
-  onEditMessage: (id: string, newText: string) => void
+  onEditMessage: (id: string, newText: string, isAiGenerated: boolean) => void
 }
 
 export default function UserAnswer({ message, aiExample, aiOptions, onEditMessage }: IUserAnswerProps) {
   const avatarSrc = useAppSelector(selectUserContext).picture;
+  const [isUserAnswer, onUserAnswerChange] = useState(!(message.content as IChatMessageUserAnswer).isAiGenerated);
   const [value, onValueChange] = useState((message.content as IChatMessageUserAnswer).answer);
   const [isEditMode, onEditModeChange] = useState(false);
+  const hasOptions = Boolean(aiOptions && aiOptions.length > 0)
   
   const handleMessageSave = (e: Event) => {
     e.stopPropagation();
@@ -32,8 +35,11 @@ export default function UserAnswer({ message, aiExample, aiOptions, onEditMessag
       return;
     }
 
-    onEditMessage(message.id, value);
+    const isAiGenerated = !hasOptions && (value === aiExample);
+
+    onEditMessage(message.id, value, isAiGenerated);
     onEditModeChange(false);
+    onUserAnswerChange(!isAiGenerated);
   };
 
   const handleCancel = (e: Event) => {
@@ -61,7 +67,7 @@ export default function UserAnswer({ message, aiExample, aiOptions, onEditMessag
   const messageForEdit = (
     <div className={css.editWrapper}>
       <TextArea rows={4} value={value} onValueChange={(x) => onValueChange(x)} />
-      {aiOptions && aiOptions.length > 0 &&
+      {hasOptions &&
         <FlexRow columnGap={12} rawProps={ { style: { paddingBottom: '12px' } } }>
             <FlexSpacer/>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', maxWidth:'600px', justifyContent: 'flex-end'}}>
@@ -78,8 +84,8 @@ export default function UserAnswer({ message, aiExample, aiOptions, onEditMessag
           </FlexRow>
       }
       <FlexRow justifyContent='space-between' columnGap={10}>
-        {aiOptions && aiOptions.length > 0 && <FlexSpacer/>}
-        {!(aiOptions && aiOptions.length > 0) && <ChatAiButton caption='Rewrite with AI' onClick={rewriteWithAI} />}
+        {hasOptions && <FlexSpacer/>}
+        {!hasOptions && <ChatAiButton caption='Rewrite with AI' onClick={rewriteWithAI} />}
         <div className={css.editButtonsWrapper}>
           <Button onClick={handleMessageSave} caption='Save' icon={NotificationDoneOutlineIcon} iconPosition='left' />
           <Button onClick={handleCancel} cx={css.cancelButton} color='white' caption='Cancel' icon={NavigationCloseOutlineIcon} iconPosition='left' />
@@ -90,7 +96,10 @@ export default function UserAnswer({ message, aiExample, aiOptions, onEditMessag
 
   return (
     <FlexRow cx={css.root} vPadding='24' alignItems='top'>
-      <Avatar size='48' img={avatarSrc} />
+      {isUserAnswer 
+        ? <Avatar size='54' img={avatarSrc} />
+        : <IconContainer cx={css.iconWrapper} icon={AssistantIcon} />
+      }
       {isEditMode ? messageForEdit : messageForView}
       <IconContainer onClick={isEditMode ? null : () => onEditModeChange(true)} cx={css.editPencil + (isEditMode ? ` ${css.disabledPencil}` : '')} size='20' icon={ContentEditFillIcon} />
     </FlexRow>

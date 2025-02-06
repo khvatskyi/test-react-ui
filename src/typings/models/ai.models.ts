@@ -4,6 +4,7 @@ export interface IAiMessage {
   text: string;
   portfolioId: string;
   isLastAnswer: boolean;
+  isAiGenerated: boolean;
 }
 
 export interface IMessageToAi {

@@ -20,13 +20,13 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
 
-  const onSendMessage = (message: string) => {
+  const onSendMessage = (message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
 
-    dispatch(addUserMessage(message));
-    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE }));
+    dispatch(addUserMessage({message, isAiGenerated}));
+    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE, isAiGenerated }));
   };
 
   const onStartNewChat = (topic: string) => {
@@ -42,7 +42,7 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
   };
 
 
-  const onEditMessage = (id: string, message: string) => {
+  const onEditMessage = (id: string, message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
@@ -52,6 +52,7 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
       stateCode: CURRENT_STATE_CODE,
       messageId: id,
       message: message,
+      isAiGenerated: isAiGenerated,
     }
 
     return dispatch(sendEditChatMessage(editMessage));

@@ -2,10 +2,9 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 
 import type { RootState } from '../store'
 import { IApiContext, IStartChat, IEditChatMessage, IInteractiveChatContext, ChatRole, IMessageToAi, IContentMessage, IGetSummaryRequest, ChatMessageType, IChatMessageUserAnswer, IChatMessageInterviewQuestion, IGetApiContextRequest, TopicStatus } from '../typings/models/module.models';
-import { addCompletedModule, getSuccessfullyCompletedModules, setPending } from './data.slice';
+import { getSuccessfullyCompletedModules, setPending } from './data.slice';
 import { initChatTopic, startChat, deleteChat, getChatContext, sendChatMessage, editChatMessage, getChatSummary, getChatApiContext } from '../services/chat.service';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
-import { getCompletedModules } from '../services/data..service';
 import { findLastElement } from '../utilities/data.utility';
 
 export interface IAiState {
@@ -27,7 +26,7 @@ const initialState: StateModel = {
 
 export const sendChatMessageToAi = createAsyncThunk(
   'ai/sendChatMessageToAi',
-  async (args: { message: string, stateCode: STATE_CODES }, thunkAPI) => {
+  async (args: { message: string, stateCode: STATE_CODES, isAiGenerated: boolean}, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const activeTopic = state.ai.aiChatContext.topics?.find(topic => topic.status === TopicStatus.ActiveDiscussion);
     const messages = activeTopic.history;
@@ -38,6 +37,7 @@ export const sendChatMessageToAi = createAsyncThunk(
     const requestMessage: IMessageToAi = {
       portfolioId: state.data.selectedPortfolio.id,
       isLastAnswer: isFinalAnswer,
+      isAiGenerated: args.isAiGenerated,
       message: args.message,
       stateCode: args.stateCode,
     };
@@ -268,7 +268,8 @@ export const aiSlice = createSlice({
         type: ChatMessageType.UserAnswer,
         role: ChatRole.User,
         content: {
-          answer: action.payload
+          answer: action.payload.message,
+          isAiGenerated: action.payload.isAiGenerated,
         }
       });
     },

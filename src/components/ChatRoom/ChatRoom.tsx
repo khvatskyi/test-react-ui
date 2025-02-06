@@ -4,8 +4,8 @@ import { isAiMessageLoading } from '../../store/ai.slice';
 
 export interface IChatProps {
   onStartNewChat:(topic: string) => void; 
-  onSendMessage: (message: string) => void;
-  onEditMessage: (id: string, message: string) => void;
+  onSendMessage: (message: string, isAiGenerated: boolean) => void;
+  onEditMessage: (id: string, message: string, isAiGenerated: boolean) => void;
 }
 
 export default function ChatRoom(props: IChatProps) {

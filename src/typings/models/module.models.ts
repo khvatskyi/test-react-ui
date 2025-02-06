@@ -18,6 +18,7 @@ export interface IEditChatMessage {
   stateCode: string;
   messageId: string;
   message: string;
+  isAiGenerated: boolean;
 }
 
 export interface IChatMessageInterviewQuestion {
@@ -31,8 +32,7 @@ export interface IChatMessageInterviewQuestion {
 
 export interface IChatMessageUserAnswer {
   answer?: string;
-  example?: string;
-  options?: [string];
+  isAiGenerated: boolean;
 }
 
 export type IChatMessageAnyContent = 
@@ -63,6 +63,7 @@ export interface IMessageToAi {
   message: string;
   portfolioId: string;
   isLastAnswer: boolean;
+  isAiGenerated: boolean;
   stateCode: string;
 }
 

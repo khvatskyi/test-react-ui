@@ -20,17 +20,17 @@ export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsPro
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
   
-  const onSendMessage = (message: string) => {
+  const onSendMessage = (message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
 
-    dispatch(addUserMessage(message));
+    dispatch(addUserMessage({message, isAiGenerated}));
 
-    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE }));
+    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE, isAiGenerated }));
   };
 
-  const onEditMessage = (id: string, message: string) => {
+  const onEditMessage = (id: string, message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
@@ -40,6 +40,7 @@ export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsPro
       stateCode: CURRENT_STATE_CODE,
       messageId: id,
       message: message,
+      isAiGenerated: isAiGenerated,
     }
 
     return dispatch(sendEditChatMessage(editMessage));

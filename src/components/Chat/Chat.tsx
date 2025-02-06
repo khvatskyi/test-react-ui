@@ -20,8 +20,8 @@ import { findLastElement } from '../../utilities/data.utility';
 export interface IChatProps {
   isResponding: boolean;
   onStartNewChat:(topic: string) => void; 
-  onSendMessage: (message: string) => void;
-  onEditMessage: (id: string, message: string) => void;
+  onSendMessage: (message: string, isAiGenerated: boolean) => void;
+  onEditMessage: (id: string, message: string, isAiGenerated: boolean) => void;
 }
 
 export default function Chat({ isResponding, onSendMessage, onEditMessage, onStartNewChat }: IChatProps) {
@@ -52,13 +52,13 @@ export default function Chat({ isResponding, onSendMessage, onEditMessage, onSta
 
   const [currentInput, setCurrentInput] = useState('');
 
-  const handleSendResponce = (value: string, isAiExample: boolean) => {
-    onSendMessage(value);
+  const handleSendResponce = (value: string, isAiGenerated: boolean) => {
+    onSendMessage(value, isAiGenerated);
   }
 
   const handleSendMessage = () => {
     if (currentInput.trim()) {
-      onSendMessage(currentInput);
+      onSendMessage(currentInput, false);
       setCurrentInput('');
     }
   };
@@ -94,8 +94,8 @@ export default function Chat({ isResponding, onSendMessage, onEditMessage, onSta
             {topic.history && topic.history.map((message, message_index) => message.type === ChatMessageType.InterviewQuestion
               ? <ChatQuestion key={message_index} message={message.content as IChatMessageInterviewQuestion} />
               : <UserAnswer key={message_index} message={message} 
-                            aiExample={(topic.history[message_index-1].content as IChatMessageInterviewQuestion).example}
-                            aiOptions={(topic.history[message_index-1].content as IChatMessageInterviewQuestion).options}
+                            aiExample={(topic.history[message_index-1]?.content as IChatMessageInterviewQuestion)?.example}
+                            aiOptions={(topic.history[message_index-1]?.content as IChatMessageInterviewQuestion)?.options}
                             onEditMessage={onEditMessage} />
             )}
             {lastMessageBelongsToAi && <ChatAiResponse onSendResponce={handleSendResponce} message={lastMessage.content as IChatMessageInterviewQuestion} /> }

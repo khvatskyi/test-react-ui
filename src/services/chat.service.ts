@@ -134,6 +134,7 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
   const body = {
     portfolioId: message.portfolioId,
     isLastAnswer: message.isLastAnswer,
+    isAiGenerated: message.isAiGenerated,    
     message: message.message,
     stateCode: message.stateCode,
   };

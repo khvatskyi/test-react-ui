@@ -3,7 +3,7 @@ import { IChatMessageInterviewQuestion } from '../../typings/models/module.model
 import ChatAiButton from './ChatAiButton';
 
 export interface IChatAiResponseProps {
-  onSendResponce: (string, boolean) => void;
+  onSendResponce: (message: string, isAiGenerated: boolean) => void;
   message: IChatMessageInterviewQuestion;
 }
 

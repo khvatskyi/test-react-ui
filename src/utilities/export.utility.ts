@@ -62,8 +62,9 @@ export const exportToPDF = (jsonObject: any) => {
     } else if (Array.isArray(jsonObject[key])) {
       // Handle arrays
       addWrappedText(`${key}:`, marginLeft, y, true); // Make the key bold
+      const currentY = y
       jsonObject[key].forEach((item) => {
-        addWrappedText(`  - ${item}`, marginLeft, y);
+        addWrappedText(`  - ${item}`, marginLeft, currentY);
       });
     } else {
       // Handle simple key-value pairs
@@ -119,6 +120,7 @@ export const exportToPPT = (jsonObject) => {
         }
       } else if (Array.isArray(value)) {
         // Handle arrays
+        // eslint-disable-next-line no-loop-func
         value.forEach(item => {
           slide.addText(`  - ${item}`, {
             x: 1.5,

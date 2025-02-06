@@ -20,14 +20,14 @@ export default function ModuleValueProposition({ portfolioId }: IModuleValueProp
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
 
-  const onSendMessage = (message: string) => {
+  const onSendMessage = (message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
 
-    dispatch(addUserMessage(message));
+    dispatch(addUserMessage({message, isAiGenerated}));
 
-    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE}));
+    return dispatch(sendChatMessageToAi({ message, stateCode: CURRENT_STATE_CODE, isAiGenerated}));
   };
 
   const onStartNewChat = (topic: string) => {
@@ -42,7 +42,7 @@ export default function ModuleValueProposition({ portfolioId }: IModuleValueProp
     return result;
   };
 
-  const onEditMessage = (id: string, message: string) => {
+  const onEditMessage = (id: string, message: string, isAiGenerated: boolean) => {
     if (!message) {
       return;
     }
@@ -52,9 +52,9 @@ export default function ModuleValueProposition({ portfolioId }: IModuleValueProp
       stateCode: CURRENT_STATE_CODE,
       messageId: id,
       message: message,
+      isAiGenerated: isAiGenerated,
     }
 
-    //dispatch(addUserMessage(message)); //TODO: need to check
     return dispatch(sendEditChatMessage(editMessage));
   };
 
