@@ -1,12 +1,10 @@
-// @use '../../../../variables.scss' as globalVars;
+@use '../../../../../src/variables.scss' as globalVars;
 
 .root {
   width: 300px;
-  // width: 100%;
   background-color: yellow;
   height: 100%;
   flex-grow: 1;
-  // min-height: globalVars.$min-content-height !important;
 }
 
 .completedIcon {
@@ -14,3 +12,10 @@
     fill: #07A956;
   }
 }
+
+.content {
+  display: flex;
+  min-width: 0;
+  height: globalVars.$min-content-height;
+  overflow: hidden;  
+}  

@@ -1,0 +1,51 @@
+.root {
+  width: 100%;
+
+  .messageWrapper {
+    padding-left: 12px;
+  }
+
+  .editWrapper {
+    margin-top: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    width: 100%;
+  }
+
+  .editPencil {
+    align-self: flex-start !important;
+    margin-top: 5px;
+    margin-left: 15px;
+    margin-right: 6px;
+    visibility: hidden;
+  }
+
+  &:hover .editPencil {
+    visibility: visible;
+  }
+
+  .editButtonsWrapper {
+    display: flex;
+    gap: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .cancelButton {
+
+    &, &:hover {
+      border: 1px solid #6C6F80;
+    }
+  }
+
+  .disabledPencil {
+    fill: #ACAFBF;
+  }
+
+  .iconWrapper {
+    align-self: center;
+    width: 54px;
+    height: 54px;
+  }
+
+}

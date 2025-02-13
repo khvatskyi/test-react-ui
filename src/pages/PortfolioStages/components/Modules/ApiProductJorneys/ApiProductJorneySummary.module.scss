@@ -1,0 +1,67 @@
+@use '../../../../../variables' as globalVars;
+
+.content {
+  display: flex;  
+  width: 100%;
+  height: globalVars.$top-bar-content-height;
+  overflow: hidden;  
+
+ 
+}
+
+.rootForm {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  margin: 0 auto;
+  width: 670px;
+}
+
+.formPanel{
+  padding: 24px;
+}
+
+.titleForm {
+  padding-bottom: 12px;
+}
+
+.stepArea{
+  padding-top: 12px;  
+  padding-left: 12px;  
+  padding-bottom: 24px;  
+}
+
+.actionAria{
+  padding-bottom: 24px;  
+}
+
+.tableRow {
+  padding: 0px !important;
+}
+
+.cellTitleColor{
+  background-color: #F5F6FA;
+  vertical-align: middle;
+}
+
+.valueMargin{
+  margin-top: 6px; 
+  margin-bottom: 6px; 
+  margin-right: 6px; 
+  margin-left: 12px; 
+}
+
+.borderTop {
+  border-top: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderBottom {
+  border-bottom: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderLeft {
+  border-left: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderRight {
+  border-right: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}

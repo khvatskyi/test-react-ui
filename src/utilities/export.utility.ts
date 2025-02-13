@@ -52,26 +52,31 @@ export const exportToPDF = (jsonObject: any) => {
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(12);
 
-  for (const key in jsonObject) {
-    if (typeof jsonObject[key] === 'object' && !Array.isArray(jsonObject[key])) {
-      // Handle nested objects
-      addWrappedText(`${key}:`, marginLeft, y, true); // Make the key bold
-      for (const subKey in jsonObject[key]) {
-        addWrappedText(`  - ${subKey}: ${jsonObject[key][subKey]}`, marginLeft, y);
+  const processObject = (obj, offset = 0) => {
+    for (const key in obj) {
+      if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+        // Handle nested objects
+        addWrappedText(`${key}:`, marginLeft + offset, y, true); // Make the key bold
+        processObject(obj[key], offset + 10);
+      } else if (Array.isArray(obj[key])) {
+        // Handle arrays
+        addWrappedText(`${key}:`, marginLeft + offset, y, true); // Make the key bold
+        const currentY = y
+        obj[key].forEach((item) => {
+          if (typeof item === 'object') {
+            processObject(item, offset + 10);
+          } else {
+            addWrappedText(`  - ${item}`, marginLeft + offset, currentY);
+          }
+        });
+      } else {
+        // Handle simple key-value pairs
+        addWrappedText(`${key}:`, marginLeft + offset, y, true); // Make the key bold
+        addWrappedText(`${obj[key]}`, marginLeft + offset, y); // Regular text for value
       }
-    } else if (Array.isArray(jsonObject[key])) {
-      // Handle arrays
-      addWrappedText(`${key}:`, marginLeft, y, true); // Make the key bold
-      const currentY = y
-      jsonObject[key].forEach((item) => {
-        addWrappedText(`  - ${item}`, marginLeft, currentY);
-      });
-    } else {
-      // Handle simple key-value pairs
-      addWrappedText(`${key}:`, marginLeft, y, true); // Make the key bold
-      addWrappedText(`${jsonObject[key]}`, marginLeft, y); // Regular text for value
     }
-  }
+  };
+  processObject(jsonObject);  
 
   // Save the PDF
   doc.save('summary.pdf');

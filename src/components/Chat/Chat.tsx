@@ -4,7 +4,7 @@ import { FlexRow, Button, TextInput } from '@epam/uui';
 import { ReactComponent as sendIcon } from '@epam/assets/icons/action-send-fill.svg';
 
 import css from './Chat.module.scss';
-import { ChatMessageType, ChatRole, IChatMessageInterviewQuestion, IContentMessage, TopicStatus } from '../../typings/models/module.models';
+import { IChatMessageInterviewQuestion, IContentMessage } from '../../typings/models/module.models';
 import ChatSpinner from './ChatSpinner';
 import ChatQuestion from './ChatQuestion';
 import ChatAiResponse from './ChatAiResponse';
@@ -15,6 +15,7 @@ import { ModuleCompleted } from '..';
 import ChatTopicSelector from './ChatTopicSelector';
 import { normalizeSummaryKeys } from '../../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 import { findLastElement } from '../../utilities/data.utility';
+import { ChatMessageType, ChatRole, TopicStatus } from '../../typings/enums/module.enum';
 
 
 export interface IChatProps {
@@ -99,7 +100,7 @@ export default function Chat({ isResponding, onSendMessage, onEditMessage, onSta
                             onEditMessage={onEditMessage} />
             )}
             {lastMessageBelongsToAi && <ChatAiResponse onSendResponce={handleSendResponce} message={lastMessage.content as IChatMessageInterviewQuestion} /> }
-            {topic.summary && <ModuleCompleted objectToExport={normalizeSummaryKeys(topic.summary)} topicName={topic.name}/>}
+            {topic.summary && <ModuleCompleted objectToExport={normalizeSummaryKeys(topic.summary)} topicName={topic.name} showSummaryButton={true} />}
           </>
         )
       })

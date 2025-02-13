@@ -1,8 +1,8 @@
 import { STATE_CODES } from "../../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure";
+import { ChatMessageType, ChatRole } from "../enums/module.enum";
 
 export interface IApiContext {
   portfolioId: string;
-  stateCode: string;
   name?: string;
   description?: string;
 }
@@ -75,21 +75,5 @@ export interface IGetSummaryRequest {
 
 export interface IGetApiContextRequest {
   portfolio_id: string;
-  state_code: STATE_CODES;
 }
 
-export enum ChatRole {
-  AI = 'assistant',
-  User = 'user'
-}
-
-export enum ChatMessageType {
-  InterviewQuestion = 'interview_question',
-  UserAnswer = 'user_answer'
-}
-
-export enum TopicStatus {
-  New = 'new',
-  ActiveDiscussion = 'active',
-  Completed = 'completed',
-}

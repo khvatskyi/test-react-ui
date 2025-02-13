@@ -46,30 +46,28 @@ export function Sidebar(props: SidebarProps) {
 
   return (
     <aside className={css.root}>
-      <div className={css.tree} role="tablist">
-        <ScrollBars>
-          <Tree<PortfolioStateItem>
-            items={props.items}
-            value={value}
-            onValueChange={setValue}
-            renderRow={(row) => (<SidebarButton
-              cx={props.itemCx}
-              key={row.key}
-              link={props.getItemLink(row)}
-              indent={(row.indent - 1) * 12}
-              isOpen={!row.isFolded}
-              isDropdown={row.isFoldable}
-              icon={row.value.icon}
-              iconPosition={row.value.iconPosition}
-              isDisabled={row.value.isLocked}
-              isActive={row.id === props.value}
-              caption={row.value.name}
-              onClick={() => handleClick(row)}
-            />)
-            }
-          />
-        </ScrollBars>
-      </div>
+      <ScrollBars>
+        <Tree<PortfolioStateItem>
+          items={props.items}
+          value={value}
+          onValueChange={setValue}
+          renderRow={(row) => (<SidebarButton
+            cx={props.itemCx}
+            key={row.key}
+            link={props.getItemLink(row)}
+            indent={(row.indent - 1) * 12}
+            isOpen={!row.isFolded}
+            isDropdown={row.isFoldable}
+            icon={row.value.icon}
+            iconPosition={row.value.iconPosition}
+            isDisabled={row.value.isLocked}
+            isActive={row.id === props.value}
+            caption={row.value.name}
+            onClick={() => handleClick(row)}
+          />)
+          }
+        />
+      </ScrollBars>
     </aside>
   );
 }

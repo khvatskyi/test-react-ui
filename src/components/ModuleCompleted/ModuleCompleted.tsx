@@ -9,9 +9,10 @@ import { ViewSummaryButton } from '../ViewSummaryButton/ViewSummaryButton';
 export interface IModuleCompletedProps {
   topicName: string;
   objectToExport: any;
+  showSummaryButton: boolean;
 }
 
-export default function ModuleCompleted({ objectToExport, topicName }: IModuleCompletedProps) {
+export default function ModuleCompleted({ objectToExport, topicName, showSummaryButton }: IModuleCompletedProps) {
 
   const exportOptions = (_: DropdownBodyProps) => {
     return (
@@ -35,7 +36,7 @@ export default function ModuleCompleted({ objectToExport, topicName }: IModuleCo
             renderBody={exportOptions}
             renderTarget={(props: IDropdownToggler) => <Button caption='Export output as' fill="ghost" color="secondary" {...props} />}
           />
-          <ViewSummaryButton onClick={()=>{}} summaryObject={objectToExport}  />
+          {showSummaryButton && <ViewSummaryButton onClick={()=>{}} summaryObject={objectToExport}  />}
         </FlexRow>
       </Panel>
     </FlexRow>

@@ -1,13 +1,12 @@
 import { Icon } from '@epam/uui-core';
 import { ReactComponent as FillInfoIcon } from '@epam/assets/icons/notification-info-fill.svg';
-// import { ReactComponent as SuccessIcon } from  '../../../../assets/icons/success.svg'
 import { ReactComponent as LockIcon } from '@epam/assets/icons/action-lock-fill.svg'
 import { TreeListItem } from '@epam/uui-components';
 
 export enum STATE_CODES {
   AboutPortfolio = 'about-portfolio',
   Discover = 'discover',
-  APIProductJourneys = 'api-product-journeys',
+  APIProductJourneys = 'api-product-journey',
   BusinessModels = 'business-models',
   Capabilities = 'capabilities',
   ConsumersAndNeeds = 'consumers-and-needs',
@@ -60,15 +59,18 @@ export const portfolioStates: PortfolioStateItem[] = [
 ];
 
 
-export function normalizeSummaryKeys(data: any) {
-
-    const newData: any = {};
-
-    Object.keys(data).forEach(key => {
-        const readableKey = key.replace(/([A-Z])/g, ' $1').trim();
-        const capitalizedKey = readableKey.charAt(0).toUpperCase() + readableKey.slice(1);
-        newData[capitalizedKey] = data[key];
-    });
-
-    return newData;
+export function normalizeSummaryKeys(data: any): any {
+  if (Array.isArray(data)) {
+      return data.map(item => normalizeSummaryKeys(item));
+  } else if (typeof data === 'object' && data !== null) {
+      const newData: any = {};
+      Object.keys(data).forEach(key => {
+          const readableKey = key.replace(/([A-Z])/g, ' $1').trim();
+          const capitalizedKey = readableKey.charAt(0).toUpperCase() + readableKey.slice(1);
+          newData[capitalizedKey] = normalizeSummaryKeys(data[key]);
+      });
+      return newData;
+  } else {
+      return data;
+  }
 }

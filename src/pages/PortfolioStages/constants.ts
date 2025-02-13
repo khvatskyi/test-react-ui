@@ -12,7 +12,7 @@ const VALUE_PROPOSITION_MODULE_TAGS = [
 
 const VALUE_PROPOSITION_LABELS = {
   moduleTitle: 'Module objective',
-  moduleDescription: 'The purpose of the of the Value Proposition module is to clearly articulate the unique benefits and advantages that the API offers to developers and businesses, demonstrating how it can solve specific problems, streamline processes, or enhance existing systems, ultimately driving adoption and usage.',
+  moduleDescription: 'Defining the unique value the API provides to its users, distinguishing it from competitors and outlining its benefits.',
   apiTitle: 'API context',
   tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
 }
@@ -23,7 +23,6 @@ const VALUE_PROPOSITION_DEFAULT_API_CONTEXT_DATA: IApiContext = {
   portfolioId: null,
   name: '', // 'Business insurance quote enablement',
   description: '', // "The API Product will enable insurance brokers and agents request a quote from the insurance carrier 'Travelers Insurance' directly from their Agency/Broker Management System.",
-  stateCode: STATE_CODES.ValueProposition,
 } as const;
 
 // -------------------------------------------------------
@@ -37,7 +36,7 @@ const CONSUMERS_AND_NEEDS_MODULE_TAGS = [
 
 const CONSUMERS_AND_NEEDS_LABELS = {
   moduleTitle: 'Module objective',
-  moduleDescription: 'This module aids in better understanding and addressing the specific requirements of different API consumer groups defining key characteristics and needs.',
+  moduleDescription: 'Defining the target consumers for the API, identifying their needs and how they will interact with the API.',
   apiTitle: 'API context',
   tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
 };
@@ -46,21 +45,20 @@ const CONSUMERS_AND_NEEDS_DEFAULT_API_CONTEXT_DATA: IApiContext = {
   portfolioId: null,
   name: '',
   description: '',
-  stateCode: STATE_CODES.ConsumersAndNeeds,
 } as const;
 
 // -------------------------------------------------------
 const API_PRODUCT_JOURNEYS_MODULE_TAGS = [
-  'User journey',
-  'Steps & Activities',
-  'Personas',
-  'API product(s)',
+  'Actions',
+  'Steps',
+  'API call details',
+  'Outcomes',
 ];
 
 const API_PRODUCT_JOURNEYS_LABELS = {
   moduleTitle: 'Module objective',
-  moduleDescription: 'Outline the lifecycle and interactions a user or developer has with an API, from discovery and initial testing to integration and long-term usage, ensuring a smooth and effective experience that meets their needs and encourages continued engagement.',
-  apiTitle: 'API context',
+  moduleDescription: 'Providing a structured narrative that describes the use and interaction with the API, API Product, or related features, highlighting user interactions and usability.',
+  apiTitle: 'Scenario details',
   tipMessage: 'To get most out of AI capabilities when completing the modules, try to follow the order presented in the left navigation.'
 };
 
@@ -68,7 +66,6 @@ const API_PRODUCT_JOURNEYS_DEFAULT_API_CONTEXT_DATA: IApiContext = {
   portfolioId: null,
   name: '',
   description: '',
-  stateCode: STATE_CODES.APIProductJourneys,
 } as const;
 
 // -------------------------------------------------------

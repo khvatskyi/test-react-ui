@@ -40,7 +40,7 @@ function ResetProgressButtonModal(modalProps: IConfirmModalProps) {
               {' '}
               <b>[{modalProps.stageName}]</b>
               {' '}
-              <span>module and start over?'</span>
+              <span>module and start over?</span>
             </RichTextView>
           </FlexRow>
           <ModalFooter cx={css.footer}>

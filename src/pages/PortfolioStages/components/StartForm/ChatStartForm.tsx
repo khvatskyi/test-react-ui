@@ -16,6 +16,7 @@ import { useShowErrorNotification } from '../../../../utilities/notifications.ut
 import { selectPortfolioDetails, setPending } from '../../../../store/data.slice';
 import { FORM_DEFAULT_DATA } from '../../constants';
 import { useEffect } from 'react';
+import { ScrollBars } from '@epam/uui-components';
 
 export interface IChatStartFormProps {
   stateCode: STATE_CODES
@@ -29,7 +30,6 @@ export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
   useEffect(() => {
     const request: IGetApiContextRequest = {
       portfolio_id: selectedPortfolio.id,
-      state_code: stateCode
     };
     dispatch(loadApiContext(request));
   }, [dispatch, selectedPortfolio.id, stateCode]);
@@ -81,48 +81,52 @@ export default function ChatStartForm({ stateCode }: IChatStartFormProps) {
   const { lens } = form;
 
   return (
-    <div className={css.rootForm}>
-      <Panel cx={css.formPanel} background='surface-main' shadow>
-        <FlexCell width='100%'>
-          <h3 style={{ margin: '0px' }}>{LABELS.moduleTitle}</h3>
-        </FlexCell>
-        <FlexCell width='100%'>
-          <Text cx={css.description}>{LABELS.moduleDescription} </Text>
-        </FlexCell>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-          {
-            MODULE_TAGS.map((tag, index) => (
-              <Badge key={index} color="neutral" fill="outline" caption={tag} />
-            ))
-          }
+    <div className={css.content}>
+      <ScrollBars>
+        <div className={css.rootForm}>
+          <Panel cx={css.formPanel} background='surface-main' shadow>
+            <FlexCell width='100%'>
+              <h3 style={{ margin: '0px' }}>{LABELS.moduleTitle}</h3>
+            </FlexCell>
+            <FlexCell width='100%'>
+              <Text cx={css.description}>{LABELS.moduleDescription} </Text>
+            </FlexCell>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+              {
+                MODULE_TAGS.map((tag, index) => (
+                  <Badge key={index} color="neutral" fill="outline" caption={tag} />
+                ))
+              }
+            </div>
+            <FlexCell width='100%' cx={ cx(css.formContent) }  >
+              <h3 style={{ margin: '0px' }}>{LABELS.apiTitle}</h3>
+              <FlexRow vPadding='12'>
+                <FlexCell minWidth={550} width='100%'>
+                  <LabeledInput htmlFor='chatStartName' label='API name'  {...lens.prop('name').toProps()}>
+                    <TextInput {...lens.prop('name').toProps()} id='chatStartName' placeholder='Please type text' maxLength={72} isDisabled={disableEditors}/>
+                  </LabeledInput>
+                </FlexCell>
+              </FlexRow>
+              <FlexRow vPadding='12'>
+                <FlexCell minWidth={550} width='100%'>
+                  <LabeledInput htmlFor='chatStartDescription' label='Description' {...lens.prop('description').toProps()}>
+                    <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={4} placeholder='Please type text' isDisabled={disableEditors} />
+                  </LabeledInput>
+                </FlexCell>
+              </FlexRow>
+            </FlexCell>
+            <FlexRow vPadding="12">
+              <Button caption="Start chat" color="primary" icon={iconStart} iconPosition='right' onClick={form.save} />
+            </FlexRow>
+            <Panel cx={css.panelTip}>
+              <FlexRow columnGap={8} alignItems='top'>
+                <IconContainer icon={iconInfo} />
+                <Text size="36"> {LABELS.tipMessage} </Text>
+              </FlexRow>
+            </Panel>
+          </Panel>
         </div>
-        <FlexCell width='100%' cx={ cx(css.formContent) }  >
-          <h3 style={{ margin: '0px' }}>{LABELS.apiTitle}</h3>
-          <FlexRow vPadding='12'>
-            <FlexCell minWidth={550} width='100%'>
-              <LabeledInput htmlFor='chatStartName' label='API name'  {...lens.prop('name').toProps()}>
-                <TextInput {...lens.prop('name').toProps()} id='chatStartName' placeholder='Please type text' maxLength={72} isDisabled={disableEditors}/>
-              </LabeledInput>
-            </FlexCell>
-          </FlexRow>
-          <FlexRow vPadding='12'>
-            <FlexCell minWidth={550} width='100%'>
-              <LabeledInput htmlFor='chatStartDescription' label='Description' {...lens.prop('description').toProps()}>
-                <TextArea {...lens.prop('description').toProps()} id='chatStartDescription' rows={4} placeholder='Please type text' isDisabled={disableEditors} />
-              </LabeledInput>
-            </FlexCell>
-          </FlexRow>
-        </FlexCell>
-        <FlexRow vPadding="12">
-          <Button caption="Start chat" color="primary" icon={iconStart} iconPosition='right' onClick={form.save} />
-        </FlexRow>
-        <Panel cx={css.panelTip}>
-          <FlexRow columnGap={8} alignItems='top'>
-            <IconContainer icon={iconInfo} />
-            <Text size="36"> {LABELS.tipMessage} </Text>
-          </FlexRow>
-        </Panel>
-      </Panel>
+      </ScrollBars>
     </div>
-  )
+    )
 }

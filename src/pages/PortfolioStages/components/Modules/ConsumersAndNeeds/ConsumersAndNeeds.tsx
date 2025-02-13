@@ -9,6 +9,8 @@ import css from './ConsumersAndNeeds.module.scss';
 import ModuleTopBar from '../../TopBar/ModuleTopBar';
 import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
 import { IEditChatMessage, IStartChat } from '../../../../../typings/models/module.models';
+import UncompletedModule from '../../UncompletedModule/UncompletedModule';
+import { selectCompletedModules } from '../../../../../store/data.slice';
 
 export interface IConsumersAndNeedsProps {
   portfolioId: string;
@@ -19,6 +21,8 @@ const CURRENT_STATE_CODE = STATE_CODES.ConsumersAndNeeds;
 export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsProps) {
   const dispatch = useAppDispatch();
   const chatContext = useAppSelector(selectChatContext);
+  const completedModules = useAppSelector(selectCompletedModules);
+  const valuePropositionIsCompleted = Boolean(completedModules.find(x => x === STATE_CODES.ValueProposition));
   
   const onSendMessage = (message: string, isAiGenerated: boolean) => {
     if (!message) {
@@ -67,8 +71,13 @@ export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsPro
   return portfolioId && (
     <div className={css.root}>
       <ModuleTopBar stateCode={CURRENT_STATE_CODE} />
-      {!chatContext && <ChatStartForm stateCode={CURRENT_STATE_CODE} />}
-      {chatContext && <ChatRoom onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
+      {!valuePropositionIsCompleted && <UncompletedModule portfolioId={portfolioId} stateCode={STATE_CODES.ValueProposition} />}
+      {valuePropositionIsCompleted && 
+        <>
+          {!chatContext && <ChatStartForm stateCode={CURRENT_STATE_CODE} />}
+          {chatContext && <ChatRoom onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
+        </>
+      }
     </div>
   )
 }

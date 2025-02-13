@@ -8,7 +8,7 @@ import { selectCompletedModules } from '../../../../store/data.slice';
 
 import css from './PortfolioStagesLeftPanel.module.scss';
 
-export default function PortfolioStagesSidebar() {
+export default function PortfolioStagesLeftPanel() {
   const portfolioId = useParamId();
   const selectedStage = useQuery('stage', STATE_CODES.AboutPortfolio);
   const completedModules = useAppSelector(selectCompletedModules);

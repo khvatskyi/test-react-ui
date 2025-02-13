@@ -1,7 +1,7 @@
 import { Metadata } from '@epam/uui-core';
-import { IApiContext } from '../../../../typings/models/module.models';
+import { IScenarioDetails } from '../../../../typings/models/product-journey.model';
 
-export const apiContextValidationSchema = (_: IApiContext): Metadata<IApiContext> => ({
+export const scenarioDetailsValidationSchema = (_: IScenarioDetails): Metadata<IScenarioDetails> => ({
   props: {
     name: {
       isRequired: true,
