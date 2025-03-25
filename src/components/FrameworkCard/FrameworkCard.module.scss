@@ -4,7 +4,6 @@
   background-color: #ffffff;
   width: 295px;
   min-width: 295px;
-  max-width: 295px;
   height: fit-content;
   flex-basis: unset !important;
   padding: 15px;
@@ -28,9 +27,6 @@
     cursor: pointer;
     background-color: #ebedf5;
     min-height: 50px;
-    width: 118px;
-    min-width: 118px;
-    max-width: 118px;
     padding-top: 6px;
     padding-bottom: 6px;
     padding-left: 12px;
@@ -78,15 +74,15 @@
   }
 
   .rightPoint {
-    clip-path: polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0% 100%);
   }
 
   .rightChevron {
-    clip-path: polygon(90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%, 0 0);
+    clip-path: polygon(calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%, 15px 50%, 0 0);
   }
 
   .rightEndChevron {
-    clip-path: polygon(90% 0, 100% 0, 100% 100%, 0 100%, 10% 50%, 0 0);
+    clip-path: polygon(calc(100% - 15px) 0, 100% 0, 100% 100%, 0 100%, 15px 50%, 0 0);
   }
 
   .categoryStageWrapper {
@@ -94,7 +90,6 @@
     position: relative;
     color: white;
     background-color: #6c6f80;
-    width: 147px;
     display: flex;
     justify-content: center;
     align-items: center;

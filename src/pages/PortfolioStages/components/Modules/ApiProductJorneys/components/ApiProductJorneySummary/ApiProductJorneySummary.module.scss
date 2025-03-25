@@ -1,0 +1,29 @@
+@use '../../../../../../../variables' as globalVars;
+
+.content {
+  display: flex;  
+  width: 100%;
+  height: globalVars.$top-bar-content-height;
+  overflow: hidden;  
+
+ 
+}
+
+.rootForm {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  margin: 0 auto;
+  width: 670px;
+}
+
+.formPanel{
+  padding: 24px;
+}
+
+.titleForm {
+  padding-bottom: 12px;
+}
+
+
+
+

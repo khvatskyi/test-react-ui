@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { FormSaveResponse } from '@epam/uui-core';
+import { FormSaveResponse, useUuiContext } from '@epam/uui-core';
 import { ScrollBars, useForm } from '@epam/uui';
 
 import css from './PortfolioDetails.module.scss';
@@ -13,23 +13,27 @@ import { loadPortfolio, selectPortfolioDetails, upsertPortfolio, clearPortfolioD
 import { PortfolioDetailsForm } from '../../components';
 import { useParamId } from '../../utilities/route.utility';
 import { useShowSuccessNotification } from '../../utilities/notifications.utility';
+import { LeavePageConfirmation } from '../../components/LeavePageConfirmation/LeavePageConfirmation';
+import { selectBackUrl } from '../../store/app.slice';
 
 const DEFAULT_DATA: IPortfolioDetails = {
   name: '',
   description: '',
-  industry: '',
+  industry: null,
   goalsOrObjectives: '',
-  businessCapabilities: '',
+  businessCapabilities: null,
   industryStandards: '',
-  keyPartners: '',
-  keySuppliers: ''
+  keyPartners: null,
+  keySuppliers: null
 }
 
 export default function PortfolioDetails() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const portfolioId = useParamId();  
+  const { uuiModals } = useUuiContext();
   const showSuccessNotification = useShowSuccessNotification();
+  const backUrl = useAppSelector(selectBackUrl);
 
   useEffect(() => {
     if (portfolioId) {
@@ -52,31 +56,30 @@ export default function PortfolioDetails() {
     showSuccessNotification('Data has been saved!')
   }
 
+  const beforeLeave = useCallback((): Promise<boolean> => {
+    return uuiModals.show<boolean>((modalProps) => <LeavePageConfirmation { ...modalProps } />);
+  }, [uuiModals]);
+
   const form = useForm<IPortfolioDetails>({
     settingsKey: 'portfolio-details-form',
     value: defaultFormData,
-    beforeLeave: () => Promise.resolve(false),
-    loadUnsavedChanges: () => Promise.resolve(),
+    beforeLeave: beforeLeave,
+    loadUnsavedChanges: () => Promise.reject(),
     getMetadata: portfolioValidationSchema,
     onSave: onSave,
     onSuccess: onSuccess
   });
   form.canRedo = false;
 
-  const formIsChanged = () => {
-    return form.isChanged;
-  }  
-
   const onCancel = () => {
     return new Promise<void>(() => {
-      form.revert();
-      history.goBack();
+      history.push(backUrl ? backUrl : '/portfolios');
     });
   }
 
   return (
     <div className={css.root}>
-      <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} save={form.save} cancel={onCancel} formIsChanged={formIsChanged}/>
+      <PortfolioDetailsTopBar saveDisabled={form.isInvalid ?? true} onSave={form.save} onCancel={onCancel} />
       <div className={ css.content }>
         <ScrollBars>
           <PortfolioDetailsForm form={form} showCaption={true} fromCaption={fromCaption} />

@@ -9,6 +9,7 @@ import { useShowErrorNotification } from '../utilities/notifications.utility';
 interface ISessionState {
   userContext: IUserContext | null;
   pending: boolean;
+  backUrl: string | null;
 }
 
 const serializedUserContext: string | null = sessionStorage.getItem(SessionStorageItems.UserContext);
@@ -17,6 +18,7 @@ const storedUserContext: IUserContext = serializedUserContext ? JSON.parse(seria
 const initialState: ISessionState = {
   userContext: storedUserContext || null,
   pending: false,
+  backUrl: null,
 };
 
 export const signInWithSSOCode = createAsyncThunk(

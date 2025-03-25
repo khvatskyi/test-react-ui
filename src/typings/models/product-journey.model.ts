@@ -44,6 +44,10 @@ export interface IScenario {
   context: string;
 }
 
+export interface IGetProductJourneyRequest {
+  portfolio_id: string;
+}
+
 export interface IProductJourney {
   personas: IPersona[];
   scenario: IScenario;

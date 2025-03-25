@@ -1,4 +1,4 @@
-@use '../../../../variables.scss' as globalVars;
+// @use '../../../../variables.scss' as globalVars;
 
 .root {
   width: 100%;
@@ -6,12 +6,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: globalVars.$min-content-height !important;
+  // min-height: globalVars.$min-content-height !important;
 }
 
 .labelContainer {
   margin-top: 8px;
-  margin-bottom: 8px;
 }
 
 .label {

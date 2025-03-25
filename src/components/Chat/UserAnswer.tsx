@@ -15,8 +15,8 @@ import ChatAiButton from './ChatAiButton';
 export interface IUserAnswerProps {
   message: IContentMessage,
   aiExample: string,
-  aiOptions?: [string];
-  onEditMessage: (id: string, newText: string, isAiGenerated: boolean) => void
+  aiOptions?: string[];
+  onEditMessage?: (id: string, newText: string, isAiGenerated: boolean) => void
 }
 
 export default function UserAnswer({ message, aiExample, aiOptions, onEditMessage }: IUserAnswerProps) {
@@ -101,7 +101,14 @@ export default function UserAnswer({ message, aiExample, aiOptions, onEditMessag
         : <IconContainer cx={css.iconWrapper} icon={AssistantIcon} />
       }
       {isEditMode ? messageForEdit : messageForView}
-      <IconContainer onClick={isEditMode ? null : () => onEditModeChange(true)} cx={css.editPencil + (isEditMode ? ` ${css.disabledPencil}` : '')} size='20' icon={ContentEditFillIcon} />
+      {onEditMessage && 
+        <IconContainer 
+          onClick={isEditMode ? null : () => onEditModeChange(true)} 
+          cx={css.editPencil + (isEditMode ? ` ${css.disabledPencil}` : '')} 
+          size='20' 
+          icon={ContentEditFillIcon} 
+        />
+      }
     </FlexRow>
   );
 }

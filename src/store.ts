@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
+import appReducer from './store/app.slice';
 import sessionReducer from './store/session.slice';
 import aiReducer from './store/ai.slice';
 import dataReducer from './store/data.slice';
 
 export const store = configureStore({
   reducer: {
+    app: appReducer,
     session: sessionReducer,
     ai: aiReducer,
     data: dataReducer

@@ -5,6 +5,9 @@ export enum ChatRole {
 
 export enum ChatMessageType {
   InterviewQuestion = 'interview_question',
+  ValueCreationModelQuestion = 'value_creation_model_question',
+  ValueCreatorsListQuestion = 'value_creators_list_question',
+  NotApplicableQuestion = 'not_applicable_question',
   UserAnswer = 'user_answer'
 }
 

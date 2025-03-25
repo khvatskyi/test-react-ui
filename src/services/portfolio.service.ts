@@ -72,13 +72,17 @@ export async function savePortfolio(portfolio: IPortfolioDetails): Promise<IPort
   return result;
 }
 
-export async function deletePortfolio(id: string): Promise<void> {
+export async function deletePortfolioRequest(id: string): Promise<string> {
 
   const path = process.env.REACT_APP_API_ROOT + `/user/portfolio/${id}`;
 
   const response = await fetchWithAuth(path, { 
     method: 'DELETE'
   });
-  
-  return response.json();
+
+  if (response.ok) {
+    return id;
+  } else {
+    return response.json();
+  }
 }

@@ -11,6 +11,10 @@ import ModuleValueProposition from './components/Modules/ValueProposition/Module
 import ApiProductJorneys from './components/Modules/ApiProductJorneys/ApiProductJorneys';
 import DiscoverOverview from './components/DiscoverOverview/DiscoverOverview';
 import ConsumersAndNeeds from './components/Modules/ConsumersAndNeeds/ConsumersAndNeeds';
+import { setBackUrl } from '../../store/app.slice';
+import BusinessModel from './components/Modules/BusinessModel/BusinessModel';
+import ModuleCapabilities from './components/Modules/Capabilities/ModuleCapabilities';
+import ModuleGoalsKPIs from './components/Modules/GoalsKPIs/GoalsKPIs';
 
 type ClickEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
@@ -31,6 +35,7 @@ export default function PortfolioStages() {
   const history = useHistory();
   const handlePortfolioUpdate = (e: ClickEvent) => {
     e.stopPropagation();
+    dispatch(setBackUrl(window.location.pathname));
     history.push(`/portfolio/details/${portfolio.id}`);
   }
 
@@ -39,7 +44,10 @@ export default function PortfolioStages() {
     STATE_CODES.Discover,
     STATE_CODES.ValueProposition,
     STATE_CODES.ConsumersAndNeeds,
-    STATE_CODES.APIProductJourneys,
+    STATE_CODES.APIProductJourney,
+    STATE_CODES.BusinessModel,
+    STATE_CODES.Capabilities,
+    STATE_CODES.GoalsAndKPIs,
   ];
 
   return (
@@ -52,7 +60,10 @@ export default function PortfolioStages() {
         {(selectedStage === STATE_CODES.Discover) && <DiscoverOverview portfolio={portfolio} onUpdateClick={handlePortfolioUpdate} />}
         {(selectedStage === STATE_CODES.ValueProposition) && <ModuleValueProposition portfolioId={portfolio?.id} />}
         {(selectedStage === STATE_CODES.ConsumersAndNeeds) && <ConsumersAndNeeds portfolioId={portfolio?.id} />}
-        {(selectedStage === STATE_CODES.APIProductJourneys) && <ApiProductJorneys portfolioId={portfolio?.id} />}
+        {(selectedStage === STATE_CODES.APIProductJourney) && <ApiProductJorneys portfolioId={portfolio?.id} />}
+        {(selectedStage === STATE_CODES.BusinessModel) && <BusinessModel portfolioId={portfolio?.id} />}        
+        {(selectedStage === STATE_CODES.Capabilities) && <ModuleCapabilities portfolioId={portfolio?.id} />}        
+        {(selectedStage === STATE_CODES.GoalsAndKPIs) && <ModuleGoalsKPIs portfolioId={portfolio?.id} />}        
         
 
         {/* temporary */}

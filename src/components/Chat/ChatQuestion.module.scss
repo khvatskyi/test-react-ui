@@ -1,8 +1,10 @@
+@use '../../variables.scss' as globalVars;
+
 .panelQuestion {
   padding: 24px;
-  width: 626px;
   gap: 18px;
   border-radius: 6px;
+  width: globalVars.$question-width;
 }
 
 .questionText {

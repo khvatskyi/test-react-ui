@@ -68,7 +68,7 @@ export default function ModuleValueProposition({ portfolioId }: IModuleValueProp
     <div className={css.root}>
       <ModuleTopBar stateCode={CURRENT_STATE_CODE} />
       {!chatContext && <ChatStartForm stateCode={CURRENT_STATE_CODE} />}
-      {chatContext && <ChatRoom onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
+      {chatContext && <ChatRoom stateCode={CURRENT_STATE_CODE} showResponseOptionHint={true} onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
     </div>
   )
 }

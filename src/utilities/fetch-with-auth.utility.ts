@@ -1,5 +1,6 @@
 import { SessionStorageItems } from '../typings/enums/session-storage-items.enum';
 import { IUserContext } from '../typings/models/user.models';
+import { redirectToSSO } from './login.utility';
   
 export const fetchWithAuth = async (url: string, options?: RequestInit): Promise<Response> => {
 
@@ -18,11 +19,15 @@ export const fetchWithAuth = async (url: string, options?: RequestInit): Promise
     headers
   });
 
-  if (!response.ok) {      
-    throw new Error(response.statusText, {cause: {
-      body: await response.json(),
-      response: response
-    }});
+  if (!response.ok) {
+    if (response.status === 401) {
+      redirectToSSO();
+    } else {
+      throw new Error(response.statusText, {cause: {
+        body: await response.json(),
+        response: response
+      }});
+    }
   }
 
   return response;

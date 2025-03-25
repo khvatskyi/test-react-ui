@@ -29,7 +29,6 @@ export default function Framework() {
 
   CARDS.forEach(card => {
     card.categories.forEach(category => {
-      category.status = !!completedStages.find(x => x === category.path) ? StageStatus.Complete : StageStatus.None;
       category.stages?.forEach(stage => {
         stage.status = !!completedStages.find(x => x === stage.path) ? StageStatus.Complete : StageStatus.None;
       })

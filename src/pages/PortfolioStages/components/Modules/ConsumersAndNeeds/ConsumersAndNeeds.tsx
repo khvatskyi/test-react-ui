@@ -71,11 +71,11 @@ export default function ConsumersAndNeeds({ portfolioId }: IConsumersAndNeedsPro
   return portfolioId && (
     <div className={css.root}>
       <ModuleTopBar stateCode={CURRENT_STATE_CODE} />
-      {!valuePropositionIsCompleted && <UncompletedModule portfolioId={portfolioId} stateCode={STATE_CODES.ValueProposition} />}
+      {!valuePropositionIsCompleted && <UncompletedModule portfolioId={portfolioId} stageCodes={[STATE_CODES.ValueProposition]} />}
       {valuePropositionIsCompleted && 
         <>
           {!chatContext && <ChatStartForm stateCode={CURRENT_STATE_CODE} />}
-          {chatContext && <ChatRoom onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
+          {chatContext && <ChatRoom stateCode={CURRENT_STATE_CODE} showResponseOptionHint={true} onSendMessage={onSendMessage} onEditMessage={onEditMessage} onStartNewChat={onStartNewChat} />}
         </>
       }
     </div>

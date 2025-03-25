@@ -10,7 +10,11 @@
   padding: 15px;
   border: 1px solid #E1E3EB;
   border-radius: 5px;
-  cursor: pointer;
+
+  .title{
+    min-width: 210px;
+    cursor: pointer;
+  }
 
   .editButton {
     visibility: hidden;
@@ -18,5 +22,22 @@
 
   &:hover .editButton {
     visibility: visible;
+  }
+
+  .itemRowIcon svg {
+    fill: var(--core-semantic-info-50, #0A68F1);
+  }  
+}
+
+.editIcon {
+  svg {
+    fill: #6C6F80;
+  }
+}
+
+.deleteIcon {
+  color: #FF4242;
+  svg {
+    fill: #FF4242;
   }
 }

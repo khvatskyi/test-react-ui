@@ -1,3 +1,4 @@
+import React from 'react';
 import { FlexCell, FlexRow, IconContainer, Text } from '@epam/uui';
 import { ReactComponent as NotificationCheckFillIcon } from '@epam/assets/icons/notification-check-fill.svg';
 
@@ -9,6 +10,7 @@ export interface IFrameworkCardProps extends IFrameworkCard {
   onStageClick: (stage: IStage) => void;
   cx?: string;
   isSingleCard?: boolean;
+  footerElement?: React.ReactNode;
 };
 
 export default function FrameworkCard(props: IFrameworkCardProps) {
@@ -41,20 +43,22 @@ export default function FrameworkCard(props: IFrameworkCardProps) {
         {
           props.categories.map((category, index) => {
             const categoryStageWrapperClasses = css.categoryStageWrapper
-              + (category.path ? ` ${css.categoryStageWrapperClickable}` : '')
               + ` ${index > 0 ? (props.isSingleCard ? css.rightEndChevron : css.rightChevron) : css.rightPoint}`
 
             return (
-              <div key={index} className={css.categoryWrapper} onClick={(e) => handleStageClick(e, category)}>
-                <div className={categoryStageWrapperClasses}>
-                  <h4>{category.name}</h4>
+              <React.Fragment key={index}>
+                <div key={index} className={css.categoryWrapper}>
+                  <div className={categoryStageWrapperClasses}>
+                    <h4>{category.name}</h4>
+                  </div>
+                  {category.stages?.map(stage => childStage(index, stage))}
                 </div>
-                {category.stages?.map(stage => childStage(index, stage))}
-              </div>
+              </React.Fragment>
             )
           })
         }
       </FlexRow>
+      {props.footerElement}
     </FlexCell>
   );
 }

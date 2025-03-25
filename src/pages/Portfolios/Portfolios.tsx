@@ -9,6 +9,7 @@ import { loadPortfolios, loadProfileInfo, selectIsDataLoading, selectPortfolios,
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useUuiContext } from '@epam/uui-core';
 import StartWizard from '../../components/StartWizard/StartWizard';
+import { setBackUrl } from '../../store/app.slice';
 
 export default function Portfolios() {
 
@@ -25,7 +26,8 @@ export default function Portfolios() {
   const { uuiModals } = useUuiContext();
   const history = useHistory();
   const handlePortfolioCreate = () => {
-      history.push('/portfolios/create');
+    dispatch(setBackUrl(window.location.pathname));
+    history.push('/portfolios/create');
   }
   const progressStep = portfolios?.length ? 3 : 2;
   const handleShowProgressForm = () => {

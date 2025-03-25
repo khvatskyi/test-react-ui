@@ -5,11 +5,12 @@ import { IClientDefinitionInfo, IClientProfileInfo } from '../typings/models/cli
 import { IPortfolio } from '../typings/models/portfolio.models';
 import { saveClientDefinition } from '../services/ai.service';
 import { RootState } from '../store';
-import { getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
+import { deletePortfolioRequest, getPortfolio, getPortfolios, savePortfolio } from '../services/portfolio.service';
 import { getProfile, saveProfile } from '../services/profile.service';
 import { updateProfileAvailability } from './session.slice';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
-import { getCompletedModules } from '../services/data..service';
+import { getCompletedModules, fetchValueCreationModules } from '../services/data..service';
+import { IValueCreationModel } from '../typings/models/business-model.models';
 
 interface IDataState {
   clientDefinition: IClientDefinitionInfo | null;
@@ -17,6 +18,7 @@ interface IDataState {
   portfolios: IPortfolio[] | null;
   selectedPortfolio: IPortfolioDetails | null;
   completedModules: STATE_CODES[];
+  valueCreationModels: IValueCreationModel[] | null;
   pending: boolean[];
 }
 
@@ -26,6 +28,7 @@ const initialState: IDataState = {
   portfolios: null,
   selectedPortfolio: null,
   completedModules: [],
+  valueCreationModels: [],
   pending: []
 };
 
@@ -58,6 +61,37 @@ export const getSuccessfullyCompletedModules = createAsyncThunk(
   }
 );
 
+export const getValueCreationModules = createAsyncThunk(
+  'data/getValueCreationModules',
+  async (_, { rejectWithValue }) => {
+
+    try {
+      return await fetchValueCreationModules();
+    } catch (ex) {
+      console.log(ex);
+      return rejectWithValue(ex);
+    }
+  }
+);
+
+export const deletePortfolio = createAsyncThunk(
+  'data/deletePortfolio',
+  async (portfolioId: string, { rejectWithValue, dispatch }) => {
+
+    dispatch(setPending(true));
+
+    try {
+      return await deletePortfolioRequest(portfolioId);
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+      return rejectWithValue(r);
+    } finally {
+      dispatch(setPending(false));
+    }
+  }
+);
+
 const completedModulesExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) => {
   builder
   .addCase(getSuccessfullyCompletedModules.pending, (state) => {
@@ -68,6 +102,16 @@ const completedModulesExtraReducers = (builder: ActionReducerMapBuilder<IDataSta
     state.pending.pop();
   })
   .addCase(getSuccessfullyCompletedModules.rejected, (state) => {
+    state.pending.pop();
+  })
+  .addCase(getValueCreationModules.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(getValueCreationModules.fulfilled, (state, action) => {
+    state.valueCreationModels = action.payload;
+    state.pending.pop();
+  })
+  .addCase(getValueCreationModules.rejected, (state) => {
     state.pending.pop();
   });
 };
@@ -105,7 +149,9 @@ export const saveClientDefinitionInfo = createAsyncThunk(
         dispatch(updateProfileAvailability(true));
         return result;
       })
-      .catch(error => rejectWithValue(error));
+      .catch(error => {
+        return rejectWithValue(error);
+      });
   }
 );
 
@@ -186,6 +232,16 @@ const portfolioExtraReducers = (builder: ActionReducerMapBuilder<IDataState>) =>
   .addCase(upsertPortfolio.rejected, (state) => {
     state.pending.pop();
   })
+  .addCase(deletePortfolio.pending, (state) => {
+    state.pending.push(true);
+  })
+  .addCase(deletePortfolio.fulfilled, (state, action) => {
+    state.portfolios = state.portfolios.filter(portfolio => portfolio.id !== action.payload);
+    state.pending.pop();
+  })
+  .addCase(deletePortfolio.rejected, (state) => {
+    state.pending.pop();
+  })
 };
 
 export const dataSlice = createSlice({
@@ -236,6 +292,7 @@ export const selectPortfolios = (state: RootState) => state.data.portfolios;
 export const selectPortfolioDetails = (state: RootState) => state.data.selectedPortfolio;
 export const selectIsDataLoading = (state: RootState) => state.data.pending.length > 0;
 export const selectCompletedModules = (state: RootState) => state.data.completedModules;
+export const selectValueCreationModels = (state: RootState) => state.data.valueCreationModels;
 
 export const { setClientDefinitionInfo, clearClientProfile, clearPortfolioDetails, setPending, addCompletedModule, removeCompletedModule } = dataSlice.actions;
 

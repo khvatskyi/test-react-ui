@@ -1,0 +1,31 @@
+@use '../../variables.scss' as globalVars;
+
+.panelQuestion {
+  margin-top: -20px;
+  margin-bottom: 12px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  gap: 8px;
+  border-radius: 6px;
+  width: globalVars.$question-width;
+}
+
+.questionText {
+  margin: 0px;
+  padding: 0px;
+}
+
+.modelTitle {
+  margin-top: 6px;
+  margin-bottom: 2px;
+  padding: 0px;
+  // font-size: 48;
+  // font-weight: 600;
+}
+
+.modelLabel {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}

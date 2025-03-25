@@ -2,24 +2,45 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 
 import type { RootState } from '../store'
 import { IApiContext, IStartChat, IEditChatMessage, IInteractiveChatContext, IMessageToAi, IContentMessage, IGetSummaryRequest, 
-         IChatMessageUserAnswer, IChatMessageInterviewQuestion, IGetApiContextRequest
+         IChatMessageUserAnswer, IChatMessageInterviewQuestion, IPortfolioRequest,
+         IUpdateChatSummaryValueRequest,
+         IChatRequest
        } from '../typings/models/module.models';
 import { getSuccessfullyCompletedModules, setPending } from './data.slice';
 import { initChatTopic, startChat, deleteChat, getChatContext, sendChatMessage, editChatMessage, getChatSummary, getChatApiContext, getScenarioDetails, 
-         getApiProductJourneyReguest, initApiProductJourneyReguest, 
-         updateStepApiProductJourneyReguest,
-         updateActionApiProductJourneyReguest} from '../services/chat.service';
+         getApiProductJourneyRequest, initApiProductJourneyRequest, 
+         updateStepApiProductJourneyRequest,
+         updateActionApiProductJourneyRequest,
+         getBusinessModelStartDetails,
+         initBusinessModelCanvasRequest,
+         updateChatSummaryValueRequest} from '../services/chat.service';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
 import { findLastElement } from '../utilities/data.utility';
 import { ChatMessageType, ChatRole, TopicStatus } from '../typings/enums/module.enum';
-import { IGetScenarioDetailsRequest, IProductJourney, IScenarioDetails, IUpdateApiProductJourneyAction, IUpdateApiProductJourneyStep } from '../typings/models/product-journey.model';
+import { IGetProductJourneyRequest, IGetScenarioDetailsRequest, IProductJourney, IScenarioDetails, IUpdateApiProductJourneyAction, IUpdateApiProductJourneyStep } from '../typings/models/product-journey.model';
+import { IBusinessModelCanvas, IBusinessModelStartDetails, IGetBusinessModelStartDetailsRequest } from '../typings/models/business-model.models';
+import { ICapabilities, ICapabilitiesOwnerDetails, IGetCapabilitiesDetailsRequest } from '../typings/models/capabilities.model';
+import { getCapabilitiesDetails } from '../services/capabilities.service';
+import { IGoalsAndKPIs } from '../typings/models/goals-and-kpis.model';
+import { goalsAndKPIsReducers } from './goals-and-kpis.slice';
+import { apiProductProposalReducers } from './api-product-proposal.slice';
+import { IProductProposal } from '../typings/models/api-product-proposal.models';
+import { isInvalidGeneratedResponse } from '../utilities/notifications.utility';
+
 
 export interface IAiState {
   aiChatContext: IInteractiveChatContext;
   ApiContext: IApiContext;
   ScenarioDetails: IScenarioDetails;
   ProductJurney: IProductJourney;
+  BusinessModelStartDetails: IBusinessModelStartDetails;
+  BusinessModelCanvas: IBusinessModelCanvas;
+  CapabilitiesDetails: ICapabilitiesOwnerDetails;
+  Capabilities: ICapabilities;
+  GoalsAndKPIs: IGoalsAndKPIs;
+  ProductProposal: IProductProposal;
   currentChatTopic: string | null;
+  failedChatRequest: IChatRequest | null;
   isLoading: boolean[];
 }
 
@@ -30,14 +51,21 @@ const initialState: StateModel = {
   ApiContext: null,
   ScenarioDetails: null,
   ProductJurney: null,
+  BusinessModelStartDetails: null,
+  BusinessModelCanvas: null,
+  CapabilitiesDetails: null,
+  Capabilities: null,
+  GoalsAndKPIs: null,
+  ProductProposal: null,
   currentChatTopic: null,
+  failedChatRequest: null,
   isLoading: []
 };
 
 
 export const sendChatMessageToAi = createAsyncThunk(
   'ai/sendChatMessageToAi',
-  async (args: { message: string, stateCode: STATE_CODES, isAiGenerated: boolean}, thunkAPI) => {
+  async (chatRequest: IChatRequest, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const activeTopic = state.ai.aiChatContext.topics?.find(topic => topic.status === TopicStatus.ActiveDiscussion);
     const messages = activeTopic.history;
@@ -45,27 +73,36 @@ export const sendChatMessageToAi = createAsyncThunk(
     const lastQuestionContent = lastQuestion.content as IChatMessageInterviewQuestion
     const isFinalAnswer = lastQuestionContent.questionNumber === lastQuestionContent.totalOfQuestions
 
-    const requestMessage: IMessageToAi = {
-      portfolioId: state.data.selectedPortfolio.id,
-      isLastAnswer: isFinalAnswer,
-      isAiGenerated: args.isAiGenerated,
-      message: args.message,
-      stateCode: args.stateCode,
-    };
-
-    const response = await sendChatMessage(requestMessage);
-
-    if (isFinalAnswer) {
-      const request: IGetSummaryRequest = {
-        chat_id: state.ai.aiChatContext.id,
-        portfolio_id: state.ai.aiChatContext.portfolioId,
-        state_code: args.stateCode
+    try {
+      const requestMessage: IMessageToAi = {
+        portfolioId: state.data.selectedPortfolio.id,
+        questionNumber: lastQuestionContent.questionNumber,
+        isLastAnswer: isFinalAnswer,
+        isAiGenerated: chatRequest.isAiGenerated,
+        message: chatRequest.message,
+        stateCode: chatRequest.stateCode,
       };
 
-      thunkAPI.dispatch(getSummary(request)).then(() => thunkAPI.dispatch(getSuccessfullyCompletedModules(state.ai.aiChatContext.portfolioId)));
+      const response = await sendChatMessage(requestMessage);
+
+      if (isFinalAnswer) {
+        const summaryRequest: IGetSummaryRequest = {
+          portfolio_id: state.ai.aiChatContext.portfolioId,
+          state_code: chatRequest.stateCode
+        };
+
+        thunkAPI.dispatch(getSummary(summaryRequest)).then(() => thunkAPI.dispatch(getSuccessfullyCompletedModules(state.ai.aiChatContext.portfolioId)));
+      }
+
+      return response;
+    } catch (error) {
+      const errorText = error?.cause?.body?.detail ?? error.message;
+      if (isInvalidGeneratedResponse(errorText)) {
+        thunkAPI.dispatch(setFailedChatRequest(chatRequest));
+      }
+      throw error;
     }
 
-    return response;
   }
 );
 
@@ -85,9 +122,26 @@ export const getSummary = createAsyncThunk(
   }
 );
 
+export const updateChatSummaryValue = createAsyncThunk(
+  'data/updateChatSummaryValue',
+  async (context: IUpdateChatSummaryValueRequest, { rejectWithValue }) => {
+
+    try {
+      const response = await updateChatSummaryValueRequest(context);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
+
 export const loadApiContext = createAsyncThunk(
   'data/loadApiContext',
-  async (request: IGetApiContextRequest, { rejectWithValue }) => {
+  async (request: IPortfolioRequest, { rejectWithValue }) => {
 
     try {
       const response = await getChatApiContext(request);
@@ -117,6 +171,22 @@ export const loadScenarioDetails = createAsyncThunk(
   }
 );
 
+export const loadBusinessModelStartDetails = createAsyncThunk(
+  'data/loadBusinessModelStartDetails',
+  async (request: IGetBusinessModelStartDetailsRequest, { rejectWithValue }) => {
+
+    try {
+      const response = await getBusinessModelStartDetails(request);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
 export const startNewChat = createAsyncThunk(
   'data/startNewChat',
   async (context: IStartChat, { rejectWithValue }) => {
@@ -136,10 +206,10 @@ export const startNewChat = createAsyncThunk(
 
 export const initNewChatTopics = createAsyncThunk(
   'data/initNewChatTopics',
-  async (args: { context: IApiContext}, { rejectWithValue }) => {
+  async (context: IApiContext, { rejectWithValue }) => {
 
     try {
-      const response = await initChatTopic(args.context);
+      const response = await initChatTopic(context);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
@@ -203,7 +273,7 @@ export const initApiProductJourney = createAsyncThunk(
   async (context: IScenarioDetails, { rejectWithValue }) => {
 
     try {
-      const response = await initApiProductJourneyReguest(context);
+      const response = await initApiProductJourneyRequest(context);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
@@ -216,10 +286,10 @@ export const initApiProductJourney = createAsyncThunk(
 
 export const getApiProductJourney = createAsyncThunk(
   'data/getApiProductJourney',
-  async (context: IGetScenarioDetailsRequest, { rejectWithValue }) => {
+  async (context: IGetProductJourneyRequest, { rejectWithValue }) => {
 
     try {
-      const response = await getApiProductJourneyReguest(context);
+      const response = await getApiProductJourneyRequest(context);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
@@ -235,7 +305,7 @@ export const updateStepApiProductJourney = createAsyncThunk(
   async (context: IUpdateApiProductJourneyStep, { rejectWithValue }) => {
 
     try {
-      const response = await updateStepApiProductJourneyReguest(context);
+      const response = await updateStepApiProductJourneyRequest(context);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
@@ -251,7 +321,56 @@ export const updateActionApiProductJourney = createAsyncThunk(
   async (context: IUpdateApiProductJourneyAction, { rejectWithValue }) => {
 
     try {
-      const response = await updateActionApiProductJourneyReguest(context);
+      const response = await updateActionApiProductJourneyRequest(context);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
+export const initBusinessModelCanvas = createAsyncThunk(
+  'data/initBusinessModelCanvas',
+  async (context: IBusinessModelStartDetails, { rejectWithValue }) => {
+
+    try {
+      const response = await initBusinessModelCanvasRequest(context);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
+export const getBusinessModelCanvas = createAsyncThunk(
+  'data/getBusinessModelCanvas',
+  async (context: IGetSummaryRequest, { rejectWithValue }) => {
+
+    try {
+      const response = await getChatSummary(context);
+      return response;
+    } catch (r) {
+      const errorText = r.cause?.body?.detail ?? r.message;
+      console.log(errorText);
+
+      return rejectWithValue(r);
+    }
+  }
+);
+
+
+export const loadCapabilityDetails = createAsyncThunk(
+  'data/loadCapabilityDetails',
+  async (request: IGetCapabilitiesDetailsRequest, { rejectWithValue }) => {
+
+    try {
+      const response = await getCapabilitiesDetails(request);
       return response;
     } catch (r) {
       const errorText = r.cause?.body?.detail ?? r.message;
@@ -270,6 +389,7 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     })
     .addCase(loadChatContext.fulfilled, (state, action) => {
       state.aiChatContext = action.payload;
+      state.failedChatRequest = null;
       state.isLoading.pop();
     })
     .addCase(loadChatContext.rejected, (state) => {
@@ -311,6 +431,11 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     .addCase(resetChatContext.fulfilled, (state) => {
       state.aiChatContext = null;
       state.ProductJurney = null;
+      state.BusinessModelCanvas = null;
+      state.Capabilities = null;
+      state.GoalsAndKPIs = null;
+      state.ProductProposal = null;
+      
       state.isLoading = [];
     })
     .addCase(sendEditChatMessage.fulfilled, (state, action) => {
@@ -357,6 +482,36 @@ const chatExtraReducers = (builder: ActionReducerMapBuilder<IAiState>) => {
     .addCase(getApiProductJourney.fulfilled, (state, action) => {
       state.ProductJurney = action.payload;
     })
+    .addCase(initBusinessModelCanvas.fulfilled, (state, action) => {
+      state.BusinessModelCanvas = action.payload;
+    })
+    .addCase(getBusinessModelCanvas.fulfilled, (state, action) => {
+      if (action.payload && (action.payload.length > 0)) {
+        state.BusinessModelCanvas = action.payload[0].summary;
+      } else {
+        state.BusinessModelCanvas = null;
+      }
+    })
+    .addCase(loadBusinessModelStartDetails.pending, (state) => {
+      state.isLoading.push(true);
+    })
+    .addCase(loadBusinessModelStartDetails.fulfilled, (state, action) => {
+      state.BusinessModelStartDetails = action.payload;
+      state.isLoading.pop();
+    })
+    .addCase(loadBusinessModelStartDetails.rejected, (state) => {
+      state.isLoading.pop();
+    })
+    .addCase(loadCapabilityDetails.pending, (state) => {
+      state.isLoading.push(true);
+    })
+    .addCase(loadCapabilityDetails.fulfilled, (state, action) => {
+      state.CapabilitiesDetails = action.payload;
+      state.isLoading.pop();
+    })
+    .addCase(loadCapabilityDetails.rejected, (state) => {
+      state.isLoading.pop();
+    })
 };
 
 export const aiSlice = createSlice({
@@ -387,10 +542,22 @@ export const aiSlice = createSlice({
     },
     setChatTopic: (state, action) => {
       state.currentChatTopic = action.payload;
+    },
+    setFailedChatRequest: (state, action) => {
+      state.failedChatRequest = action.payload;
+    },
+    clearFailedChatRequest: (state) => {
+      state.failedChatRequest = null;
+    },
+    deleteActiveChatLastMessage: (state) => {
+      const activeTopic = state.aiChatContext.topics?.find(topic => topic.status === TopicStatus.ActiveDiscussion);
+      activeTopic.history.pop();
     }
   },
   extraReducers: builder => {
     chatExtraReducers(builder);
+    goalsAndKPIsReducers(builder);
+    apiProductProposalReducers(builder);
   }
 })
 
@@ -400,8 +567,16 @@ export const selectApiContext = (state: RootState) => state.ai.ApiContext;
 export const selectScenarioDetails = (state: RootState) => state.ai.ScenarioDetails;
 export const selectProductJurney = (state: RootState) => state.ai.ProductJurney;
 export const selectChatTopic = (state: RootState) => state.ai.currentChatTopic;
+export const selectBusinessModelStartDetails = (state: RootState) => state.ai.BusinessModelStartDetails;
+export const selectBusinessModelCanvas = (state: RootState) => state.ai.BusinessModelCanvas;
+export const selectCapabilityDetails = (state: RootState) => state.ai.CapabilitiesDetails;
+export const selectCapabilities = (state: RootState) => state.ai.Capabilities;
+export const selectGoalsAndKPIs = (state: RootState) => state.ai.GoalsAndKPIs;
+export const selectProductProposal = (state: RootState) => state.ai.ProductProposal;
+export const selectFailedChatRequest = (state: RootState) => state.ai.failedChatRequest;
+
 
 export const isAiMessageLoading = (state: RootState) => state.ai.isLoading.length > 0;
-export const { addUserMessage, clearChatContext, setChatTopic } = aiSlice.actions;
+export const { addUserMessage, clearChatContext, setChatTopic, deleteActiveChatLastMessage, setFailedChatRequest, clearFailedChatRequest } = aiSlice.actions;
 
 export default aiSlice.reducer;

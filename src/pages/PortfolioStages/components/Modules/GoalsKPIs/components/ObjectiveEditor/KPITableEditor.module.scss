@@ -1,0 +1,50 @@
+@import '~@epam/promo/assets/styles/colors';
+
+.container {
+    max-height: 620px;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+}
+.buttonPanel {
+    margin-bottom: 6px;
+}
+
+div[role="table"] {
+    margin-bottom: -17px !important;
+    margin-right: -58px !important;
+}
+
+div[role="rowgroup"] {
+    margin-bottom: 2px !important;
+}
+
+.tablePanel {
+    border: 1px solid #E1E3EB;
+    border-radius: 6px;
+  }
+  
+
+:global(.uui-table-row) {
+    &.task-is-done {
+        --uui-dt-row-bg: var(--uui-surface-higher);
+    }
+
+    .configItem {
+        visibility: hidden;
+
+        &.showButton {
+            visibility: visible;
+        }
+    }
+
+    &:hover {
+        .configItem {
+            visibility: visible;
+        }
+    }
+}
+
+.weekend-day {
+    background-color: var(--uui-surface-highest);
+}

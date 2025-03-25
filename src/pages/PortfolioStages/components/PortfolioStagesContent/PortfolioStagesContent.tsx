@@ -19,7 +19,7 @@ export default function PortfolioStagesContent({ portfolio, onUpdateClick, showO
     settingsKey: 'portfolio-details-form',
     value: portfolio,
     beforeLeave: () => Promise.resolve(false),
-    loadUnsavedChanges: () => Promise.resolve(),
+    loadUnsavedChanges: () => Promise.reject(),
     getMetadata: portfolioValidationSchema,
     onSave: () => Promise.resolve(),
   });

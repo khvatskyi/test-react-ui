@@ -6,8 +6,8 @@ import { getApiProductJourney, resetChatContext, selectChatContext, selectProduc
 import css from './ApiProductJorneys.module.scss';
 import ModuleTopBar from '../../TopBar/ModuleTopBar';
 import { STATE_CODES } from '../../PortfolioStagesLeftPanel/structure';
-import ScenarioDetailsForm from '../../ScenarioDetails/ScenarioDetailsForm';
-import ApiProductJorneySummary from './ApiProductJorneySummary';
+import ScenarioDetailsForm from './components/ScenarioDetails/ScenarioDetailsForm';
+import ApiProductJorneySummary from './components/ApiProductJorneySummary/ApiProductJorneySummary';
 import UncompletedModule from '../../UncompletedModule/UncompletedModule';
 import { removeCompletedModule, selectCompletedModules } from '../../../../../store/data.slice';
 
@@ -15,7 +15,7 @@ export interface IApiProductJorneysProps {
   portfolioId: string;
 }
 
-const CURRENT_STATE_CODE = STATE_CODES.APIProductJourneys;
+const CURRENT_STATE_CODE = STATE_CODES.APIProductJourney;
 
 export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysProps) {
   const dispatch = useAppDispatch();
@@ -38,7 +38,7 @@ export default function ApiProductJorneys({ portfolioId }: IApiProductJorneysPro
   return portfolioId && (
     <div className={css.root}>
       <ModuleTopBar stateCode={CURRENT_STATE_CODE} />
-      {!valuePropositionIsCompleted && <UncompletedModule portfolioId={portfolioId} stateCode={STATE_CODES.ValueProposition} />}
+      {!valuePropositionIsCompleted && <UncompletedModule portfolioId={portfolioId} stageCodes={[STATE_CODES.ValueProposition]} />}
       {valuePropositionIsCompleted && 
         <>
           {!productJurney && <ScenarioDetailsForm stateCode={CURRENT_STATE_CODE} />}

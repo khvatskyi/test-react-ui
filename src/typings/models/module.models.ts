@@ -1,6 +1,12 @@
 import { STATE_CODES } from "../../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure";
 import { ChatMessageType, ChatRole } from "../enums/module.enum";
 
+export interface IChatRequest {
+  message: string, 
+  stateCode: STATE_CODES, 
+  isAiGenerated: boolean
+}
+
 export interface IApiContext {
   portfolioId: string;
   name?: string;
@@ -25,7 +31,8 @@ export interface IChatMessageInterviewQuestion {
   topic?: string;
   question?: string;
   example?: string;
-  options?: [string];
+  options?: string[];
+  onlyOptionsAllowed?: boolean;
   totalOfQuestions?: number;
   questionNumber?: number;
 }
@@ -62,18 +69,25 @@ export interface IInteractiveChatContext {
 export interface IMessageToAi {
   message: string;
   portfolioId: string;
+  questionNumber: number;
   isLastAnswer: boolean;
   isAiGenerated: boolean;
   stateCode: string;
 }
 
 export interface IGetSummaryRequest {
-  chat_id: string;
   portfolio_id: string;
   state_code: STATE_CODES;
 }
 
-export interface IGetApiContextRequest {
+export interface IPortfolioRequest {
   portfolio_id: string;
 }
 
+export interface IUpdateChatSummaryValueRequest {
+  portfolioId: string;
+  stateCode: string;
+  topic: string;
+  key: string;
+  value: any;
+}

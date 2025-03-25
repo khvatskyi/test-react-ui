@@ -1,7 +1,8 @@
 // import { delay } from '@epam/uui-test-utils';
 import { STATE_CODES } from '../pages/PortfolioStages/components/PortfolioStagesLeftPanel/structure';
+import { IBusinessModelCanvas, IBusinessModelStartDetails, IGetBusinessModelStartDetailsRequest } from '../typings/models/business-model.models';
 
-import { IApiContext, IStartChat, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest, IGetApiContextRequest} from '../typings/models/module.models';
+import { IApiContext, IStartChat, IInteractiveChatContext, IMessageToAi, IContentMessage, IEditChatMessage, IGetSummaryRequest, IPortfolioRequest, IUpdateChatSummaryValueRequest} from '../typings/models/module.models';
 import { IGetScenarioDetailsRequest, IProductJourney, IScenarioDetails, IUpdateApiProductJourneyAction, IUpdateApiProductJourneyStep } from '../typings/models/product-journey.model';
 import { fetchWithAuth } from '../utilities/fetch-with-auth.utility';
 // import { SUMMARY } from '../constants';
@@ -134,6 +135,7 @@ export async function sendChatMessage(message: IMessageToAi): Promise<IContentMe
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat`;
   const body = {
     portfolioId: message.portfolioId,
+    questionNumber: message.questionNumber,
     isLastAnswer: message.isLastAnswer,
     isAiGenerated: message.isAiGenerated,    
     message: message.message,
@@ -187,7 +189,20 @@ export async function getChatSummary(request: IGetSummaryRequest): Promise<{ [ke
   return result; 
 }
 
-export async function getChatApiContext(request: IGetApiContextRequest): Promise<IApiContext> {
+export async function updateChatSummaryValueRequest(request: IUpdateChatSummaryValueRequest): Promise<void> {
+
+  const path = process.env.REACT_APP_API_ROOT + '/interactive-chat/summary/value';
+
+  const response = await fetchWithAuth(path, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+
+  return response.json();
+}
+
+
+export async function getChatApiContext(request: IPortfolioRequest): Promise<IApiContext> {
 
   const params = new URLSearchParams({ ...request }).toString();
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-context?` + params;
@@ -223,7 +238,7 @@ export async function sendScenarioDetailsMessage(portfolioId: string): Promise<I
   return response.json();
 }
 
-export async function initApiProductJourneyReguest(request: IScenarioDetails): Promise<IProductJourney> {
+export async function initApiProductJourneyRequest(request: IScenarioDetails): Promise<IProductJourney> {
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-product-journey`;
   const response = await fetchWithAuth(path, {
@@ -236,7 +251,7 @@ export async function initApiProductJourneyReguest(request: IScenarioDetails): P
 }
 
 
-export async function getApiProductJourneyReguest(request: IGetScenarioDetailsRequest): Promise<IProductJourney> {
+export async function getApiProductJourneyRequest(request: IGetScenarioDetailsRequest): Promise<IProductJourney> {
 
   const params = new URLSearchParams({ ...request }).toString();
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-product-journey?` + params;
@@ -247,7 +262,7 @@ export async function getApiProductJourneyReguest(request: IGetScenarioDetailsRe
 }
 
 
-export async function updateStepApiProductJourneyReguest(request: IUpdateApiProductJourneyStep): Promise<void> {
+export async function updateStepApiProductJourneyRequest(request: IUpdateApiProductJourneyStep): Promise<void> {
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-product-journey/update-step`;
   const response = await fetchWithAuth(path, {
@@ -259,7 +274,7 @@ export async function updateStepApiProductJourneyReguest(request: IUpdateApiProd
 }
 
 
-export async function updateActionApiProductJourneyReguest(request: IUpdateApiProductJourneyAction): Promise<void> {
+export async function updateActionApiProductJourneyRequest(request: IUpdateApiProductJourneyAction): Promise<void> {
 
   const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/api-product-journey/update-action`;
   const response = await fetchWithAuth(path, {
@@ -270,3 +285,26 @@ export async function updateActionApiProductJourneyReguest(request: IUpdateApiPr
   return await response.json();
 }
 
+
+export async function getBusinessModelStartDetails(request: IGetBusinessModelStartDetailsRequest): Promise<IBusinessModelStartDetails> {
+
+  const params = new URLSearchParams({ ...request }).toString();
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/business-model-start-details?` + params;
+  const response = await fetchWithAuth(path, { method: 'GET' });
+
+  const result = await response.json();
+  return result; 
+}
+
+
+export async function initBusinessModelCanvasRequest(request: IBusinessModelStartDetails): Promise<IBusinessModelCanvas> {
+
+  const path = process.env.REACT_APP_API_ROOT + `/interactive-chat/business-model-start-details`;
+  const response = await fetchWithAuth(path, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+
+  const result: IBusinessModelCanvas = await response.json();
+  return result;
+}

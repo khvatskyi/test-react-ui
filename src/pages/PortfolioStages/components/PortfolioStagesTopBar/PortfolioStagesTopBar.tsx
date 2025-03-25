@@ -38,7 +38,7 @@ export default function PortfolioStagesTopBar({ onUpdateClick }: IPortfolioStage
           <PortfolioPicker portfolio={selectedPortfolio} onPortfolioChange={handlePortfolioChange} />
         </FlexCell>
         <FlexSpacer />
-        <Button caption='Update portfolio' color='primary' fill='outline' onClick={onUpdateClick} />
+        <Button caption='Edit portfolio' color='primary' fill='outline' onClick={onUpdateClick} />
       </FlexRow>
     </Panel>
   );

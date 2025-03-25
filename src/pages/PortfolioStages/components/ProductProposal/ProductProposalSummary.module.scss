@@ -1,0 +1,174 @@
+@use '../../../../variables' as globalVars;
+
+.content {
+  display: flex;  
+  width: 100%;
+  height: globalVars.$top-bar-content-height;
+  overflow: hidden;
+}
+
+.segmentDesc {
+  margin-bottom: 12px;
+}
+
+.keyCaption {
+  margin-top: 24px;
+  margin-bottom: 0px;
+}
+
+.rootForm {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  margin: 0 auto;
+  width: 670px;
+}
+
+.formPanel {
+  padding: 24px;
+}
+
+.titleForm {
+  padding-bottom: 12px;
+}
+
+.stepArea {
+  padding-top: 12px;  
+  padding-left: 12px;  
+  padding-bottom: 24px;  
+}
+
+.actionAria {
+  padding-bottom: 24px;  
+}
+
+.tableRow {
+  padding: 0px !important;
+}
+
+.cellTitleColor {
+  background-color: #F5F6FA;
+  vertical-align: middle;
+}
+
+.borderTop {
+  border-top: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderBottom {
+  border-bottom: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderLeft {
+  border-left: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.borderRight {
+  border-right: 1px solid var(--core-neutral-neutral-30, #E1E3EB)
+}
+
+.exportButton {
+  margin-right: 12px;
+}
+
+.arrayItem {
+  margin-top: 6px;
+  width: 100%;
+}
+
+
+.titleMargin {
+  // margin-top: 6px; 
+  margin-bottom: 6px; 
+  margin-right: 6px; 
+  margin-left: 12px; 
+}
+
+.valueMargin {
+  margin-top: 6px; 
+  margin-bottom: 6px; 
+  margin-right: 6px; 
+  margin-left: 12px; 
+}
+
+
+
+ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+li {
+  font-size: 14px;
+  font-weight: 100;
+  position: relative;
+  padding-left: 20px;
+}
+
+li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: black; 
+  line-height: 20px;
+}
+
+.roundedTable {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #E1E3EB;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.roundedTable thead tr {
+  background-color: #F5F6FA;
+}
+
+.roundedTable th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #E1E3EB;
+  border-right: 1px solid #E1E3EB;
+}
+
+.roundedTable td {
+  padding: 12px;
+  font-weight: 400;
+  font-size: 14px;
+  border-bottom: 1px solid #E1E3EB;
+  border-right: 1px solid #E1E3EB;
+}
+
+
+table.roundedTable tr:last-child td {
+  border-bottom: none;
+}
+
+table.roundedTable td:last-child {
+  border-right: none;
+}
+
+
+.columnPersonaWidth {
+  width: 125px;
+}
+
+
+.columnKpiName {
+  width: 100px;
+}
+
+.columnKpiTarget{
+  width: 80px;
+
+}
+
+.rowTableTop {
+  vertical-align: top;
+}

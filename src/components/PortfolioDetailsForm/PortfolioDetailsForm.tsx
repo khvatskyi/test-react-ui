@@ -38,7 +38,7 @@ export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormD
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='portfolioDescription' label='Description' {...lens.prop('description').toProps()}>
-                <TextArea {...lens.prop('description').toProps()} id='portfolioDescription' placeholder='What this portfolio is about?' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('description').toProps()} id='portfolioDescription' rows={4} placeholder='What this portfolio is about?' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
@@ -61,35 +61,35 @@ export default function PortfolioDetailsForm({ form: { lens, isDisabled: isFormD
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='goalsOrObjectives' label='Goals / Objectives' {...lens.prop('goalsOrObjectives').toProps()}>
-                <TextArea {...lens.prop('goalsOrObjectives').toProps()} id='goalsOrObjectives' placeholder='What business is trying to achieve with this portfolio?' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('goalsOrObjectives').toProps()} id='goalsOrObjectives' rows={4} placeholder='What business is trying to achieve with this portfolio?' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='businessCapabilities' label='Business Capabilities' info='Business capabilities' {...lens.prop('businessCapabilities').toProps()}>
-                <TextArea {...lens.prop('businessCapabilities').toProps()} id='businessCapabilities' placeholder='What business capabilities are in the scope of this portfolio?' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('businessCapabilities').toProps()} id='businessCapabilities' rows={4} placeholder='What business capabilities are in the scope of this portfolio?' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='industryStandards' label='Industry Standards' info='Industry Standards' {...lens.prop('industryStandards').toProps()}>
-                <TextArea {...lens.prop('industryStandards').toProps()} id='industryStandards' placeholder='Please type text' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('industryStandards').toProps()} id='industryStandards' rows={4} placeholder='Please type text' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='keyPartners' label='Key Partners' info='Key Partners' {...lens.prop('keyPartners').toProps()}>
-                <TextArea {...lens.prop('keyPartners').toProps()} id='keyPartners' placeholder='Please type text' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('keyPartners').toProps()} id='keyPartners' rows={4} placeholder='Please type text' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>
           <FlexRow vPadding='12'>
             <FlexCell minWidth={324} width='100%'>
               <LabeledInput htmlFor='keySuppliers' label='Key Suppliers' info='Key Suppliers' {...lens.prop('keySuppliers').toProps()}>
-                <TextArea {...lens.prop('keySuppliers').toProps()} id='keySuppliers' placeholder='Please type text' isDisabled={isFormDisabled} />
+                <TextArea {...lens.prop('keySuppliers').toProps()} id='keySuppliers' rows={4} placeholder='Please type text' isDisabled={isFormDisabled} />
               </LabeledInput>
             </FlexCell>
           </FlexRow>

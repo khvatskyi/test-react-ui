@@ -8,16 +8,16 @@ import StartWizardProgress from '../StartWizardProgress/StartWizardProgress';
 
 
 const LABELS = {
-  addProfileTitle: 'Add client profile',
-  addProfileDecs: 'A client profile is a detailed summary of a customer who requires API products to be developed.',
+  addProfileTitle: 'Fill client profile',
+  addProfileDecs: 'Client profile is a detailed summary of a customer who requires API products to be developed.',
   createProfileButton: 'Add client profile',
-  createPortfolioTitle: 'Create first API portfolio',
-  createPortfolioDesc: 'An API portfolio is a collection of APIs managed by an organization that are designed to be used together to achieve specific business goals or provide a comprehensive suite of services.',
+  createPortfolioTitle: 'Create API portfolio',
+  createPortfolioDesc: 'API portfolio is a managed collection of APIs, typically aligned with a common API resource model or information model.',
   createPortfolioButton: 'Create a portfolio',
-  discovePhaseTitle: 'Finish module in Discover phase',
-  discovePhaseDesc: 'Answer a set of questions regarding specific API inside a portfolio either manually or with a help of AI assistant.',
-  resultTitle: 'Export results as a deliverable',
-  resultDesc: 'Choose your preferred format of the output and export it.',
+  discovePhaseTitle: 'Complete module in Discover phase',
+  discovePhaseDesc: 'Modules are topics or concerns that make a key contribution to the portfolio, product, or API.',
+  resultTitle: 'Export API product proposal',
+  resultDesc: 'API product proposal is a formalization of the API Product as a business-manageable asset that drives downstream activities, including identification of API Consumers, their needs, features of the API product, and initial requirements.',
 };
 
 export interface IStartWizardForProps {
